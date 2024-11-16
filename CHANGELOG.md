@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.5](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.4.4...v2.4.5) (2024-11-16)
+
+
+### Bug Fixes
+
+* pm2调整 ([7032306](https://github.com/rainbowwarmth/KazuhaBot/commit/703230647656cd4ff25aa8b41678f08006ac72c4))
+
 ## [2.4.4](https://github.com/rainbowwarmth/KazuhaBot/compare/2.4.3...v2.4.4) (2024-11-16)
 
 
