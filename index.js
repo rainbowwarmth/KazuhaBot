@@ -40,7 +40,7 @@ async function initialize() {
             logger_1.default.mark('[READY] 事件接收 :', data);
         });
         global_1.ws.on('ERROR', (data) => {
-            logger_1.default.mark('[ERROR] 事件接收 :', data);
+            logger_1.default.error('[ERROR] 事件接收 :', data);
         });
         global_1.ws.on('GUILD_MESSAGES', async (data) => {
             if (data.eventType != "MESSAGE_CREATE")

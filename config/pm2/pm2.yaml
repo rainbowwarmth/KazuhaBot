@@ -1,11 +1,11 @@
 apps:
-  - cwd: ./ # ����Ŀ¼
-    min_uptime: 10000 # pm2��Ϊ�������ߵ���Сʱ��
-    max_restarts: 3 # ����ȶ��������������ȶ�ָ����С��1s����С�ڵ�min_uptime������
-    name: KazuhaBot # pm2��Ŀ����
-    script: ./config/pm2/pm2-run.js # �����ļ���� (����Ϊpm2.js)
-    error_file: ./pm2/error.log # pm2���������Ϣ��־
-    out_file: ./pm2/out.log # pm2��������־
-    log_date_format: 'YYYY-MM-DD HH:mm Z' # ��־�����ڸ�ʽ ��-��-�� ʱ:��:�� ʱ��
-    max_memory_restart: 512M # �������ڴ���Զ�����
-    cron_restart: '0 8 * * *' # ��ʱ���� ����Ϊÿ��8�� ��Ҫע��ʱ��
+  - cwd: ./ #
+    min_uptime: 10000 
+    max_restarts: 3
+    name: KazuhaBot
+    script: ./config/pm2/pm2-run.js 
+    error_file: ./pm2/error.log
+    out_file: ./pm2/out.log
+    log_date_format: 'YYYY-MM-DD HH:mm Z'
+    max_memory_restart: 512M
+    cron_restart: '0 8 * * *'

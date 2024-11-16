@@ -208,7 +208,7 @@ async function changePushTask(msg) {
             : `[${gameName}关闭公告推送] changePushTask/mysNew.ts`;
         logger_1.default.mark(loggerMessage);
     })
-        .catch(err => logger_1.default.error(err));
+        .catch((err) => logger_1.default.error(err));
 }
 async function taskPushNews() {
     // List of all available game IDs (gid)
@@ -218,7 +218,7 @@ async function taskPushNews() {
         return;
     // Loop through each game ID
     for (const gid of allGameIds) {
-        const _newsPushChannels = await global_1.redis.hGetAll(`config:${getGamePrefix(gid)}newsPush`).catch(err => { logger_1.default.error(err); });
+        const _newsPushChannels = await global_1.redis.hGetAll(`config:${getGamePrefix(gid)}newsPush`).catch((err) => { logger_1.default.error(err); });
         if (!_newsPushChannels)
             continue;
         const sendChannels = []; // 每次开始时清空 sendChannels
