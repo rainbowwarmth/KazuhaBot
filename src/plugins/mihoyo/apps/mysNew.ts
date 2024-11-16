@@ -4,7 +4,6 @@ import logger from "../../../lib/logger"
 import { redis } from '../../../lib/global'
 import { miGetNewsList, miGetPostFull } from "../models/mysNew"
 import { PostFullPost } from "../models/mysNew"
-import { version } from "os";
 
 var emoticon: Map<any, any> | null = null;
 
@@ -211,7 +210,7 @@ export async function changePushTask(msg: IMessageEx) {
 
             logger.mark(loggerMessage)
         })
-        .catch(err => logger.error(err));
+        .catch((err: any) => logger.error(err));
 }
 export async function taskPushNews() {
     // List of all available game IDs (gid)
@@ -222,7 +221,7 @@ export async function taskPushNews() {
 
     // Loop through each game ID
     for (const gid of allGameIds) {
-        const _newsPushChannels = await redis.hGetAll(`config:${getGamePrefix(gid)}newsPush`).catch(err => { logger.error(err); });
+        const _newsPushChannels = await redis.hGetAll(`config:${getGamePrefix(gid)}newsPush`).catch((err: any) => { logger.error(err); });
         if (!_newsPushChannels) continue;
 
         const sendChannels: string[] = [];  // 每次开始时清空 sendChannels

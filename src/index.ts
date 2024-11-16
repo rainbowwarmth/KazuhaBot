@@ -14,7 +14,7 @@ export async function initialize(){
             logger.mark('[READY] 事件接收 :', data)
         });
         ws.on('ERROR', (data: any) => {
-            logger.mark('[ERROR] 事件接收 :', data);
+            logger.error('[ERROR] 事件接收 :', data);
           });
         ws.on('GUILD_MESSAGES', async (data: IntentMessage) => {
             if (data.eventType != "MESSAGE_CREATE") return;
