@@ -42,11 +42,10 @@ jobs:
             echo "VERSION_UPDATED=false" >> $GITHUB_ENV
           fi
 
-      # 5. 使用 release-please 进行发布
-      - name: Release Please Action
+      # 5. 使用 release-please 创建 PR，而不是直接发布
+      - name: Release Please Action (PR Mode)
         if: env.VERSION_UPDATED == 'true'
         uses: GoogleCloudPlatform/release-please-action@v3
-        id: release
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
           release-type: node
@@ -67,38 +66,12 @@ jobs:
               {"type": "build", "section": "Build System", "hidden": false},
               {"type": "ci", "section": "CI", "hidden": false}
             ]
+          create-pr: true  # 设置为 true 以生成发布 PR 而不是直接发布
 
-      # 6. 上传构建的发行包
+      # 6. 上传构建的发行包（在 PR 合并时执行）
       - name: Upload release assets
         if: env.VERSION_UPDATED == 'true'
         uses: actions/upload-artifact@v3
         with:
           name: my-release-asset
           path: ./path/to/your/build/artifacts/*.tar.gz
-
-      # 7. 提交版本更新
-      - name: Commit version update
-        if: env.VERSION_UPDATED == 'true'
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git status  # 检查是否有变化
-          git add package.json
-          git diff --cached  # 显示暂存区的变更
-          git commit -m "chore: update version to $VERSION" || echo "No changes to commit"  # 如果没有变化，则不提交
-          git push origin main
-
-      # 8. 创建 GitHub Release（可选）
-      - name: Create GitHub Release
-        if: env.VERSION_UPDATED == 'true'
-        run: |
-          curl -X POST \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            -d '{
-              "tag_name": "${{ env.VERSION }}",
-              "name": "Release ${{ env.VERSION }}",
-              "body": "Release notes for version ${{ env.VERSION }}",
-              "draft": false,
-              "prerelease": false
-            }' \
-            https://api.github.com/repos/${{ github.repository }}/releases
