@@ -70,7 +70,7 @@ function extractContentFromMarkdown(markdown) {
     return { headings, emphasis };
 }
 async function info(msg) {
-    const markdown = fs_1.default.readFileSync('CHANGELOG.md', 'utf-8');
+    const markdown = fs_1.default.readFileSync('resources/markdown/CHANGELOG.md', 'utf-8');
     const { headings, emphasis } = extractContentFromMarkdown(markdown);
     let content = '更新日志\n';
     // 将解析后的标题和强调内容按顺序添加到content中
