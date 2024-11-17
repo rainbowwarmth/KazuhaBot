@@ -43,7 +43,6 @@ export async function update(msg: IMessageEx) {
         } else {
             logger.info('未找到 .git 目录。运行 pnpm i 并初始化...');
             await execCommand('pnpm i kazuha-bot --registry=https://registry.npmmirror.com && node node_modules/kazuha-bot/init.js');
-            await execCommand('node node_modules/kazuha-bot/init.js');
             msg.sendMsgEx({ content: '初始化完成，重启中...' });
             restartBot();
         }
