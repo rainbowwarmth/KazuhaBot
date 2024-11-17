@@ -56,10 +56,10 @@ export async function commits(msg: IMessageEx) {
         });
         // 循环遍历提取的数据发送到控制台
         extractedData.forEach((commit: Commit) => {
-            logger.log('Author Name:', commit.authorName);
-            logger.log('Author Date:', commit.authorDate);
-            logger.log('Commit Message:', commit.commitMessage);
-            logger.log('\n');
+            logger.info('Author Name:', commit.authorName);
+            logger.info('Author Date:', commit.authorDate);
+            logger.info('Commit Message:', commit.commitMessage);
+            logger.info('\n');
         });
 
         let content = '提交日志\n';

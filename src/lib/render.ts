@@ -1,4 +1,4 @@
-﻿import fs from "fs";
+﻿﻿import fs from "fs";
 import puppeteer from "puppeteer";
 import template from "art-template";
 import sharp from "sharp"; // 引入 sharp 库
@@ -52,6 +52,7 @@ export async function render(renderData: Render) {
 async function doRender(renderData: Render): Promise<string | null> {
     var { app, type, imgType, render, data } = renderData;
     const savePic = `${render.saveFile}.${imgType}`;
+    const tempPic = `${render.saveFile}_temp.${imgType}`
     html[`${app}.${type}`] = fs.readFileSync(render.resFile!, "utf8");
 
     var tmpHtml = template.render(html[`${app}.${type}`], data);
@@ -77,7 +78,8 @@ async function doRender(renderData: Render): Promise<string | null> {
         // 使用 sharp 压缩截图
         await sharp(savePic)
             .jpeg({ quality: 80 }) // 设置压缩质量
-            .toFile(savePic); // 覆盖原文件，生成压缩版本
+            .toFile(tempPic); // 覆盖原文件，生成压缩版本
+        fs.renameSync(tempPic, savePic);
     }).catch(err => {
         logger.error(err);
     });
@@ -93,7 +95,8 @@ async function doRender(renderData: Render): Promise<string | null> {
 
 export async function renderURL(renderData: RenderURL) {
     var { app, type, imgType, url, saveId } = renderData;
-    const savePath = `${_path}/generate/url/${app}/${type}/${saveId}.${imgType}`;
+    const savePath = `${_path}/data/url/${app}/${type}/${saveId}.${imgType}`;
+    const tempPath = `${_path}/data/url/${app}/${type}/${saveId}_temp.${imgType}`;
 
     if (!(await browserInit())) return false;
     if (!global.browser) return false;
@@ -119,6 +122,7 @@ export async function renderURL(renderData: RenderURL) {
             await sharp(savePath)
                 .jpeg({ quality: 80 }) // 设置压缩质量
                 .toFile(savePath); // 覆盖原文件，生成压缩版本
+            fs.renameSync(tempPath, savePath);
         }
     }).catch(err => {
         logger.error(err);
