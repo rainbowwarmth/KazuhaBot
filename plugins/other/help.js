@@ -42,10 +42,10 @@ async function commits(msg) {
         });
         // 循环遍历提取的数据发送到控制台
         extractedData.forEach((commit) => {
-            logger_1.default.log('Author Name:', commit.authorName);
-            logger_1.default.log('Author Date:', commit.authorDate);
-            logger_1.default.log('Commit Message:', commit.commitMessage);
-            logger_1.default.log('\n');
+            logger_1.default.info('Author Name:', commit.authorName);
+            logger_1.default.info('Author Date:', commit.authorDate);
+            logger_1.default.info('Commit Message:', commit.commitMessage);
+            logger_1.default.info('\n');
         });
         let content = '提交日志\n';
         extractedData.forEach((commit) => {
