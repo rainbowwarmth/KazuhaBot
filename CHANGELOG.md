@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.8](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.4.7...v2.4.8) (2024-11-17)
+
+
+### Bug Fixes
+
+* sharp库截图压缩方法改为临时路径替换保存路径 ([8249c2a](https://github.com/rainbowwarmth/KazuhaBot/commit/8249c2a976cbe1315ceca2bb73325ab984f25978))
+
 ## [2.4.7](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.4.6...v2.4.7) (2024-11-17)
 
 
