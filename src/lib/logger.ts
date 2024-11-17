@@ -9,15 +9,30 @@ const logger = log4js.configure({
                 type: "pattern",
                 pattern: "%[[KazuhaBot][%d{yyyy-MM-dd hh:mm:ss.SSS}[%p]%] %m"
             }
+        },
+        error: {
+            type: "file",
+            filename: "logs/error.log",
+            alwaysIncludePattern: true,
+            layout: {
+              type: "pattern",
+              pattern: "[%d{hh:mm:ss.SSS}][%4.4p]%m"
+            }
         }
     },
+    
     categories: {
         default: {
             appenders: ["console"],
             level: "mark",
             enableCallStack: true
+        },
+        error: { 
+            appenders: ["console", "error"], 
+            level: "error" 
         }
-    }
+    },
+    
 }).getLogger();
 
     export function setDevLog() {
