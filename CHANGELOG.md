@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.6](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.4.5...v2.4.6) (2024-11-17)
+
+
+### Feature Improvements
+
+* error输出到文件 ([7340985](https://github.com/rainbowwarmth/KazuhaBot/commit/7340985088c29fc6ff8bf12e6e81caed8375c7f6))
+
 ## [2.4.5](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.4.4...v2.4.5) (2024-11-16)
 
 
