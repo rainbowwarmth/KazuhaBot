@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.7](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.4.6...v2.4.7) (2024-11-17)
+
+
+### Feature Improvements
+
+* 优化日志 ([b0fa8ee](https://github.com/rainbowwarmth/KazuhaBot/commit/b0fa8eee03d7f541ca606fd6f8cf1b9d271c42e0))
+
 ## [2.4.6](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.4.5...v2.4.6) (2024-11-17)
 
 
