@@ -1,12 +1,5 @@
 # Changelog
 
-## [2.4.8](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.4.7...v2.4.8) (2024-11-17)
-
-
-### Bug Fixes
-
-* sharp库截图压缩方法改为临时路径替换保存路径 ([8249c2a](https://github.com/rainbowwarmth/KazuhaBot/commit/8249c2a976cbe1315ceca2bb73325ab984f25978))
-
 ## [2.4.7](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.4.6...v2.4.7) (2024-11-17)
 
 
@@ -71,16 +64,3 @@
 * 细节优化 ([9c4023f](https://github.com/rainbowwarmth/KazuhaBot/commit/9c4023f0338fd6c94a9f6d8359aca00ac291f2ec))
 * 细节优化 ([83b8fd0](https://github.com/rainbowwarmth/KazuhaBot/commit/83b8fd0bcc61ac5bdc7a2443bcfd08f1a428b0f3))
 * 转为js运行 ([48d68fb](https://github.com/rainbowwarmth/KazuhaBot/commit/48d68fb8ad72db1e94c66f4c596fc1ac878ce888))
-
-## 2.1.5
-*更换米游社公告API， 废弃大部分global导出，改为引用， 自定义其他浏览器地址*
-## 2.0.0
-*部分完成大部分内容还需等待下次更新*
-## 1.0.7
-*更新版本，调整部分ts文件日志等级*
-## 1.0.6
-*优化 更新日志输入方式*
-## 1.0.4
-*优化 资源目录结构，版本号，修复部分Bug*
-## 1.0.2
-*修复 尝试修复图片生成花屏/黑屏的问题*

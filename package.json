@@ -1,6 +1,6 @@
 {
   "name": "kazuha-bot",
-  "version": "2.4.8",
+  "version": "2.4.9",
   "description": "QQ频道米游社推送Bot",
   "private": false,
   "homepage": "https://github.com/rainbowwarmth/KazuhaBot",
@@ -25,8 +25,6 @@
   "author": "feilongproject,rainbowwarmth",
   "license": "MIT",
   "devDependencies": {
-    "@types/lodash": "^4.17.7",
-    "@types/md5": "^2.3.2",
     "@types/node": "^22.9.0",
     "@types/node-fetch": "^2.6.2",
     "@types/node-schedule": "^2.1.0",
@@ -35,14 +33,11 @@
   "dependencies": {
     "art-template": "^4.13.2",
     "chalk": "^4.0.0",
+    "depcheck": "^1.4.7",
     "form-data": "^4.0.1",
-    "lodash": "^4.17.21",
     "log4js": "^6.5.2",
-    "md5": "^2.3.0",
-    "moment": "^2.29.4",
     "node-fetch": "^2.6.6",
     "node-schedule": "^2.1.0",
-    "nodemon": "^2.0.16",
     "pm2": "^5.3.0",
     "puppeteer": "^15.4.0",
     "qq-bot-sdk": "^1.9.1",
@@ -50,8 +45,7 @@
     "resty-client": "^0.0.5",
     "sharp": "^0.33.5",
     "tsx": "^4.16.2",
-    "typescript": "^5.5.4",
-    "yaml": "^2.5.0"
+    "typescript": "^5.5.4"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"

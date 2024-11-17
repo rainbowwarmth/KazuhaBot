@@ -121,7 +121,7 @@ export async function renderURL(renderData: RenderURL) {
             // 使用 sharp 压缩截图
             await sharp(savePath)
                 .jpeg({ quality: 80 }) // 设置压缩质量
-                .toFile(savePath); // 覆盖原文件，生成压缩版本
+                .toFile(tempPath); // 覆盖原文件，生成压缩版本
             fs.renameSync(tempPath, savePath);
         }
     }).catch(err => {

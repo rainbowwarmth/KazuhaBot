@@ -93,7 +93,7 @@ function extractContentFromMarkdown(markdown: string): { headings: string[], emp
 
 export async function info(msg: IMessageEx) {
 
-    const markdown = fs.readFileSync('CHANGELOG.md', 'utf-8');
+    const markdown = fs.readFileSync('resources/markdown/CHANGELOG.md', 'utf-8');
     const { headings, emphasis } = extractContentFromMarkdown(markdown);
     let content = '更新日志\n';
 
