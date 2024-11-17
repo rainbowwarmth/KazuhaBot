@@ -16,7 +16,7 @@ const logger = log4js.configure({
             alwaysIncludePattern: true,
             layout: {
               type: "pattern",
-              pattern: "[%d{hh:mm:ss.SSS}][%4.4p]%m"
+              pattern: "%[[KazuhaBot][%d{yyyy-MM-dd hh:mm:ss.SSS}[%p]%] %m"
             }
         }
     },

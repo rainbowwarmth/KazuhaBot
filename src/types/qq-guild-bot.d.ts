@@ -63,7 +63,8 @@ declare enum AvailableIntentsEventsEnum {
     AUDIO_ACTION = "AUDIO_ACTION",
     PUBLIC_GUILD_MESSAGES = "PUBLIC_GUILD_MESSAGES",
     MESSAGE_AUDIT = "MESSAGE_AUDIT",
-    INTERACTION = "INTERACTION"
+    INTERACTION = "INTERACTION",
+    GROUP_AND_C2C_EVENT = "GROUP_AND_C2C_EVENT"
 }
 declare const WsEventType: {
     [key: string]: AvailableIntentsEventsEnum;
@@ -98,7 +99,7 @@ declare const WebsocketCloseReason: ({
     reason: string;
     resume: boolean;
 })[];
-declare type IntentEventsMapType = {
+type IntentEventsMapType = {
     [key in AvailableIntentsEventsEnum]: number;
 };
 declare const IntentEvents: IntentEventsMapType;
@@ -164,8 +165,8 @@ interface ChannelAPI {
     patchChannel: (channelID: string, channel: PatchChannelObj) => Promise<RestyResponse<IChannel>>;
     deleteChannel: (channelID: string) => Promise<RestyResponse<any>>;
 }
-declare type ChannelType = 0 | 1 | 2 | 3 | 4 | 10005;
-declare type ChannelSubType = 0 | 1 | 2 | 3;
+type ChannelType = 0 | 1 | 2 | 3 | 4 | 10005;
+type ChannelSubType = 0 | 1 | 2 | 3;
 interface IChannel extends PostChannelObj {
     id: string;
     guild_id: string;
@@ -174,16 +175,16 @@ interface IChannel extends PostChannelObj {
     application_id?: string;
 }
 interface PostChannelObj {
-    id: string;
-    guild_id:string;
     name: string;
     type: ChannelType;
     sub_type?: ChannelSubType;
     position: number;
     parent_id: string;
     private_type?: number;
+    private_user_ids?: string[];
+    permissions?: string;
 }
-declare type PatchChannelObj = Partial<Omit<PostChannelObj, 'sub_type' | 'private_user_ids'>>;
+type PatchChannelObj = Partial<Omit<PostChannelObj, 'sub_type' | 'private_user_ids'>>;
 
 /**
  * =============  ChannelPermissions 子频道权限接口  =============
@@ -306,7 +307,7 @@ interface Ark {
 interface ArkKV {
     key: string;
     value: string;
-    obj: ArkObj[];
+    obj?: ArkObj[];
 }
 interface ArkObj {
     obj_kv: ArkObjKV[];
@@ -351,6 +352,49 @@ interface MessageToCreate {
     message_reference?: MessageReference;
     image?: string;
     msg_id?: string;
+    keyboard?: MessageKeyboard;
+    markdown?: MessageMarkdown;
+}
+interface MessageMarkdown {
+    custom_template_id?: string;
+    content?: string;
+    params?: MessageMarkdownParam[];
+}
+interface MessageMarkdownParam {
+    key: string;
+    values: string[];
+}
+interface MessageKeyboard {
+    id?: string;
+    content?: CustomKeyboard;
+}
+interface CustomKeyboard {
+    rows?: Row[];
+}
+interface Row {
+    buttons?: Button[];
+}
+interface Button {
+    id?: string;
+    render_data?: RenderData;
+    action?: Action;
+}
+interface RenderData {
+    label?: string;
+    visited_label?: string;
+    style?: number;
+}
+interface Action {
+    type?: number;
+    permission?: Permission;
+    click_limit?: number;
+    data?: string;
+    at_bot_show_channel_list?: boolean;
+}
+interface Permission {
+    type?: number;
+    specify_role_ids?: string[];
+    specify_user_ids?: string[];
 }
 
 /**
@@ -374,14 +418,14 @@ interface IDirectMessage {
  * =============  Member 成员接口  =============
  */
 interface MemberAPI {
-    memberAddRole: (guildID: string, roleID: string, userID: string,
-        /**  兼容原来传递 channel 对象的逻辑，后续仅支持 string */
-        channel?: string | MemberAddRoleBody) => Promise<RestyResponse<any>>;
-    memberDeleteRole: (guildID: string, roleID: string, userID: string,
-        /**  兼容原来传递 channel 对象的逻辑，后续仅支持 string */
-        channel?: string | MemberAddRoleBody) => Promise<RestyResponse<any>>;
+    memberAddRole: (guildID: string, roleID: string, userID: string, 
+    /**  兼容原来传递 channel 对象的逻辑，后续仅支持 string */
+    channel?: string | MemberAddRoleBody) => Promise<RestyResponse<any>>;
+    memberDeleteRole: (guildID: string, roleID: string, userID: string, 
+    /**  兼容原来传递 channel 对象的逻辑，后续仅支持 string */
+    channel?: string | MemberAddRoleBody) => Promise<RestyResponse<any>>;
 }
-declare type MemberAddRoleBody = Pick<IChannel, 'id'>;
+type MemberAddRoleBody = Pick<IChannel, 'id'>;
 
 /**
  * =============  Role 身份组接口  =============
@@ -465,7 +509,7 @@ interface ScheduleAPI {
     patchSchedule: (channelID: string, scheduleID: string, schedule: ScheduleToPatch) => Promise<RestyResponse<ISchedule>>;
     deleteSchedule: (channelID: string, scheduleID: string) => Promise<RestyResponse<any>>;
 }
-declare type ScheduleRemindType = '0' | '1' | '2' | '3' | '4' | '5';
+type ScheduleRemindType = '0' | '1' | '2' | '3' | '4' | '5';
 interface ScheduleToCreate {
     name: string;
     description?: string;
@@ -478,7 +522,7 @@ interface ScheduleToCreate {
 interface ISchedule extends ScheduleToCreate {
     id: string;
 }
-declare type ScheduleToPatch = Partial<Omit<ISchedule, 'id'>>;
+type ScheduleToPatch = Partial<Omit<ISchedule, 'id'>>;
 
 /**
  * =============  Reaction 接口  =============
@@ -555,11 +599,102 @@ interface GuildPermissionDemandIdentify {
     method: string;
 }
 
-declare type OpenAPIRequest = <T extends Record<any, any> = any>(options: RequestOptions) => Promise<RestyResponse<T>>;
+/**
+ * =============  Group 消息接口  =============
+ */
+interface GroupAPI {
+    postMessage: (openID: string, message: GMessageToCreate) => Promise<RestyResponse<GMessageRec>>;
+    postFile: (openID: string, message: GFileToCreate) => Promise<RestyResponse<GFileRec>>;
+    deleteMessage: (openID: string, messageID: string) => Promise<RestyResponse<any>>;
+}
+interface GMessageToCreate {
+    content?: string;
+    msg_type: number;
+    msg_id?: string;
+    msg_seq?: number;
+    media?: GMedia;
+    ark?: Ark;
+    keyboard?: MessageKeyboard;
+    markdown?: MessageMarkdown;
+    event_id?: string;
+}
+interface GMedia {
+    file_info: string;
+}
+interface GFileToCreate {
+    file_type: number;
+    file_data?: string;
+    url?: string;
+    srv_send_msg: boolean;
+}
+interface GMessageRec {
+    group_code: string;
+    msg?: string;
+    msg_seq?: string;
+    ret?: number;
+}
+interface GFileRec {
+    file_uuid: string;
+    file_info: string;
+    ttl: string;
+}
+
+/**
+ * =============  C2C 消息接口  =============
+ */
+interface C2CAPI {
+    postMessage: (openID: string, message: GMessageToCreate) => Promise<RestyResponse<GMessageRec>>;
+    postFile: (openID: string, message: GFileToCreate) => Promise<RestyResponse<GFileRec>>;
+    deleteMessage: (openID: string, messageID: string) => Promise<RestyResponse<any>>;
+}
+
+declare class WebhookAPI {
+    private request;
+    private config;
+    constructor(request: OpenAPIRequest, config: Config);
+    /**
+     * 用于校验消息正文，对于所有正文全部适用
+     *
+     * __注意：需要设置 `secret` 才可使用，否则会抛出错误__
+     * @param ts 时间戳，从 `header` 中 `x-signature-timestamp` 字段获取
+     * @param body 收到的消息正文，需要以源文本传入
+     * @param sign sign签名，从 `header` 中的 `x-signature-ed25519` 字段获取
+     * @returns 返回 `true`/`false` 布尔值，代表是否通过了校验
+     */
+    validSign(ts: string, body: string | Buffer, sign: string | Buffer): boolean;
+    /**
+     * 校验 url 时用到的函数，此时消息正文（使用 `body` 表示）中 `body.d = 13`
+     *
+     * __注意：需要设置 `secret` 才可使用，否则会抛出错误__
+     * @param eventTs 从消息正文中获取 `body.d.event_ts`
+     * @param plainToken 从消息正文中获取 `body.d.plain_token`
+     * @returns 返回 `sign` 签名，使用 `{ plain_token: plainToken, signature: sign }` 的 json 形式对 webhook 做出回应
+     */
+    getSign(eventTs: string, plainToken: string): string;
+    /**
+     * 通过 `secret` 进行 `ed25519` 密钥算法获取 `key`
+     *
+     * __注意：需要设置 `secret` 才可使用，否则会抛出错误__
+     * @returns 返回 `privateKey` 与 `publicKey`
+     */
+    getKey(): {
+        privateKey: Buffer;
+        publicKey: Uint8Array;
+    };
+}
+
+type OpenAPIRequest = <T extends Record<any, any> = any>(options: RequestOptions) => Promise<RestyResponse<T>>;
 interface Config {
     appID: string;
     token: string;
     sandbox?: boolean;
+    secret?: string;
+}
+interface ConfigLogger {
+    logger: Logger;
+}
+interface Logger {
+    info: (message: any, ...args: any[]) => void;
 }
 interface IOpenAPI {
     config: Config;
@@ -580,8 +715,11 @@ interface IOpenAPI {
     reactionApi: ReactionAPI;
     interactionApi: InteractionAPI;
     pinsMessageApi: PinsMessageAPI;
+    groupApi: GroupAPI;
+    c2cApi: C2CAPI;
+    webhookApi: WebhookAPI;
 }
-declare type APIVersion = `v${number}`;
+type APIVersion = `v${number}`;
 interface Token {
     appID: number;
     accessToken: string;
@@ -591,7 +729,7 @@ interface WebsocketAPI {
     ws: () => any;
 }
 
-declare type Nullish = null | undefined;
+type Nullish = null | undefined;
 
 declare class OpenAPI implements IOpenAPI {
     static newClient(config: Config): OpenAPI;
@@ -612,6 +750,9 @@ declare class OpenAPI implements IOpenAPI {
     interactionApi: InteractionAPI;
     pinsMessageApi: PinsMessageAPI;
     guildPermissionsApi: GuildPermissionsAPI;
+    groupApi: GroupAPI;
+    c2cApi: C2CAPI;
+    webhookApi: WebhookAPI;
     constructor(config: Config);
     register(client: IOpenAPI): void;
     request<T extends Record<any, any> = any>(options: RequestOptions): Promise<RestyResponse<T>>;
@@ -620,7 +761,7 @@ declare class OpenAPI implements IOpenAPI {
 declare class Ws {
     ws: WebSocket;
     event: EventEmitter;
-    config: GetWsParam;
+    config: GetWsParam & ConfigLogger;
     heartbeatInterval: number;
     heartbeatParam: {
         op: OpCode;
@@ -632,7 +773,7 @@ declare class Ws {
         seq: number;
     };
     alive: boolean;
-    constructor(config: GetWsParam, event: EventEmitter, sessionRecord?: SessionRecord);
+    constructor(config: GetWsParam & ConfigLogger, event: EventEmitter, sessionRecord?: SessionRecord);
     createWebsocket(wsData: WsAddressObj): WebSocket;
     createListening(): WebSocket;
     connectWs(wsData: WsAddressObj): void;
@@ -649,12 +790,12 @@ declare class Ws {
 }
 
 declare class Session {
-    config: GetWsParam;
+    config: GetWsParam & ConfigLogger;
     heartbeatInterval: number;
     ws: Ws;
     event: EventEmitter;
     sessionRecord: SessionRecord | undefined;
-    constructor(config: GetWsParam, event: EventEmitter, sessionRecord?: SessionRecord);
+    constructor(config: GetWsParam & ConfigLogger, event: EventEmitter, sessionRecord?: SessionRecord);
     createSession(): void;
     closeSession(): void;
 }
@@ -662,14 +803,13 @@ declare class Session {
 declare class WebsocketClient extends EventEmitter {
     session: Session;
     retry: number;
-    constructor(config: GetWsParam);
-    connect(config: GetWsParam, sessionRecord?: SessionRecord): Session;
+    constructor(config: GetWsParam & ConfigLogger);
+    connect(config: GetWsParam & ConfigLogger, sessionRecord?: SessionRecord): Session;
     disconnect(): void;
 }
 
 declare function selectOpenAPIVersion(version: APIVersion): false | undefined;
 declare function createOpenAPI(config: Config): OpenAPI;
-declare function createWebsocket(config: GetWsParam): WebsocketClient;
+declare function createWebsocket(config: GetWsParam & Partial<ConfigLogger>): WebsocketClient;
 
-
-export { WebsocketClient, OpenAPI, APIVersion, AnnounceAPI, Ark, ArkKV, ArkObj, ArkObjKV, AudioAPI, AudioControl, AvailableIntentsEventsEnum, ChannelAPI, ChannelPermissionsAPI, ChannelSubType, ChannelType, Config, DirectMessageAPI, DirectMessageToCreate, Embed, EmbedField, EmbedThumbnail, EventTypes, GetWsParam, GuildAPI, GuildMembersPager, GuildPermission, GuildPermissionDemand, GuildPermissionDemandIdentify, GuildPermissionRes, GuildPermissionsAPI, GuildRoles, HeartbeatParam, IAnnounce, IChannel, IChannelPermissions, IChannelRolePermissions, IDirectMessage, IGuild, IMember, IMessage, IMessageRes, IOpenAPI, IPinsMessage, IRole, IRoleFilter, ISchedule, IUser, IVoiceMember, IntentEvents, IntentEventsMapType, Intents, InteractionAPI, InteractionData, MeAPI, MeGuildsReq, MemberAPI, MemberAddRoleBody, MessageAPI, MessageAttachment, MessageReference, MessageToCreate, MessagesPager, MuteAPI, MuteOptions, Nullish, OpCode, OpenAPIRequest, PatchChannelObj, PermissionDemandToCreate, PinsMessageAPI, PostChannelObj, ReactionAPI, ReactionObj, ReactionUserListObj, RecommendChannel, RecommendObj, RoleAPI, ScheduleAPI, ScheduleRemindType, ScheduleToCreate, ScheduleToPatch, SessionEvents, SessionRecord, Token, UpdateChannelPermissions, UpdateRoleRes, WSCodes, WebsocketAPI, WebsocketCloseReason, WebsocketCode, WsAddressObj, WsDataInfo, WsEventType, WsObjRequestOptions, createOpenAPI, createWebsocket, selectOpenAPIVersion, wsResData };
+export { APIVersion, Action, AnnounceAPI, Ark, ArkKV, ArkObj, ArkObjKV, AudioAPI, AudioControl, AvailableIntentsEventsEnum, Button, C2CAPI, ChannelAPI, ChannelPermissionsAPI, ChannelSubType, ChannelType, Config, ConfigLogger, CustomKeyboard, DirectMessageAPI, DirectMessageToCreate, Embed, EmbedField, EmbedThumbnail, EventTypes, GFileRec, GFileToCreate, GMedia, GMessageRec, GMessageToCreate, GetWsParam, GroupAPI, GuildAPI, GuildMembersPager, GuildPermission, GuildPermissionDemand, GuildPermissionDemandIdentify, GuildPermissionRes, GuildPermissionsAPI, GuildRoles, HeartbeatParam, IAnnounce, IChannel, IChannelPermissions, IChannelRolePermissions, IDirectMessage, IGuild, IMember, IMessage, IMessageRes, IOpenAPI, IPinsMessage, IRole, IRoleFilter, ISchedule, IUser, IVoiceMember, IntentEvents, IntentEventsMapType, Intents, InteractionAPI, InteractionData, Logger, MeAPI, MeGuildsReq, MemberAPI, MemberAddRoleBody, MessageAPI, MessageAttachment, MessageKeyboard, MessageMarkdown, MessageMarkdownParam, MessageReference, MessageToCreate, MessagesPager, MuteAPI, MuteOptions, Nullish, OpCode, OpenAPIRequest, PatchChannelObj, Permission, PermissionDemandToCreate, PinsMessageAPI, PostChannelObj, ReactionAPI, ReactionObj, ReactionUserListObj, RecommendChannel, RecommendObj, RenderData, RoleAPI, Row, ScheduleAPI, ScheduleRemindType, ScheduleToCreate, ScheduleToPatch, SessionEvents, SessionRecord, Token, UpdateChannelPermissions, UpdateRoleRes, WSCodes, WebsocketAPI, WebsocketCloseReason, WebsocketCode, WsAddressObj, WsDataInfo, WsEventType, WsObjRequestOptions, createOpenAPI, createWebsocket, selectOpenAPIVersion, wsResData };

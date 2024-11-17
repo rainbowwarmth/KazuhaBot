@@ -31,7 +31,7 @@ export async function initialize(){
         });
     
     
-        ws.on("GUILDS", (data) => {
+        ws.on("GUILDS", () => {
             logger.mark(`重新加载频道树中`);
             loadGuildTree().then(() => {
                 logger.mark(`频道树加载完毕`);

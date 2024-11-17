@@ -1,5 +1,6 @@
 ﻿import fs from "fs";
 import { IMessageEx } from "../../lib/IMessageEx";
+import logger from "../../lib/logger";
 
 
 export async function helpimage(msg: IMessageEx) {
@@ -55,10 +56,10 @@ export async function commits(msg: IMessageEx) {
         });
         // 循环遍历提取的数据发送到控制台
         extractedData.forEach((commit: Commit) => {
-            console.log('Author Name:', commit.authorName);
-            console.log('Author Date:', commit.authorDate);
-            console.log('Commit Message:', commit.commitMessage);
-            console.log('\n');
+            logger.log('Author Name:', commit.authorName);
+            logger.log('Author Date:', commit.authorDate);
+            logger.log('Commit Message:', commit.commitMessage);
+            logger.log('\n');
         });
 
         let content = '提交日志\n';
@@ -71,7 +72,7 @@ export async function commits(msg: IMessageEx) {
         });
 
     } catch (error) {
-        console.error('Error fetching or parsing data:', error);
+        logger.error('Error fetching or parsing data:', error);
         return null;
     }
 }

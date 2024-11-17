@@ -1,13 +1,13 @@
 import log4js from "log4js";
 import { RedisClientType } from "redis";
 import { IMessage } from "qq-bot-sdk";
-import { OpenAPI, WebsocketClient } from "../types/qq-guild-bot";
+import { IOpenAPI, WebsocketCode } from "../types/qq-guild-bot";
 
 export let _path: string;
 export let devEnv: boolean;
-export let client: OpenAPI;
+export let client: IOpenAPI;
 export let adminId: string[];
-export let ws: WebsocketClient;
+export let ws: WebsocketCode;
 export let redis: RedisClientType;
 export let botStatus: {
     startTime: Date;

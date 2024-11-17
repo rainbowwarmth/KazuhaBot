@@ -1,6 +1,6 @@
 {
   "name": "kazuha-bot",
-  "version": "2.4.6",
+  "version": "2.4.7",
   "description": "QQ频道米游社推送Bot",
   "private": false,
   "homepage": "https://github.com/rainbowwarmth/KazuhaBot",
@@ -45,7 +45,7 @@
     "nodemon": "^2.0.16",
     "pm2": "^5.3.0",
     "puppeteer": "^15.4.0",
-    "qq-bot-sdk": "^1.9.0",
+    "qq-bot-sdk": "^1.9.1",
     "redis": "^4.2.0",
     "resty-client": "^0.0.5",
     "sharp": "^0.33.5",

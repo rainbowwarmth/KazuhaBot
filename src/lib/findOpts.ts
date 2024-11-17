@@ -2,6 +2,7 @@ import { isAdmin } from "../plugins/other/admin";
 import { IMessageEx } from "./IMessageEx";
 import path from 'path';
 import fs from 'fs';
+import logger from "./logger";
 
 // 定义插件命令的类型，不包含 directory 字段
 interface CommandOption {
@@ -38,7 +39,7 @@ export async function findOpts(msg: IMessageEx): Promise<{ directory: string; fi
         try {
             // 确保配置文件存在
             if (!fs.existsSync(configPath)) {
-                console.warn(`Config file for plugin ${plugin} not found: ${configPath}`);
+                logger.warn(`Config file for plugin ${plugin} not found: ${configPath}`);
                 continue;
             }
 
@@ -81,7 +82,7 @@ export async function findOpts(msg: IMessageEx): Promise<{ directory: string; fi
                 }
             }
         } catch (error) {
-            console.error(`Error loading config for plugin ${plugin}:`, error);
+           logger.error(`Error loading config for plugin ${plugin}:`, error);
         }
     }
 
