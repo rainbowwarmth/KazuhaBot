@@ -55,7 +55,7 @@ async function initialize() {
             global_1.redis.hSet(`genshin:config:${msg.author.id}`, "guildId", msg.guild_id);
             execute(msg);
         });
-        global_1.ws.on("GUILDS", (data) => {
+        global_1.ws.on("GUILDS", () => {
             logger_1.default.mark(`重新加载频道树中`);
             (0, Bot_1.loadGuildTree)().then(() => {
                 logger_1.default.mark(`频道树加载完毕`);

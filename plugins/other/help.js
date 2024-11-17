@@ -7,6 +7,7 @@ exports.helpimage = helpimage;
 exports.commits = commits;
 exports.info = info;
 const fs_1 = __importDefault(require("fs"));
+const logger_1 = __importDefault(require("../../lib/logger"));
 async function helpimage(msg) {
     const markdown = fs_1.default.readFileSync('resources/markdown/HELP.md', 'utf-8');
     const { headings, emphasis } = extractContentFromMarkdown(markdown);
@@ -41,10 +42,10 @@ async function commits(msg) {
         });
         // 循环遍历提取的数据发送到控制台
         extractedData.forEach((commit) => {
-            console.log('Author Name:', commit.authorName);
-            console.log('Author Date:', commit.authorDate);
-            console.log('Commit Message:', commit.commitMessage);
-            console.log('\n');
+            logger_1.default.log('Author Name:', commit.authorName);
+            logger_1.default.log('Author Date:', commit.authorDate);
+            logger_1.default.log('Commit Message:', commit.commitMessage);
+            logger_1.default.log('\n');
         });
         let content = '提交日志\n';
         extractedData.forEach((commit) => {
@@ -55,7 +56,7 @@ async function commits(msg) {
         });
     }
     catch (error) {
-        console.error('Error fetching or parsing data:', error);
+        logger_1.default.error('Error fetching or parsing data:', error);
         return null;
     }
 }
