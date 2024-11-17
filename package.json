@@ -1,6 +1,6 @@
 {
   "name": "kazuha-bot",
-  "version": "2.4.9",
+  "version": "2.4.10",
   "description": "QQ频道米游社推送Bot",
   "private": false,
   "homepage": "https://github.com/rainbowwarmth/KazuhaBot",
@@ -33,7 +33,6 @@
   "dependencies": {
     "art-template": "^4.13.2",
     "chalk": "^4.0.0",
-    "depcheck": "^1.4.7",
     "form-data": "^4.0.1",
     "log4js": "^6.5.2",
     "node-fetch": "^2.6.6",
