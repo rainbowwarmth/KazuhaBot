@@ -11,7 +11,7 @@ export async function initialize(){
     init().then(() => {
 
         ws.on('READY', (data: any) =>{
-            logger.mark('[READY] 事件接收 :', data)
+            logger.info('[READY] 事件接收 :', data)
         });
         ws.on('ERROR', (data: any) => {
             logger.error('[ERROR] 事件接收 :', data);
@@ -32,9 +32,9 @@ export async function initialize(){
     
     
         ws.on("GUILDS", () => {
-            logger.mark(`重新加载频道树中`);
+            logger.info(`重新加载频道树中`);
             loadGuildTree().then(() => {
-                logger.mark(`频道树加载完毕`);
+                logger.info(`频道树加载完毕`);
             }).catch((err: any) => {
                 logger.error(`频道树加载失败`, err);
             });
