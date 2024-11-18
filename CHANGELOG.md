@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.12](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.4.11...v2.4.12) (2024-11-18)
+
+
+### Bug Fixes
+
+* 消息匹配, 重启逻辑 ([2010a44](https://github.com/rainbowwarmth/KazuhaBot/commit/2010a442fa6336c1232b6ac728f28a837fb8fe3d))
+
 ## [2.4.11](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.4.10...v2.4.11) (2024-11-18)
 
 
