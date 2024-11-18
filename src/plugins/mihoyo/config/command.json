@@ -1,0 +1,34 @@
+{
+    "desc": "命令总览json,按照顺序进行匹配",
+    "command": {
+        "mysNew": {
+            "directory": "mihoyo",
+            "newsContentBBS": {
+                "reg": "^#(原神|未定事件簿|绝区零|大别野|别野|崩坏星穹铁道|星铁|铁道|星穹铁道|崩坏三|崩三|崩坏二|崩坏学圆二|崩二)?(公告|活动|资讯)[0-9]*$",
+                "fnc": "newsContentBBS",
+                "type": ["GUILD", "DIRECT"],
+                "permission": "anyone",
+                "describe": "米游社社区官方公告"
+            },
+            "newsListBBS": {
+                "reg": "^#(原神|未定事件簿|绝区零|大别野|别野|崩坏星穹铁道|星铁|铁道|星穹铁道|崩坏三|崩三|崩坏二|崩坏学圆二|崩二)?(公告|活动|资讯)列表$",
+                "fnc": "newsListBBS",
+                "type": ["GUILD", "DIRECT"],
+                "permission": "anyone",
+                "describe": "米游社社区官方公告列表"
+            },
+            "changePushTask": {
+                "reg": "^#(开启|关闭)(原神|未定事件簿|绝区零|大别野|别野|崩坏星穹铁道|星铁|铁道|星穹铁道|崩坏三|崩三|崩坏二|崩坏学圆二|崩二)公告推送$",
+                "fnc": "changePushTask",
+                "type": ["GUILD", "DIRECT"],
+                "describe": "开启/关闭公告推送"
+            },
+            "taskPushNews": {
+                "reg": "^#测试(原神|未定事件簿|绝区零|大别野|别野|崩坏星穹铁道|星铁|铁道|星穹铁道|崩坏三|崩三|崩坏二|崩坏学圆二|崩二)公告推送$",
+                "fnc": "taskPushNews",
+                "type": ["GUILD", "DIRECT"],
+                "describe": "开启/关闭公告推送"
+            }
+        }
+    }
+}

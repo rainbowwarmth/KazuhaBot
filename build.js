@@ -72,7 +72,7 @@ const configSourceDir = path.join(__dirname, 'config');
 const configTargetDir = path.join(__dirname, 'dist', 'config');
 copyDir(configSourceDir, configTargetDir);
 
-// 复制插件目录内的 resources 文件夹
+// 复制插件目录内的 resources 和 config 文件夹
 const pluginsDir = path.resolve(__dirname, './src/plugins');
 const distPluginsDir = path.resolve(__dirname, './dist/plugins');
 const pluginPaths = fs.readdirSync(pluginsDir).filter((file) => {
@@ -96,6 +96,14 @@ for (const plugin of pluginPaths) {
     const pluginDistResourcesDir = path.join(pluginDistPath, 'resources');
     copyDir(pluginResourcesDir, pluginDistResourcesDir);
     console.log(`已复制插件 ${plugin} 的 resources 文件夹`);
+  }
+
+  // 如果插件包内存在 config 文件夹，则复制
+  const pluginConfigDir = path.join(pluginPath, 'config');
+  if (fs.existsSync(pluginConfigDir)) {
+    const pluginDistConfigDir = path.join(pluginDistPath, 'config');
+    copyDir(pluginConfigDir, pluginDistConfigDir);
+    console.log(`已复制插件 ${plugin} 的 config 文件夹`);
   }
 }
 

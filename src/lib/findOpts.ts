@@ -1,4 +1,4 @@
-import { isAdmin } from "../plugins/other/admin"; 
+import { isAdmin } from "../plugins/other/admin";
 import { IMessageEx } from "./IMessageEx";
 import path from 'path';
 import fs from 'fs';
@@ -22,28 +22,26 @@ interface CommandGroup {
 export async function findOpts(msg: IMessageEx): Promise<{ directory: string; file: string; fnc: string; } | null> {
     if (!msg.content) return null; // 如果内容为空，返回 null
 
-    // 动态获取 plugins 文件夹下的所有子文件夹名称
     const pluginsDir = path.resolve(__dirname, '../plugins');
     const pluginPaths = fs.readdirSync(pluginsDir).filter((file) => {
         const filePath = path.join(pluginsDir, file);
         return fs.statSync(filePath).isDirectory();
     });
 
-    // 动态加载 config/command 文件夹下的每个插件对应的配置文件
-    const configDir = path.resolve(__dirname, '../config/command');
-
     for (const plugin of pluginPaths) {
-        // 构造每个插件对应的配置文件路径
-        const configPath = path.resolve(configDir, `${plugin}.json`);
+        // 根据插件名称确定配置文件路径
+        const configPath = ['other', 'system', 'example'].includes(plugin)
+            ? path.resolve(__dirname, `../config/command/${plugin}.json`)
+            : path.resolve(pluginsDir, plugin, 'config', 'command.json');
         
         try {
-            // 确保配置文件存在
+            // 检查配置文件是否存在
             if (!fs.existsSync(configPath)) {
-                logger.warn(`Config file for plugin ${plugin} not found: ${configPath}`);
+                logger.warn(`未找到插件 ${plugin} 的配置文件: ${configPath}`);
                 continue;
             }
 
-            // 动态导入插件的配置文件
+            // 动态导入配置文件
             const fnc = await import(configPath);
             const command: { [mainKey: string]: CommandGroup } = fnc.command;
 
@@ -82,7 +80,7 @@ export async function findOpts(msg: IMessageEx): Promise<{ directory: string; fi
                 }
             }
         } catch (error) {
-           logger.error(`Error loading config for plugin ${plugin}:`, error);
+            logger.error(`加载插件 ${plugin} 的配置时出错:`, error);
         }
     }
 
