@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.15](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.4.14...v2.4.15) (2024-11-18)
+
+
+### Bug Fixes
+
+* 修复命令热加载报错 ([02fccbe](https://github.com/rainbowwarmth/KazuhaBot/commit/02fccbe44d7a0542e7d2513b5483eba53a0bfe85))
+
 ## [2.4.14](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.4.13...v2.4.14) (2024-11-18)
 
 
