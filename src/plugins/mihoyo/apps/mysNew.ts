@@ -77,7 +77,7 @@ export async function newsContentBBS(msg: IMessageEx) {
             data,
         }
     }).then((savePath: any) => {
-        if (savePath) msg.sendMsgEx({ imagePath: savePath });
+        if (savePath) msg.sendMsgEx({ content: data.post.subject, imagePath: savePath });
         logger.mark(kazuha.chalk.blueBright(`[${gameIds[gid]}公告] newsContentBBS/mysNew.ts`));
     }).catch((err: any) => {
         logger.error(err);
@@ -280,6 +280,7 @@ export async function taskPushNews() {
                     const _sendQueue: Promise<any>[] = [];
                     for (const sendChannel of sendChannels) {
                         _sendQueue.push(sendImage({
+                            content: data.post.subject,
                             msgId,
                             imagePath: savePath,
                             channelId: sendChannel,
