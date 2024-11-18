@@ -51,6 +51,7 @@ export async function newsContentBBS(msg: IMessageEx) {
     }
 
     let type = 1;
+    if (msg.content.includes("公告")) type = 1
     if (msg.content.includes("资讯")) type = 3
     if (msg.content.includes("活动")) type = 2
 
@@ -116,6 +117,7 @@ export async function newsListBBS(msg: IMessageEx) {
     }
 
     let type = 1, typeName = "公告";
+    if (msg.content.includes("公告")) type = 1, typeName = "公告";
     if (msg.content.includes("资讯")) type = 3, typeName = "资讯";
     if (msg.content.includes("活动")) type = 2, typeName = "活动";
 
