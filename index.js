@@ -37,7 +37,7 @@ const path_1 = __importDefault(require("path"));
 async function initialize() {
     (0, init_1.init)().then(() => {
         global_1.ws.on('READY', (data) => {
-            logger_1.default.mark('[READY] 事件接收 :', data);
+            logger_1.default.info('[READY] 事件接收 :', data);
         });
         global_1.ws.on('ERROR', (data) => {
             logger_1.default.error('[ERROR] 事件接收 :', data);
@@ -56,9 +56,9 @@ async function initialize() {
             execute(msg);
         });
         global_1.ws.on("GUILDS", () => {
-            logger_1.default.mark(`重新加载频道树中`);
+            logger_1.default.info(`重新加载频道树中`);
             (0, Bot_1.loadGuildTree)().then(() => {
-                logger_1.default.mark(`频道树加载完毕`);
+                logger_1.default.info(`频道树加载完毕`);
             }).catch((err) => {
                 logger_1.default.error(`频道树加载失败`, err);
             });
