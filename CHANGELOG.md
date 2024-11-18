@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.16](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.4.15...v2.4.16) (2024-11-18)
+
+
+### Feature Improvements
+
+* 推送添加标题 ([c843190](https://github.com/rainbowwarmth/KazuhaBot/commit/c8431900964743465ac1851865fca6df54a62dcf))
+
 ## [2.4.15](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.4.14...v2.4.15) (2024-11-18)
 
 
