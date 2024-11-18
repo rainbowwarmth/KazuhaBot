@@ -84,7 +84,7 @@ async function newsContentBBS(msg) {
         }
     }).then((savePath) => {
         if (savePath)
-            msg.sendMsgEx({ imagePath: savePath });
+            msg.sendMsgEx({ content: data.post.subject, imagePath: savePath });
         logger_1.default.mark(kazuha_1.default.chalk.blueBright(`[${gameIds[gid]}公告] newsContentBBS/mysNew.ts`));
     }).catch((err) => {
         logger_1.default.error(err);
@@ -277,6 +277,7 @@ async function taskPushNews() {
                     const _sendQueue = [];
                     for (const sendChannel of sendChannels) {
                         _sendQueue.push((0, IMessageEx_1.sendImage)({
+                            content: data.post.subject,
                             msgId,
                             imagePath: savePath,
                             channelId: sendChannel,
