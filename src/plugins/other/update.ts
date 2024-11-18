@@ -1,8 +1,9 @@
 import { promises as fs } from 'fs';
-import { exec } from 'child_process';
 import { join } from 'path';
 import logger from '../../lib/logger';
 import { IMessageEx } from '../../lib/IMessageEx';
+import { restartBot } from './restart';
+import { execCommand } from './restart'
 
 export async function update(msg: IMessageEx) {
     const projectRoot = process.cwd();
@@ -73,23 +74,4 @@ async function fetchLatestVersion(): Promise<string> {
     if (!response.ok) throw new Error('无法获取最新版本号');
     const data = await response.json();
     return data['dist-tags'].latest;
-}
-
-function execCommand(command: string): Promise<string> {
-    return new Promise((resolve, reject) => {
-        exec(command, { encoding: 'utf-8' }, (error, stdout) => {
-            if (error) reject(error);
-            else resolve(stdout.trim());
-        });
-    });
-}
-
-function restartBot(msg: IMessageEx) {
-    logger.info('重启前台服务...');
-    msg.sendMsgEx({ content: '重启中'})
-
-    // 启动 npm start
-    execCommand('npm start')
-        .then(() => process.exit(0)) // 退出当前进程
-        .catch(error => logger.error('重启 Bot 时出错:', error));
 }

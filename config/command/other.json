@@ -43,7 +43,16 @@
                 "reg": "^#更新$",
                 "fnc": "update",
                 "type": ["GUILD","DIRECT"],
-                "describe": "help信息"
+                "describe": "更新版本"
+            }
+        },
+        "restart": {
+            "directory": "other",
+            "update": {
+                "reg": "^#重启$",
+                "fnc": "restartBot",
+                "type": ["GUILD","DIRECT"],
+                "describe": "bot重启"
             }
         }
     }
