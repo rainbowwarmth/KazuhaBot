@@ -33,10 +33,10 @@ npm install pnpm -g
 
 ```
 // 使用PNPM
-pnpm init && pnpm i kazuha-bot && node node_modules\kazuha-bot\init.js
+pnpm i kazuha-bot && node node_modules\kazuha-bot\init.js
 
 // 使用PNPM镜像(网络不好首选)
-pnpm init && pnpm i kazuha-bot --registry=https://registry.npmmirror.com && node node_modules\kazuha-bot\init.js
+pnpm i kazuha-bot --registry=https://registry.npmmirror.com && node node_modules\kazuha-bot\init.js
 ```
 
 ### 使用Git安装（第二推荐）

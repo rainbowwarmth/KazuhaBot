@@ -48,7 +48,7 @@ async function handleGitUpdate(msg: IMessageEx) {
         const commits = await execCommand('git log --oneline -n 5');
         logger.info('Git 拉取成功。最新提交：\n' + commits);
         msg.sendMsgEx({ content: '更新完成，重启中...' });
-        restartBot();
+        restartBot(msg);
     }
 }
 
@@ -56,7 +56,7 @@ async function initializeProject(msg: IMessageEx) {
     logger.info('未找到 .git 目录。运行 pnpm i 并初始化...');
     await execCommand('pnpm i kazuha-bot --registry=https://registry.npmmirror.com && node node_modules/kazuha-bot/init.js');
     msg.sendMsgEx({ content: '初始化完成，重启中...' });
-    restartBot();
+    restartBot(msg);
 }
 
 async function fileExists(path: string): Promise<boolean> {
@@ -84,8 +84,9 @@ function execCommand(command: string): Promise<string> {
     });
 }
 
-function restartBot() {
+function restartBot(msg: IMessageEx) {
     logger.info('重启前台服务...');
+    msg.sendMsgEx({ content: '重启中'})
 
     // 启动 npm start
     execCommand('npm start')
