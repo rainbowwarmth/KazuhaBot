@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.13](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.4.12...v2.4.13) (2024-11-18)
+
+
+### Docs
+
+* 文档更新 ([09aa02b](https://github.com/rainbowwarmth/KazuhaBot/commit/09aa02b1fbec8e62a7904c4d0d6385a0642ca6f3))
+
 ## [2.4.12](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.4.11...v2.4.12) (2024-11-18)
 
 
