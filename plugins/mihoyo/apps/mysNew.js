@@ -54,6 +54,8 @@ async function newsContentBBS(msg) {
         logger_1.default.debug("匹配到 绝区零 -> gid = 8");
     }
     let type = 1;
+    if (msg.content.includes("公告"))
+        type = 1;
     if (msg.content.includes("资讯"))
         type = 3;
     if (msg.content.includes("活动"))
@@ -119,6 +121,8 @@ async function newsListBBS(msg) {
         logger_1.default.debug("匹配到 绝区零 -> gid = 8");
     }
     let type = 1, typeName = "公告";
+    if (msg.content.includes("公告"))
+        type = 1, typeName = "公告";
     if (msg.content.includes("资讯"))
         type = 3, typeName = "资讯";
     if (msg.content.includes("活动"))
