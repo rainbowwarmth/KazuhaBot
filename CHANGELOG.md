@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.4.14](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.4.13...v2.4.14) (2024-11-18)
+
+
+### Feature Improvements
+
+* 添加 `#重启` 命令 ([1bf7f92](https://github.com/rainbowwarmth/KazuhaBot/commit/1bf7f925fb87bbc13e0d233c966e2946ec8f570c))
+* 调整命令匹配目录 ([1a5e70e](https://github.com/rainbowwarmth/KazuhaBot/commit/1a5e70ea939c06b1b6e5d5259870fc85a8a912bc))
+
 ## [2.4.13](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.4.12...v2.4.13) (2024-11-18)
 
 
