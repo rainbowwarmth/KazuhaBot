@@ -87,20 +87,39 @@ export async function initGlobals() {
 
     logger.info('初始化：正在创建热加载监听');
     pluginFolders.forEach(pluginName => {
-        const pluginConfigPath = path.join(_path, 'config', 'command', `${pluginName}.json`);
+        const pluginConfigPath = path.join(_path, 'plugins', pluginName, 'config', 'command.json');
+        
         fs.watchFile(pluginConfigPath, () => {
-            logger.mark(`插件配置文件 ${pluginConfigPath} 发生变化，正在进行热更新`);
-            delete require.cache[require.resolve(pluginConfigPath)];
-            loadPluginConfig(pluginName);
+            fs.access(pluginConfigPath, fs.constants.F_OK, (err) => {
+                if (err) {
+                    logger.warn(`插件配置文件 ${pluginConfigPath} 不存在，跳过加载`);
+                } else {
+                    logger.mark(`插件配置文件 ${pluginConfigPath} 发生变化，正在进行热更新`);
+                    delete require.cache[require.resolve(pluginConfigPath)];
+                    loadPluginConfig(pluginName);
+                }
+            });
         });
     });
-
-    const optFile = path.join(_path, 'config', 'opts.json');
-    fs.watchFile(optFile, () => {
-        if (require.cache[optFile]) {
-            logger.mark('指令配置文件正在进行热更新');
-            delete require.cache[optFile];
-        }
+    
+    // 根目录 config/command/ 中的特定文件热更新逻辑
+    const configDirPath = path.join(_path, 'config', 'command');
+    const specificFolders = ['other', 'system', 'example'];
+    
+    specificFolders.forEach(folderName => {
+        const configFilePath = path.join(configDirPath, `${folderName}.json`);
+        
+        fs.watchFile(configFilePath, () => {
+            fs.access(configFilePath, fs.constants.F_OK, (err) => {
+                if (err) {
+                    logger.warn(`配置文件 ${configFilePath} 不存在，跳过加载`);
+                } else {
+                    logger.mark(`配置文件 ${configFilePath} 发生变化，正在进行热更新`);
+                    delete require.cache[require.resolve(configFilePath)];
+                    loadPluginConfig(folderName);
+                }
+            });
+        });
     });
 
     logger.info('初始化：正在连接数据库');
