@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.18](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.4.17...v2.4.18) (2024-11-20)
+
+
+### Bug Fixes
+
+* 修复推送频道问腿 ([e9b0df1](https://github.com/rainbowwarmth/KazuhaBot/commit/e9b0df1036e0c8fa38ea4b6cbc9dc15e8dedec8d))
+
 ## [2.4.17](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.4.16...v2.4.17) (2024-11-19)
 
 
