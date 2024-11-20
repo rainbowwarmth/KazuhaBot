@@ -77,7 +77,7 @@ export async function newsContentBBS(msg: IMessageEx) {
             data,
         }
     }).then((savePath: any) => {
-        if (savePath) msg.sendMsgEx({ imagePath: savePath });
+        if (savePath) msg.sendMsgEx({ content: data.post.subject, imagePath: savePath });
         logger.mark(kazuha.chalk.blueBright(`[${gameIds[gid]}公告] newsContentBBS/mysNew.ts`));
     }).catch((err: any) => {
         logger.error(err);
@@ -287,6 +287,7 @@ export async function taskPushNews() {
                     for (const sendChannel of sendChannels) {
                         _sendQueue.push(sendImage({
                             msgId,
+                            content: data.post.subject ,
                             imagePath: savePath,
                             channelId: sendChannel,
                             messageType: "GUILD"
@@ -362,13 +363,13 @@ function getGameName(gid: number): string {
 // Helper function to get ignore regex based on gid
 function getIgnoreReg(gid: number): RegExp {
     const ignoreRegs: { [key: number]: RegExp } = {
-        1: /封禁名单|大别野/,
-        2: /封禁名单|大别野/,
-        3: /已开奖|大别野/,
-        4: /大别野/,
-        5: /大别野/,
-        6: /星铁/,
-        8: /绝区零/
+        1: /已开奖|封禁名单|商品资讯|活动资讯/,
+        2: /已开奖|战绩|攻略|工具更新|积分赛|绘画征集|内容专题页|作品展示|开售|贩卖|新品|养成计算器|集中反馈|纪行|冒险助力|封禁名单|大别野/,
+        3: /已开奖/,
+        4: /已开奖/,
+        5: /已开奖/,
+        6: /已开奖|绘画征集|攻略|工具更新|新品|实物|展示视频|封禁|意见反馈|黑塔•协议|无名勋礼/,
+        8: /已开奖|战绩|新品|攻略|丽都城募|商城/
     };
     return ignoreRegs[gid] || /大别野/;
 }

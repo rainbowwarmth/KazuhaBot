@@ -22,7 +22,7 @@ export async function miGetPostFull(gid: number, postId: string) {
     return fetch(`https://bbs-api.miyoushe.com/post/wapi/getPostFull?gids=${gid}&read=1&post_id=${postId}`, {
         method: "GET",
         headers: { Referer: 'https://www.miyoushe.com',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36 Edg/130.0.0.0' }
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36 Edg/130.0.0.0' }
     }).then(res => {
         return res.json();
     }).then((json: MihoyoAPI<PostFull>) => {
