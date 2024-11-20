@@ -222,17 +222,21 @@ async function taskPushNews() {
         return;
     // Loop through each game ID
     for (const gid of allGameIds) {
-        const _newsPushChannels = await global_1.redis.hGetAll(`config:${getGamePrefix(gid)}newsPush`).catch((err) => { logger_1.default.error(err); });
+        const _newsPushChannels = await global_1.redis.hGetAll(`config:${getGamePrefix(gid)}newsPush`).catch((err) => {
+            logger_1.default.error(`Error fetching news push channels for gid ${gid}:`, err);
+        });
+        // Log to verify correct channels are loaded for each gid
+        logger_1.default.debug(`Loaded channels for gid ${gid}:`, _newsPushChannels);
         if (!_newsPushChannels)
             continue;
         const sendChannels = []; // 每次开始时清空 sendChannels
         // 获取当前游戏的所有频道推送设置
         for (const channel in _newsPushChannels) {
-            if (_newsPushChannels[channel] == "true") {
+            if (_newsPushChannels[channel] === "true") {
                 sendChannels.push(channel); // 如果开启了公告推送，将频道添加到 sendChannels
             }
         }
-        if (sendChannels.length == 0)
+        if (sendChannels.length === 0)
             continue; // 如果没有频道开启推送，则跳过
         const gameName = getGameName(gid);
         logger_1.default.debug(`${gameName} 官方公告检查中`);
@@ -251,9 +255,9 @@ async function taskPushNews() {
                     continue;
                 if (new Date().getTime() / 1000 - page.post.created_at > 3600)
                     continue;
-                if (await global_1.redis.get(`mysNews:${page.post.post_id}`) == `${true}`)
+                if (await global_1.redis.get(`mysNews:${page.post.post_id}`) === "true")
                     continue;
-                await global_1.redis.set(`mysNews:${page.post.post_id}`, `${true}`, { EX: 3600 * 2 });
+                await global_1.redis.set(`mysNews:${page.post.post_id}`, "true", { EX: 3600 * 2 });
                 postIds.push(page.post.post_id);
             }
         }
