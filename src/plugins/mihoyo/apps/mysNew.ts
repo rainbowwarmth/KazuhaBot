@@ -214,7 +214,7 @@ export async function changePushTask(msg: IMessageEx) {
         })
         .catch((err: any) => logger.error(err));
 }
-export async function taskPushNews() {
+export async function taskPushNews() { 
     // List of all available game IDs (gid)
     const allGameIds = [1, 2, 3, 4, 5, 6, 8]; // Add or remove game IDs as needed
 
@@ -223,19 +223,25 @@ export async function taskPushNews() {
 
     // Loop through each game ID
     for (const gid of allGameIds) {
-        const _newsPushChannels = await redis.hGetAll(`config:${getGamePrefix(gid)}newsPush`).catch((err: any) => { logger.error(err); });
+        const _newsPushChannels = await redis.hGetAll(`config:${getGamePrefix(gid)}newsPush`).catch((err: any) => { 
+            logger.error(`Error fetching news push channels for gid ${gid}:`, err); 
+        });
+
+        // Log to verify correct channels are loaded for each gid
+        logger.debug(`Loaded channels for gid ${gid}:`, _newsPushChannels);
+
         if (!_newsPushChannels) continue;
 
         const sendChannels: string[] = [];  // 每次开始时清空 sendChannels
 
         // 获取当前游戏的所有频道推送设置
         for (const channel in _newsPushChannels) {
-            if (_newsPushChannels[channel] == "true") {
+            if (_newsPushChannels[channel] === "true") {
                 sendChannels.push(channel);  // 如果开启了公告推送，将频道添加到 sendChannels
             }
         }
 
-        if (sendChannels.length == 0) continue;  // 如果没有频道开启推送，则跳过
+        if (sendChannels.length === 0) continue;  // 如果没有频道开启推送，则跳过
 
         const gameName = getGameName(gid);
         logger.debug(`${gameName} 官方公告检查中`);
@@ -254,8 +260,8 @@ export async function taskPushNews() {
             for (const page of pageData.list) {
                 if (ignoreReg.test(page.post.subject)) continue;
                 if (new Date().getTime() / 1000 - page.post.created_at > 3600) continue;
-                if (await redis.get(`mysNews:${page.post.post_id}`) == `${true}`) continue;
-                await redis.set(`mysNews:${page.post.post_id}`, `${true}`, { EX: 3600 * 2 });
+                if (await redis.get(`mysNews:${page.post.post_id}`) === "true") continue;
+                await redis.set(`mysNews:${page.post.post_id}`, "true", { EX: 3600 * 2 });
                 postIds.push(page.post.post_id);
             }
         }
