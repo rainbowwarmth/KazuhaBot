@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.19](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.4.18...v2.4.19) (2024-11-20)
+
+
+### Feature Improvements
+
+* 过滤公告添加 ([df2d901](https://github.com/rainbowwarmth/KazuhaBot/commit/df2d901dac49c0eed28ff9c91e5ba7fd09c851f5))
+
 ## [2.4.18](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.4.17...v2.4.18) (2024-11-20)
 
 
