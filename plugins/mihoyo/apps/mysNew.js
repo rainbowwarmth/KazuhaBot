@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.newsContentBBS = newsContentBBS;
 exports.newsListBBS = newsListBBS;
 exports.changePushTask = changePushTask;
+exports.taskPushNewsForGame = taskPushNewsForGame;
 exports.taskPushNews = taskPushNews;
 exports.detalData = detalData;
 const kazuha_1 = __importDefault(require("../../../kazuha"));
@@ -214,90 +215,86 @@ async function changePushTask(msg) {
     })
         .catch((err) => logger_1.default.error(err));
 }
-async function taskPushNews() {
-    // List of all available game IDs (gid)
-    const allGameIds = [1, 2, 3, 4, 5, 6, 8]; // Add or remove game IDs as needed
+async function taskPushNewsForGame(gid) {
     const msgId = await global_1.redis.get("lastestMsgId");
     if (!msgId)
         return;
-    // Loop through each game ID
-    for (const gid of allGameIds) {
-        const _newsPushChannels = await global_1.redis.hGetAll(`config:${getGamePrefix(gid)}newsPush`).catch((err) => {
-            logger_1.default.error(`Error fetching news push channels for gid ${gid}:`, err);
-        });
-        // Log to verify correct channels are loaded for each gid
-        logger_1.default.debug(`Loaded channels for gid ${gid}:`, _newsPushChannels);
-        if (!_newsPushChannels)
+    const _newsPushChannels = await global_1.redis.hGetAll(`config:${getGamePrefix(gid)}newsPush`).catch((err) => {
+        logger_1.default.error(`Error fetching news push channels for gid ${gid}:`, err);
+    });
+    if (!_newsPushChannels)
+        return;
+    const sendChannels = [];
+    for (const channel in _newsPushChannels) {
+        if (_newsPushChannels[channel] === "true") {
+            sendChannels.push(channel);
+        }
+    }
+    if (sendChannels.length === 0)
+        return;
+    const gameName = getGameName(gid);
+    logger_1.default.debug(`${gameName} 官方公告检查中`);
+    const ignoreReg = getIgnoreReg(gid);
+    const pagesData = [
+        { type: "公告", list: (await (0, mysNew_1.miGetNewsList)(gid, 1))?.list },
+        { type: "资讯", list: (await (0, mysNew_1.miGetNewsList)(gid, 3))?.list }
+    ];
+    const postIds = [];
+    for (const pageData of pagesData) {
+        if (!pageData.list)
             continue;
-        const sendChannels = []; // 每次开始时清空 sendChannels
-        // 获取当前游戏的所有频道推送设置
-        for (const channel in _newsPushChannels) {
-            if (_newsPushChannels[channel] === "true") {
-                sendChannels.push(channel); // 如果开启了公告推送，将频道添加到 sendChannels
-            }
-        }
-        if (sendChannels.length === 0)
-            continue; // 如果没有频道开启推送，则跳过
-        const gameName = getGameName(gid);
-        logger_1.default.debug(`${gameName} 官方公告检查中`);
-        const ignoreReg = getIgnoreReg(gid);
-        const pagesData = [
-            { type: "公告", list: (await (0, mysNew_1.miGetNewsList)(gid, 1))?.list },
-            { type: "资讯", list: (await (0, mysNew_1.miGetNewsList)(gid, 3))?.list }
-        ];
-        const postIds = [];
-        // Process each page for the game
-        for (const pageData of pagesData) {
-            if (!pageData.list)
+        for (const page of pageData.list) {
+            if (ignoreReg.test(page.post.subject))
                 continue;
-            for (const page of pageData.list) {
-                if (ignoreReg.test(page.post.subject))
-                    continue;
-                if (new Date().getTime() / 1000 - page.post.created_at > 3600)
-                    continue;
-                if (await global_1.redis.get(`mysNews:${page.post.post_id}`) === "true")
-                    continue;
-                await global_1.redis.set(`mysNews:${page.post.post_id}`, "true", { EX: 3600 * 2 });
-                postIds.push(page.post.post_id);
-            }
-        }
-        // Process posts for the game
-        for (const postId of postIds) {
-            const postFull = await (0, mysNew_1.miGetPostFull)(gid, postId);
-            if (!postFull)
+            if (new Date().getTime() / 1000 - page.post.created_at > 78950)
                 continue;
-            const data = await detalData(postFull.post);
-            await kazuha_1.default.render({
-                app: "mys",
-                type: "mysNew",
-                imgType: "jpeg",
-                render: { saveId: "NewBB" },
-                data: {
-                    dataConent: data.post.content,
-                    data,
-                }
-            }).then((savePath) => {
-                if (savePath) {
-                    const _sendQueue = [];
-                    for (const sendChannel of sendChannels) {
-                        _sendQueue.push((0, IMessageEx_1.sendImage)({
-                            msgId,
-                            content: data.post.subject,
-                            imagePath: savePath,
-                            channelId: sendChannel,
-                            messageType: "GUILD"
-                        }));
-                    }
-                    logger_1.default.mark(kazuha_1.default.chalk.blueBright(`[${gameName}公告推送] taskPushNews/mysNew.ts`));
-                    return Promise.all(_sendQueue).catch(err => {
-                        logger_1.default.error(err);
-                    });
-                }
-            }).catch((err) => {
-                logger_1.default.error(err);
-            });
+            if (await global_1.redis.get(`mysNews:${page.post.post_id}`) === "true")
+                continue;
+            await global_1.redis.set(`mysNews:${page.post.post_id}`, "true", { EX: 3600 * 2 });
+            postIds.push(page.post.post_id);
         }
-        logger_1.default.debug(`${gameName} 官方公告检查完成`);
+    }
+    for (const postId of postIds) {
+        const postFull = await (0, mysNew_1.miGetPostFull)(gid, postId);
+        if (!postFull)
+            continue;
+        const data = await detalData(postFull.post);
+        await kazuha_1.default.render({
+            app: "mys",
+            type: "mysNew",
+            imgType: "jpeg",
+            render: { saveId: `mys_${getGamePrefix(gid)}` },
+            data: {
+                dataConent: data.post.content,
+                data,
+            }
+        }).then((savePath) => {
+            if (savePath) {
+                const _sendQueue = [];
+                for (const sendChannel of sendChannels) {
+                    _sendQueue.push((0, IMessageEx_1.sendImage)({
+                        msgId,
+                        content: data.post.subject,
+                        imagePath: savePath,
+                        channelId: sendChannel,
+                        messageType: "GUILD"
+                    }));
+                }
+                logger_1.default.mark(kazuha_1.default.chalk.blueBright(`[${gameName}公告推送] taskPushNews/mysNew.ts`));
+                return Promise.all(_sendQueue).catch(err => {
+                    logger_1.default.error(err);
+                });
+            }
+        }).catch((err) => {
+            logger_1.default.error(err);
+        });
+    }
+    logger_1.default.debug(`${gameName} 官方公告检查完成`);
+}
+async function taskPushNews() {
+    const gameIds = [1, 2, 3, 4, 5, 6, 8];
+    for (const gid of gameIds) {
+        await taskPushNewsForGame(gid);
     }
 }
 async function detalData(data) {
