@@ -246,7 +246,7 @@ async function taskPushNewsForGame(gid) {
         for (const page of pageData.list) {
             if (ignoreReg.test(page.post.subject))
                 continue;
-            if (new Date().getTime() / 1000 - page.post.created_at > 78950)
+            if (new Date().getTime() / 1000 - page.post.created_at > 3600)
                 continue;
             if (await global_1.redis.get(`mysNews:${page.post.post_id}`) === "true")
                 continue;
@@ -263,7 +263,7 @@ async function taskPushNewsForGame(gid) {
             app: "mys",
             type: "mysNew",
             imgType: "jpeg",
-            render: { saveId: `mys_${getGamePrefix(gid)}` },
+            render: { saveId: data.post.post_id },
             data: {
                 dataConent: data.post.content,
                 data,
@@ -347,7 +347,6 @@ function getGameName(gid) {
     };
     return gameNames[gid] || "未知游戏";
 }
-// Helper function to get ignore regex based on gid
 function getIgnoreReg(gid) {
     const ignoreRegs = {
         1: /已开奖|封禁名单|商品资讯|活动资讯/,
@@ -370,6 +369,6 @@ function getGamePrefix(gid) {
         6: "sr", // 星铁
         8: "zzz" // 绝区零
     };
-    return gamePrefixes[gid] || "unknown"; // Default to "unknown" if gid doesn't match
+    return gamePrefixes[gid] || "unknown";
 }
 //# sourceMappingURL=mysNew.js.map
