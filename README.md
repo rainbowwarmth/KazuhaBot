@@ -10,6 +10,7 @@
 
 ## 使用方法
 > 前往[QQ开放平台](https://q.qq.com/)，注册QQ机器人获取APPID和TOKEN
+
 > 环境准备： Windows or Linux，Node.js（ [版本至少v16以上](http://nodejs.cn/download/) ）， [Redis](https://redis.io/docs/getting-started/installation/ )
 
 > 与[KazuhaBot](https://github.com/feilongproject/KazuhaBot)对比
