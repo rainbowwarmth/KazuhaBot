@@ -295,10 +295,8 @@ export async function taskPushNewsForGame(gid: number) {
 }
 export async function taskPushNews() {
     const gameIds = [1, 2, 3, 4, 5, 6, 8];
-    for (const gid of gameIds) {
-        await taskPushNewsForGame(gid);
+    await Promise.all(gameIds.map((gid) => taskPushNewsForGame(gid)));
     }
-}
 
 
 export async function detalData(data: PostFullPost) {
