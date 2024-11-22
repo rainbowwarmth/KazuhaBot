@@ -8,7 +8,7 @@ exports.miGetPostFull = miGetPostFull;
 const node_fetch_1 = __importDefault(require("node-fetch"));
 const logger_1 = __importDefault(require("../../../lib/logger"));
 async function miGetNewsList(gid, type, pageSize = 10) {
-    return (0, node_fetch_1.default)(`https://bbs-api-static.miyoushe.com/painter/wapi/getNewsList?client_type=4&gids=${gid}&last_id=&page_size=${pageSize}&type=${type}`, {
+    return (0, node_fetch_1.default)(`https://bbs-api-static.miyoushe.com/painter/wapi/getNewsList?gids=${gid}&page_size=${pageSize}&type=${type}`, {
         method: "GET",
         headers: {
             Referer: 'https://www.miyoushe.com',
