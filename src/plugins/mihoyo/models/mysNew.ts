@@ -3,7 +3,7 @@ import { MihoyoAPI } from "../../../lib/type";
 import logger from "../../../lib/logger";
 
 export async function miGetNewsList(gid: number, type: number, pageSize = 10) {
-    return fetch(`https://bbs-api-static.miyoushe.com/painter/wapi/getNewsList?client_type=4&gids=${gid}&last_id=&page_size=${pageSize}&type=${type}`, {
+    return fetch(`https://bbs-api-static.miyoushe.com/painter/wapi/getNewsList?gids=${gid}&page_size=${pageSize}&type=${type}`, {
         method: "GET",
         headers: { 
             Referer: 'https://www.miyoushe.com',
