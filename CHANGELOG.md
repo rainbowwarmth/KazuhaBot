@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.24](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.4.23...v2.4.24) (2024-11-22)
+
+
+### Bug Fixes
+
+* 去除多余.then，添加Promise.all用于并发任务 ([2a76e1e](https://github.com/rainbowwarmth/KazuhaBot/commit/2a76e1eaea9a789d560934f0561c6c004b917d45))
+
 ## [2.4.23](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.4.22...v2.4.23) (2024-11-22)
 
 
