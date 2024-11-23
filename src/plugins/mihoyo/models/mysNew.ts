@@ -3,49 +3,40 @@ import { MihoyoAPI } from "../../../lib/type";
 import logger from "../../../lib/logger";
 
 export async function miGetNewsList(gid: number, type: number, pageSize = 10) {
-    try {
-        const response = await fetch(`https://bbs-api-static.miyoushe.com/painter/wapi/getNewsList?gids=${gid}&page_size=${pageSize}&type=${type}`, {
-            method: "GET",
-            headers: {
-                Referer: 'https://www.miyoushe.com',
-                origin: 'https://www.miyoushe.com',
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36 miHoYoBBS/2.77.1'
-            }
-        });
-        const json: MihoyoAPI<PostList> = await response.json();
-        if (json.data) {
-            return json.data;
-        } else {
-            throw new Error("Data not found");
-        }
-    } catch (err) {
+    return fetch(`https://bbs-api-static.miyoushe.com/painter/wapi/getNewsList?gids=${gid}&page_size=${pageSize}&type=${type}`, {
+        method: "GET",
+        headers: { 
+            Referer: 'https://www.miyoushe.com',
+            origin: 'https://www.miyoushe.com',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36 miHoYoBBS/2.77.1' }
+    }).then(res => {
+        return res.json();
+    }).then((json: MihoyoAPI<PostList>) => {
+        if (json.data) return json.data;
+        else throw new Error("not found data");
+    }).catch(err => {
         logger.error(err);
         return null;
-    }
+    });
 }
 
 export async function miGetPostFull(gid: number, postId: string) {
-    try {
-        const response = await fetch(`https://bbs-api.miyoushe.com/post/wapi/getPostFull?gids=${gid}&read=1&post_id=${postId}`, {
-            method: "GET",
-            headers: {
-                Referer: 'https://www.miyoushe.com',
-                origin: 'https://www.miyoushe.com',
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36 miHoYoBBS/2.77.1'
-            }
-        });
-        const json: MihoyoAPI<PostFull> = await response.json();
-        if (json.data) {
-            return json.data;
-        } else {
-            throw new Error("Data not found");
-        }
-    } catch (err) {
+    return fetch(`https://bbs-api.miyoushe.com/post/wapi/getPostFull?gids=${gid}&read=1&post_id=${postId}`, {
+        method: "GET",
+        headers: { 
+            Referer: 'https://www.miyoushe.com',
+            origin: 'https://www.miyoushe.com',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36 miHoYoBBS/2.77.1' }
+    }).then(res => {
+        return res.json();
+    }).then((json: MihoyoAPI<PostFull>) => {
+        if (json.data) return json.data;
+        else throw new Error("not found data");
+    }).catch(err => {
         logger.error(err);
         return null;
-    }
+    });
 }
-
 
 export interface PostList {
     list: PostListInfo[];
