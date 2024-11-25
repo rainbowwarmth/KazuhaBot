@@ -1,120 +1,78 @@
-"use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.initialize = initialize;
-const init_1 = require("./init");
-const Bot_1 = require("./lib/Bot");
-const kazuha_1 = __importDefault(require("./kazuha"));
-const IMessageEx_1 = require("./lib/IMessageEx");
-const global_1 = require("./lib/global");
-const logger_1 = __importDefault(require("./lib/logger"));
-const path_1 = __importDefault(require("path"));
-async function initialize() {
-    (0, init_1.init)().then(() => {
-        global_1.ws.on('READY', (data) => {
-            logger_1.default.info('[READY] 事件接收 :', data);
+import { init } from './init.js';
+import { loadGuildTree } from './lib/Bot.js';
+import kazuha from './kazuha.js';
+import { IMessageEx } from './lib/IMessageEx.js';
+import { ws, redis, _path } from './lib/global.js';
+import logger from './lib/logger.js';
+import path from "path";
+import { pathToFileURL } from "url";
+export async function initialize() {
+    init().then(() => {
+        ws.on('READY', (data) => {
+            logger.info('[READY] 事件接收 :', data);
         });
-        global_1.ws.on('ERROR', (data) => {
-            logger_1.default.error('[ERROR] 事件接收 :', data);
+        ws.on('ERROR', (data) => {
+            logger.error('[ERROR] 事件接收 :', data);
         });
-        global_1.ws.on('GUILD_MESSAGES', async (data) => {
+        ws.on('GUILD_MESSAGES', async (data) => {
             if (data.eventType != "MESSAGE_CREATE")
                 return;
-            const msg = new IMessageEx_1.IMessageEx(data.msg, "GUILD");
+            const msg = new IMessageEx(data.msg, "GUILD");
             execute(msg);
         });
-        global_1.ws.on("DIRECT_MESSAGE", async (data) => {
+        ws.on("DIRECT_MESSAGE", async (data) => {
             if (data.eventType != 'DIRECT_MESSAGE_CREATE')
                 return;
-            const msg = new IMessageEx_1.IMessageEx(data.msg, "DIRECT");
-            global_1.redis.hSet(`genshin:config:${msg.author.id}`, "guildId", msg.guild_id);
+            const msg = new IMessageEx(data.msg, "DIRECT");
+            redis.hSet(`genshin:config:${msg.author.id}`, "guildId", msg.guild_id);
             execute(msg);
         });
-        global_1.ws.on("GUILDS", () => {
-            logger_1.default.info(`重新加载频道树中`);
-            (0, Bot_1.loadGuildTree)().then(() => {
-                logger_1.default.info(`频道树加载完毕`);
+        ws.on("GUILDS", () => {
+            logger.info(`重新加载频道树中`);
+            loadGuildTree().then(() => {
+                logger.info(`频道树加载完毕`);
             }).catch((err) => {
-                logger_1.default.error(`频道树加载失败`, err);
+                logger.error(`频道树加载失败`, err);
             });
         });
     });
 }
 async function execute(msg) {
     try {
-        global_1.redis.set("lastestMsgId", msg.id, { EX: 4 * 60 });
+        redis.set("lastestMsgId", msg.id, { EX: 4 * 60 });
         if (msg && msg.content) {
             msg.content = msg.content.trim().replace(/^\//, "#");
         }
         else {
-            logger_1.default.error('检查消息为空，可能是图片和GIF导致的');
+            logger.error('检查消息为空，可能是图片和GIF导致的');
             return;
         }
-        const opt = await kazuha_1.default.findOpts(msg);
+        const opt = await kazuha.findOpts(msg);
         if (!opt || opt.directory === "err") {
             return;
         }
-        if (kazuha_1.default.config.devEnv && ["system", "example", "other"].includes(opt.directory)) {
-            logger_1.default.debug(`${global_1._path}/plugins/${opt.directory}/${opt.file}:${opt.fnc}`);
-        }
-        else if (kazuha_1.default.config.devEnv) {
-            logger_1.default.debug(`${global_1._path}/plugins/${opt.directory}/apps/${opt.file}:${opt.fnc}`);
-        }
         const isSpecialDir = ["system", "example", "other"].includes(opt.directory);
-        const pluginPath = isSpecialDir
-            ? path_1.default.join(global_1._path, "plugins", opt.directory, `${opt.file}.js`)
-            : path_1.default.join(global_1._path, "plugins", opt.directory, "apps", `${opt.file}.js`);
-        logger_1.default.debug(`插件路径: ${pluginPath}`);
+        const pluginFilePath = isSpecialDir
+            ? path.join(_path, "plugins", opt.directory, `${opt.file}.js`)
+            : path.join(_path, "plugins", opt.directory, "apps", `${opt.file}.js`);
+        const pluginURL = pathToFileURL(pluginFilePath).href; // Convert file path to file:// URL
+        logger.debug(`插件路径: ${pluginURL}`);
         try {
-            const plugin = await Promise.resolve(`${pluginPath}`).then(s => __importStar(require(s)));
+            const plugin = await import(pluginURL);
             if (typeof plugin[opt.fnc] === "function") {
-                return plugin[opt.fnc](msg).catch(err => { });
+                return plugin[opt.fnc](msg).catch((err) => {
+                    logger.error('插件函数执行时发生错误:', err);
+                });
             }
             else {
-                logger_1.default.error(`未找到函数 ${opt.fnc}() 在 "${pluginPath}"`);
+                logger.error(`未找到函数 ${opt.fnc}() 在 "${pluginURL}"`);
             }
         }
         catch (importErr) {
-            logger_1.default.error('插件导入失败:', importErr);
+            logger.error('插件导入失败:', importErr);
         }
     }
     catch (err) {
-        logger_1.default.error('执行过程中发生错误:', err);
+        logger.error('执行过程中发生错误:', err);
     }
 }
-//# sourceMappingURL=index.js.map

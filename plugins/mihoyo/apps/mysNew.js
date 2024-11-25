@@ -1,25 +1,8 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.newsContentBBS = newsContentBBS;
-exports.newsListBBS = newsListBBS;
-exports.changePushTask = changePushTask;
-exports.taskPushNewsForGame = taskPushNewsForGame;
-exports.bbbtaskPushNews = bbbtaskPushNews;
-exports.ystaskPushNews = ystaskPushNews;
-exports.bbtaskPushNews = bbtaskPushNews;
-exports.wdtaskPushNews = wdtaskPushNews;
-exports.dbytaskPushNews = dbytaskPushNews;
-exports.srtaskPushNews = srtaskPushNews;
-exports.zzztaskPushNews = zzztaskPushNews;
-exports.detalData = detalData;
-const kazuha_1 = __importDefault(require("../../../kazuha"));
-const IMessageEx_1 = require("../../../lib/IMessageEx");
-const logger_1 = __importDefault(require("../../../lib/logger"));
-const global_1 = require("../../../lib/global");
-const mysNew_1 = require("../models/mysNew");
+import kazuha from '../../../kazuha.js';
+import { sendImage } from '../../../lib/IMessageEx.js';
+import logger from '../../../lib/logger.js';
+import { redis } from '../../../lib/global.js';
+import { miGetNewsList, miGetPostFull } from '../../mihoyo/models/mysNew.js';
 var emoticon = null;
 const gameIds = {
     1: '崩坏三',
@@ -30,35 +13,35 @@ const gameIds = {
     6: '崩坏星穹铁道',
     8: '绝区零'
 };
-async function newsContentBBS(msg) {
+export async function newsContentBBS(msg) {
     let gid = 2;
     if (msg.content.includes("崩坏星穹铁道") || msg.content.includes("星铁")) {
         gid = 6; // 崩坏星穹铁道
-        logger_1.default.debug("匹配到 崩坏星穹铁道 -> gid = 6");
+        logger.debug("匹配到 崩坏星穹铁道 -> gid = 6");
     }
     else if (msg.content.includes("崩坏三") || msg.content.includes("崩三")) {
         gid = 1; // 崩坏三
-        logger_1.default.debug("匹配到 崩坏三 -> gid = 1");
+        logger.debug("匹配到 崩坏三 -> gid = 1");
     }
     else if (msg.content.includes("原神")) {
         gid = 2; // 原神
-        logger_1.default.debug("匹配到 原神 -> gid = 2");
+        logger.debug("匹配到 原神 -> gid = 2");
     }
     else if (msg.content.includes("崩坏学园二") || msg.content.includes("崩坏二") || msg.content.includes("崩二")) {
         gid = 3; // 崩坏二
-        logger_1.default.debug("匹配到 崩坏二 -> gid = 3");
+        logger.debug("匹配到 崩坏二 -> gid = 3");
     }
     else if (msg.content.includes("未定事件簿")) {
         gid = 4; // 未定事件簿
-        logger_1.default.debug("匹配到 未定事件簿 -> gid = 4");
+        logger.debug("匹配到 未定事件簿 -> gid = 4");
     }
     else if (msg.content.includes("大别野") || msg.content.includes("别野")) {
         gid = 5; // 大别野
-        logger_1.default.debug("匹配到 大别野 -> gid = 5");
+        logger.debug("匹配到 大别野 -> gid = 5");
     }
     else if (msg.content.includes("绝区零")) {
         gid = 8; // 绝区零
-        logger_1.default.debug("匹配到 绝区零 -> gid = 8");
+        logger.debug("匹配到 绝区零 -> gid = 8");
     }
     let type = 1;
     if (msg.content.includes("公告"))
@@ -67,7 +50,7 @@ async function newsContentBBS(msg) {
         type = 3;
     if (msg.content.includes("活动"))
         type = 2;
-    const pagesData = await (0, mysNew_1.miGetNewsList)(gid, type);
+    const pagesData = await miGetNewsList(gid, type);
     const _page = msg.content.match(/[0-9]+/);
     const page = _page ? parseInt(_page[0]) : 1;
     if (!pagesData)
@@ -76,11 +59,11 @@ async function newsContentBBS(msg) {
         msg.sendMsgEx({ content: "目前只查前10条最新的公告，请输入1-10之间的整数。" });
         return true;
     }
-    const postFull = await (0, mysNew_1.miGetPostFull)(gid, pagesData.list[page - 1].post.post_id);
+    const postFull = await miGetPostFull(gid, pagesData.list[page - 1].post.post_id);
     if (!postFull)
         return;
     const data = await detalData(postFull.post);
-    kazuha_1.default.render({
+    kazuha.render({
         app: "mys",
         type: "mysNew",
         imgType: "jpeg",
@@ -92,40 +75,40 @@ async function newsContentBBS(msg) {
     }).then((savePath) => {
         if (savePath)
             msg.sendMsgEx({ content: data.post.subject, imagePath: savePath });
-        logger_1.default.mark(kazuha_1.default.chalk.blueBright(`[${gameIds[gid]}公告] newsContentBBS/mysNew.ts`));
+        logger.mark(kazuha.chalk.blueBright(`[${gameIds[gid]}公告] newsContentBBS/mysNew.ts`));
     }).catch((err) => {
-        logger_1.default.error(err);
+        logger.error(err);
     });
 }
-async function newsListBBS(msg) {
+export async function newsListBBS(msg) {
     let gid = 2, gameName = "原神";
     if (msg.content.includes("崩坏星穹铁道") || msg.content.includes("星铁")) {
         gid = 6, gameName = "崩坏星穹铁道";
-        logger_1.default.debug("匹配到 崩坏星穹铁道 -> gid = 6");
+        logger.debug("匹配到 崩坏星穹铁道 -> gid = 6");
     }
     else if (msg.content.includes("崩坏三") || msg.content.includes("崩三")) {
         gid = 1, gameName = "崩坏3";
-        logger_1.default.debug("匹配到 崩坏三 -> gid = 1");
+        logger.debug("匹配到 崩坏三 -> gid = 1");
     }
     else if (msg.content.includes("原神")) {
         gid = 2, gameName = "原神";
-        logger_1.default.debug("匹配到 原神 -> gid = 2");
+        logger.debug("匹配到 原神 -> gid = 2");
     }
     else if (msg.content.includes("崩坏学园二") || msg.content.includes("崩坏二") || msg.content.includes("崩二")) {
         gid = 3, gameName = "崩坏学圆2";
-        logger_1.default.debug("匹配到 崩坏二 -> gid = 3");
+        logger.debug("匹配到 崩坏二 -> gid = 3");
     }
     else if (msg.content.includes("未定事件簿")) {
         gid = 4, gameName = "未定事件簿";
-        logger_1.default.debug("匹配到 未定事件簿 -> gid = 4");
+        logger.debug("匹配到 未定事件簿 -> gid = 4");
     }
     else if (msg.content.includes("大别野") || msg.content.includes("别野")) {
         gid = 5, gameName = "大别野";
-        logger_1.default.debug("匹配到 大别野 -> gid = 5");
+        logger.debug("匹配到 大别野 -> gid = 5");
     }
     else if (msg.content.includes("绝区零")) {
         gid = 8, gameName = "绝区零";
-        logger_1.default.debug("匹配到 绝区零 -> gid = 8");
+        logger.debug("匹配到 绝区零 -> gid = 8");
     }
     let type = 1, typeName = "公告";
     if (msg.content.includes("公告"))
@@ -134,7 +117,7 @@ async function newsListBBS(msg) {
         type = 3, typeName = "资讯";
     if (msg.content.includes("活动"))
         type = 2, typeName = "活动";
-    const data = await (0, mysNew_1.miGetNewsList)(gid, type);
+    const data = await miGetNewsList(gid, type);
     if (!data)
         return;
     const datas = data.list;
@@ -143,7 +126,7 @@ async function newsListBBS(msg) {
     datas.forEach((element) => {
         element.post.created_at = new Date(element.post.created_at * 1000).toLocaleString();
     });
-    await kazuha_1.default.render({
+    await kazuha.render({
         app: "mys",
         type: "mysNewList",
         imgType: "jpeg",
@@ -156,45 +139,45 @@ async function newsListBBS(msg) {
     }).then((savePath) => {
         if (savePath)
             msg.sendMsgEx({ imagePath: savePath });
-        logger_1.default.mark(kazuha_1.default.chalk.blueBright(`[${gameName}${typeName}列表] newListBBS/mysNew.ts`));
+        logger.mark(kazuha.chalk.blueBright(`[${gameName}${typeName}列表] newListBBS/mysNew.ts`));
     }).catch((err) => {
-        logger_1.default.error(err);
+        logger.error(err);
     });
 }
-async function changePushTask(msg) {
+export async function changePushTask(msg) {
     if (msg.messageType !== "GUILD")
         return true;
     let gid = 1;
     if (msg.content.includes("崩坏星穹铁道") || msg.content.includes("星铁")) {
         gid = 6; // 崩坏星穹铁道
-        logger_1.default.debug("匹配到 崩坏星穹铁道 -> gid = 6");
+        logger.debug("匹配到 崩坏星穹铁道 -> gid = 6");
     }
     else if (msg.content.includes("崩坏三") || msg.content.includes("崩三")) {
         gid = 1; // 崩坏三
-        logger_1.default.debug("匹配到 崩坏三 -> gid = 1");
+        logger.debug("匹配到 崩坏三 -> gid = 1");
     }
     else if (msg.content.includes("原神")) {
         gid = 2; // 原神
-        logger_1.default.debug("匹配到 原神 -> gid = 2");
+        logger.debug("匹配到 原神 -> gid = 2");
     }
     else if (msg.content.includes("崩坏学园二") || msg.content.includes("崩坏二") || msg.content.includes("崩二")) {
         gid = 3; // 崩坏二
-        logger_1.default.debug("匹配到 崩坏二 -> gid = 3");
+        logger.debug("匹配到 崩坏二 -> gid = 3");
     }
     else if (msg.content.includes("未定事件簿")) {
         gid = 4; // 未定事件簿
-        logger_1.default.debug("匹配到 未定事件簿 -> gid = 4");
+        logger.debug("匹配到 未定事件簿 -> gid = 4");
     }
     else if (msg.content.includes("大别野") || msg.content.includes("别野")) {
         gid = 5; // 大别野
-        logger_1.default.debug("匹配到 大别野 -> gid = 5");
+        logger.debug("匹配到 大别野 -> gid = 5");
     }
     else if (msg.content.includes("绝区零")) {
         gid = 8; // 绝区零
-        logger_1.default.debug("匹配到 绝区零 -> gid = 8");
+        logger.debug("匹配到 绝区零 -> gid = 8");
     }
     // 记录最终的gid值
-    logger_1.default.debug(`最终匹配的gid值: ${gid}`);
+    logger.debug(`最终匹配的gid值: ${gid}`);
     // 游戏前缀处理
     const gamePrefix = gid === 1 ? 'bbb' :
         gid === 2 ? 'ys' :
@@ -204,9 +187,9 @@ async function changePushTask(msg) {
                         gid === 6 ? 'sr' : // 崩坏星穹铁道 xq
                             gid === 8 ? 'zzz' :
                                 'unknown';
-    logger_1.default.debug(`设置的gamePrefix: ${gamePrefix}`);
+    logger.debug(`设置的gamePrefix: ${gamePrefix}`);
     const value = msg.content.includes("开启");
-    await global_1.redis.hSet(`config:${gamePrefix}newsPush`, parseInt(msg.channel_id), `${value}`)
+    await redis.hSet(`config:${gamePrefix}newsPush`, parseInt(msg.channel_id), `${value}`)
         .then(() => {
         const gameName = gameIds[gid] || "未知游戏";
         const statusMessage = value
@@ -217,16 +200,16 @@ async function changePushTask(msg) {
         const loggerMessage = value
             ? `[${gameName}开启公告推送] changePushTask/mysNew.ts`
             : `[${gameName}关闭公告推送] changePushTask/mysNew.ts`;
-        logger_1.default.mark(loggerMessage);
+        logger.mark(loggerMessage);
     })
-        .catch((err) => logger_1.default.error(err));
+        .catch((err) => logger.error(err));
 }
-async function taskPushNewsForGame(gid) {
-    const msgId = await global_1.redis.get("lastestMsgId");
+export async function taskPushNewsForGame(gid) {
+    const msgId = await redis.get("lastestMsgId");
     if (!msgId)
         return;
-    const _newsPushChannels = await global_1.redis.hGetAll(`config:${getGamePrefix(gid)}newsPush`).catch((err) => {
-        logger_1.default.error(`Error fetching news push channels for gid ${gid}:`, err);
+    const _newsPushChannels = await redis.hGetAll(`config:${getGamePrefix(gid)}newsPush`).catch((err) => {
+        logger.error(`Error fetching news push channels for gid ${gid}:`, err);
     });
     if (!_newsPushChannels)
         return;
@@ -239,11 +222,11 @@ async function taskPushNewsForGame(gid) {
     if (sendChannels.length === 0)
         return;
     const gameName = getGameName(gid);
-    logger_1.default.debug(`${gameName} 官方公告检查中`);
+    logger.debug(`${gameName} 官方公告检查中`);
     const ignoreReg = getIgnoreReg(gid);
     const pagesData = [
-        { type: "公告", list: (await (0, mysNew_1.miGetNewsList)(gid, 1))?.list },
-        { type: "资讯", list: (await (0, mysNew_1.miGetNewsList)(gid, 3))?.list }
+        { type: "公告", list: (await miGetNewsList(gid, 1))?.list },
+        { type: "资讯", list: (await miGetNewsList(gid, 3))?.list }
     ];
     const postIds = [];
     for (const pageData of pagesData) {
@@ -254,18 +237,18 @@ async function taskPushNewsForGame(gid) {
                 continue;
             if (new Date().getTime() / 1000 - page.post.created_at > 3600)
                 continue;
-            if (await global_1.redis.get(`mysNews:${page.post.post_id}`) === "true")
+            if (await redis.get(`mysNews:${page.post.post_id}`) === "true")
                 continue;
-            await global_1.redis.set(`mysNews:${page.post.post_id}`, "true", { EX: 3600 * 2 });
+            await redis.set(`mysNews:${page.post.post_id}`, "true", { EX: 3600 * 2 });
             postIds.push(page.post.post_id);
         }
     }
     for (const postId of postIds) {
-        const postFull = await (0, mysNew_1.miGetPostFull)(gid, postId);
+        const postFull = await miGetPostFull(gid, postId);
         if (!postFull)
             continue;
         const data = await detalData(postFull.post);
-        await kazuha_1.default.render({
+        await kazuha.render({
             app: "mys",
             type: "mysNew",
             imgType: "jpeg",
@@ -278,7 +261,7 @@ async function taskPushNewsForGame(gid) {
             if (savePath) {
                 const _sendQueue = [];
                 for (const sendChannel of sendChannels) {
-                    _sendQueue.push((0, IMessageEx_1.sendImage)({
+                    _sendQueue.push(sendImage({
                         msgId,
                         content: data.post.subject,
                         imagePath: savePath,
@@ -286,39 +269,39 @@ async function taskPushNewsForGame(gid) {
                         messageType: "GUILD"
                     }));
                 }
-                logger_1.default.mark(kazuha_1.default.chalk.blueBright(`[${gameName}公告推送] taskPushNews/mysNew.ts`));
+                logger.mark(kazuha.chalk.blueBright(`[${gameName}公告推送] taskPushNews/mysNew.ts`));
                 return Promise.all(_sendQueue).catch(err => {
-                    logger_1.default.error(err);
+                    logger.error(err);
                 });
             }
         }).catch((err) => {
-            logger_1.default.error(err);
+            logger.error(err);
         });
     }
-    logger_1.default.debug(`${gameName} 官方公告检查完成`);
+    logger.debug(`${gameName} 官方公告检查完成`);
 }
-async function bbbtaskPushNews() {
+export async function bbbtaskPushNews() {
     await taskPushNewsForGame(1);
 }
-async function ystaskPushNews() {
+export async function ystaskPushNews() {
     await taskPushNewsForGame(2);
 }
-async function bbtaskPushNews() {
+export async function bbtaskPushNews() {
     await taskPushNewsForGame(3);
 }
-async function wdtaskPushNews() {
+export async function wdtaskPushNews() {
     await taskPushNewsForGame(4);
 }
-async function dbytaskPushNews() {
+export async function dbytaskPushNews() {
     await taskPushNewsForGame(5);
 }
-async function srtaskPushNews() {
+export async function srtaskPushNews() {
     await taskPushNewsForGame(6);
 }
-async function zzztaskPushNews() {
+export async function zzztaskPushNews() {
     await taskPushNewsForGame(8);
 }
-async function detalData(data) {
+export async function detalData(data) {
     var json;
     try {
         json = JSON.parse(data.post.content);
@@ -392,4 +375,3 @@ function getGamePrefix(gid) {
     };
     return gamePrefixes[gid] || "unknown";
 }
-//# sourceMappingURL=mysNew.js.map
