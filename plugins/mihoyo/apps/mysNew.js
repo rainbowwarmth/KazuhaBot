@@ -7,6 +7,13 @@ exports.newsContentBBS = newsContentBBS;
 exports.newsListBBS = newsListBBS;
 exports.changePushTask = changePushTask;
 exports.taskPushNewsForGame = taskPushNewsForGame;
+exports.bbbtaskPushNews = bbbtaskPushNews;
+exports.ystaskPushNews = ystaskPushNews;
+exports.bbtaskPushNews = bbtaskPushNews;
+exports.wdtaskPushNews = wdtaskPushNews;
+exports.dbytaskPushNews = dbytaskPushNews;
+exports.srtaskPushNews = srtaskPushNews;
+exports.zzztaskPushNews = zzztaskPushNews;
 exports.detalData = detalData;
 const kazuha_1 = __importDefault(require("../../../kazuha"));
 const IMessageEx_1 = require("../../../lib/IMessageEx");
@@ -289,6 +296,27 @@ async function taskPushNewsForGame(gid) {
         });
     }
     logger_1.default.debug(`${gameName} 官方公告检查完成`);
+}
+async function bbbtaskPushNews() {
+    await taskPushNewsForGame(1);
+}
+async function ystaskPushNews() {
+    await taskPushNewsForGame(2);
+}
+async function bbtaskPushNews() {
+    await taskPushNewsForGame(3);
+}
+async function wdtaskPushNews() {
+    await taskPushNewsForGame(4);
+}
+async function dbytaskPushNews() {
+    await taskPushNewsForGame(5);
+}
+async function srtaskPushNews() {
+    await taskPushNewsForGame(6);
+}
+async function zzztaskPushNews() {
+    await taskPushNewsForGame(8);
 }
 async function detalData(data) {
     var json;
