@@ -7,7 +7,6 @@ exports.newsContentBBS = newsContentBBS;
 exports.newsListBBS = newsListBBS;
 exports.changePushTask = changePushTask;
 exports.taskPushNewsForGame = taskPushNewsForGame;
-exports.taskPushNews = taskPushNews;
 exports.detalData = detalData;
 const kazuha_1 = __importDefault(require("../../../kazuha"));
 const IMessageEx_1 = require("../../../lib/IMessageEx");
@@ -290,10 +289,6 @@ async function taskPushNewsForGame(gid) {
         });
     }
     logger_1.default.debug(`${gameName} 官方公告检查完成`);
-}
-async function taskPushNews() {
-    const gameIds = [1, 2, 3, 4, 5, 6, 8];
-    await Promise.all(gameIds.map((gid) => taskPushNewsForGame(gid)));
 }
 async function detalData(data) {
     var json;
