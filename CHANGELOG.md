@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.27](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.4.26...v2.4.27) (2024-11-25)
+
+
+### Bug Fixes
+
+* 细节优化 ([08a35bf](https://github.com/rainbowwarmth/KazuhaBot/commit/08a35bfb6e3111302ef20e6e35f478caf9f9de97))
+
 ## [2.4.26](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.4.25...v2.4.26) (2024-11-25)
 
 
