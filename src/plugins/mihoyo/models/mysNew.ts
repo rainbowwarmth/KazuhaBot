@@ -5,10 +5,8 @@ import logger from "../../../lib/logger";
 export async function miGetNewsList(gid: number, type: number, pageSize = 10) {
     return fetch(`https://bbs-api-static.miyoushe.com/painter/wapi/getNewsList?gids=${gid}&page_size=${pageSize}&type=${type}`, {
         method: "GET",
-        headers: { 
-            Referer: 'https://www.miyoushe.com',
-            origin: 'https://www.miyoushe.com',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36 miHoYoBBS/2.77.1' }
+        headers: { Referer: 'https://www.miyoushe.com', origin: 'https://www.miyoushe.com',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36 Edg/130.0.0.0' }
     }).then(res => {
         return res.json();
     }).then((json: MihoyoAPI<PostList>) => {
@@ -23,10 +21,8 @@ export async function miGetNewsList(gid: number, type: number, pageSize = 10) {
 export async function miGetPostFull(gid: number, postId: string) {
     return fetch(`https://bbs-api.miyoushe.com/post/wapi/getPostFull?gids=${gid}&read=1&post_id=${postId}`, {
         method: "GET",
-        headers: { 
-            Referer: 'https://www.miyoushe.com',
-            origin: 'https://www.miyoushe.com',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36 miHoYoBBS/2.77.1' }
+        headers: { Referer: 'https://www.miyoushe.com', origin: 'https://www.miyoushe.com',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36 Edg/130.0.0.0' }
     }).then(res => {
         return res.json();
     }).then((json: MihoyoAPI<PostFull>) => {
