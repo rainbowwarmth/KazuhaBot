@@ -2,17 +2,17 @@
 import puppeteer from "puppeteer";
 import template from "art-template";
 import sharp from "sharp"; // 引入 sharp 库
-import { writeFileSyncEx } from "./common";
-import { _path, botStatus } from "./global";
-import kazuha from "../kazuha";
-import logger from "./logger";
+import { writeFileSyncEx } from "@src/lib/common";
+import { _path, botStatus } from "@src/lib/global";
+import kazuha from "@src/kazuha";
+import logger from "@src/lib/logger";
 import path from "path";
+import { fileURLToPath } from 'url';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const html: any = {};
-var restartNum = 30;
-var renderNum = 0;
 var lock = false;
-var shoting: any[] = [];
 
 export async function render(renderData: Render) {
     const pluginsDir = path.resolve(__dirname, '../plugins');

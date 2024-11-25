@@ -1,5 +1,5 @@
-﻿import { initGlobals } from './lib/Bot';
-import kazuha from './kazuha';
+﻿import { initGlobals } from '@src/lib/Bot';
+import kazuha from '@src/kazuha';
 
 export async function init() {
     kazuha.logger.mark(`-------(≡^∇^≡)-------`);

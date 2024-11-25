@@ -1,11 +1,12 @@
-﻿import { init } from "./init"
-import { loadGuildTree } from "./lib/Bot"
-import kazuha from "./kazuha";
-import { IMessageEx } from "./lib/IMessageEx";
-import { ws, redis, _path } from "./lib/global"; 
-import { IntentMessage } from "./lib/type";
-import logger from "./lib/logger";
+﻿import { init } from "@src/init"
+import { loadGuildTree } from "@src/lib/Bot"
+import kazuha from "@src/kazuha";
+import { IMessageEx } from "@src/lib/IMessageEx";
+import { ws, redis, _path } from "@src/lib/global"; 
+import { IntentMessage } from "@src/lib/type";
+import logger from "@src/lib/logger";
 import path from "path";
+import { pathToFileURL } from "url";
 
 export async function initialize(){
     init().then(() => {
@@ -45,6 +46,7 @@ export async function initialize(){
 async function execute(msg: IMessageEx) {  
     try {
         redis.set("lastestMsgId", msg.id, { EX: 4 * 60 });
+
         if (msg && msg.content) {
             msg.content = msg.content.trim().replace(/^\//, "#");
         } else {
@@ -57,31 +59,26 @@ async function execute(msg: IMessageEx) {
             return;
         }
 
-        if (kazuha.config.devEnv && ["system", "example", "other"].includes(opt.directory)) {
-            logger.debug(`${_path}/plugins/${opt.directory}/${opt.file}:${opt.fnc}`);
-        } else if(kazuha.config.devEnv) {
-            logger.debug(`${_path}/plugins/${opt.directory}/apps/${opt.file}:${opt.fnc}`);
-        }
-
         const isSpecialDir = ["system", "example", "other"].includes(opt.directory);
-
-        const pluginPath = isSpecialDir
+        const pluginFilePath = isSpecialDir
             ? path.join(_path, "plugins", opt.directory, `${opt.file}.js`)
-            : path.join(_path, "plugins", opt.directory, "apps", `${opt.file}.js`)
-        
-        logger.debug(`插件路径: ${pluginPath}`);
+            : path.join(_path, "plugins", opt.directory, "apps", `${opt.file}.js`);
+
+        const pluginURL = pathToFileURL(pluginFilePath).href; // Convert file path to file:// URL
+        logger.debug(`插件路径: ${pluginURL}`);
 
         try {
-            const plugin = await import(pluginPath);
+            const plugin = await import(pluginURL);
             if (typeof plugin[opt.fnc] === "function") {
-                return (plugin[opt.fnc] as PluginFnc)(msg).catch(err => {});
+                return plugin[opt.fnc](msg).catch((err: any) => {
+                    logger.error('插件函数执行时发生错误:', err);
+                });
             } else {
-                logger.error(`未找到函数 ${opt.fnc}() 在 "${pluginPath}"`);
+                logger.error(`未找到函数 ${opt.fnc}() 在 "${pluginURL}"`);
             }
         } catch (importErr) {
             logger.error('插件导入失败:', importErr);
         }
-
     } catch (err) {
         logger.error('执行过程中发生错误:', err);
     }

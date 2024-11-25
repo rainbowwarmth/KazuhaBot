@@ -1,5 +1,5 @@
 import log4js from "log4js";
-import { _path } from "./global";
+import { _path } from "@src/lib/global";
 
 const logger = log4js.configure({
     appenders: {

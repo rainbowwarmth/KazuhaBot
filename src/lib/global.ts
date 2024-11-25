@@ -1,7 +1,7 @@
 import { createClient } from 'redis'
 import { createOpenAPI, createWebsocket } from 'qq-bot-sdk'
-import { config } from '../kazuha'
-import logger from './logger'
+import { config } from '@src/kazuha'
+import logger from '@src/lib/logger'
 
 export const adminId = config.initConfig.adminId
 export const _path = process.cwd()

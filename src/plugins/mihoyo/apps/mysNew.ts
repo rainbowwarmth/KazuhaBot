@@ -1,9 +1,9 @@
-import kazuha from "../../../kazuha";
-import { IMessageEx, sendImage } from "../../../lib/IMessageEx"
-import logger from "../../../lib/logger"
-import { redis } from '../../../lib/global'
-import { miGetNewsList, miGetPostFull } from "../models/mysNew"
-import { PostFullPost } from "../models/mysNew"
+import kazuha from "@src/kazuha";
+import { IMessageEx, sendImage } from "@src/lib/IMessageEx"
+import logger from "@src/lib/logger"
+import { redis } from '@src/lib/global'
+import { miGetNewsList, miGetPostFull } from "@plugin/mihoyo/models/mysNew"
+import { PostFullPost } from "@plugin/mihoyo/models/mysNew"
 
 var emoticon: Map<any, any> | null = null;
 

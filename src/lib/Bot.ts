@@ -1,11 +1,11 @@
-import { _path, redis, client, ws } from './global'
+import { _path, redis, client, ws } from '@src/lib/global'
 import fs from 'fs';
-import kazuha from '../kazuha';
+import kazuha from '@src/kazuha';
 import schedule from 'node-schedule'
 import path from 'path';
-import { IMessageEx } from '../lib/IMessageEx';
-import logger from './logger';
-import { bbbtaskPushNews, bbtaskPushNews, dbytaskPushNews, srtaskPushNews, wdtaskPushNews, ystaskPushNews, zzztaskPushNews } from '../plugins/mihoyo/apps/mysNew';
+import { IMessageEx } from '@src/lib/IMessageEx';
+import logger from '@src/lib/logger';
+import { bbbtaskPushNews, bbtaskPushNews, dbytaskPushNews, srtaskPushNews, wdtaskPushNews, ystaskPushNews, zzztaskPushNews } from '@src/plugins/mihoyo/apps/mysNew';
 
 
 type PluginFnc = (msg: IMessageEx) => Promise<any>;

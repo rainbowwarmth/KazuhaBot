@@ -1,8 +1,8 @@
 import cluster from 'cluster';
 import { exec } from 'child_process';
-import logger from '../../lib/logger';
-import kazuha from '../../kazuha';
-import { IMessageEx } from '../../lib/IMessageEx';
+import logger from '@src/lib/logger';
+import kazuha from '@src/kazuha';
+import { IMessageEx } from '@src/lib/IMessageEx';
 
 // 执行命令的函数
 export function execCommand(command: string): Promise<string> {

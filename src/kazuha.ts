@@ -1,9 +1,9 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import chalk from 'chalk';
-import logger, { setDevLog } from "./lib/logger";
-import { findOpts } from "./lib/findOpts" 
-import { render } from "./lib/render";
+import logger, { setDevLog } from "@src/lib/logger";
+import { findOpts } from "@src/lib/findOpts" 
+import { render } from "@src/lib/render";
 
 const configFilePath = path.resolve(process.cwd(), 'config', 'config.json');
 const botFilePath = path.resolve(process.cwd(), 'package.json');

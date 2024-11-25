@@ -1,7 +1,7 @@
-import { IMessageEx } from "../../lib/IMessageEx";
+import { IMessageEx } from "@src/lib/IMessageEx";
 import { IMember } from "qq-bot-sdk";
-import {botStatus, redis, adminId, client} from "../../lib/global"
-import logger from "../../lib/logger";
+import {botStatus, redis, adminId, client} from "@src/lib/global"
+import logger from "@src/lib/logger";
 
 export async function status(msg: IMessageEx) {
     return msg.sendMsgEx({

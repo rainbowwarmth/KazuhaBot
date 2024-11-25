@@ -1,6 +1,6 @@
 import fs from "fs";
-import { _path, redis } from "./global";
-import logger from "./logger";
+import { _path, redis } from "@src/lib/global";
+import logger from "@src/lib/logger";
 
 export function writeFileSyncEx(filePath: string, data: string | Buffer, options?: fs.WriteFileOptions) {
 
