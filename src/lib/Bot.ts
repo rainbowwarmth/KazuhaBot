@@ -5,7 +5,7 @@ import schedule from 'node-schedule'
 import path from 'path';
 import { IMessageEx } from '@src/lib/IMessageEx';
 import logger from '@src/lib/logger';
-import { bbbtaskPushNews, bbtaskPushNews, dbytaskPushNews, srtaskPushNews, wdtaskPushNews, ystaskPushNews, zzztaskPushNews } from '@src/plugins/mihoyo/apps/mysNew';
+import { AllNewsTasks } from '@src/plugins/mihoyo/apps/mysNew';
 
 
 type PluginFnc = (msg: IMessageEx) => Promise<any>;
@@ -40,13 +40,7 @@ export async function initGlobals() {
     logger.info('初始化：正在创建定时任务');
 
     const taskList = [
-        ystaskPushNews,
-        bbbtaskPushNews,
-        bbtaskPushNews,
-        zzztaskPushNews,
-        srtaskPushNews,
-        wdtaskPushNews,
-        dbytaskPushNews
+        AllNewsTasks
     ]
 
     taskList.forEach(task => schedule.scheduleJob('0/1 * * * * ?', task));

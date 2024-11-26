@@ -23,31 +23,31 @@ export async function newsContentBBS(msg: IMessageEx) {
 
     if (msg.content.includes("崩坏星穹铁道") || msg.content.includes("星铁")) {
         gid = 6;  // 崩坏星穹铁道
-        logger.debug("匹配到 崩坏星穹铁道 -> gid = 6");
+        logger.debug("匹配到 崩坏星穹铁道 -> gid = 6")
     } 
     else if (msg.content.includes("崩坏三") || msg.content.includes("崩三")) {
         gid = 1;  // 崩坏三
-        logger.debug("匹配到 崩坏三 -> gid = 1");
+        logger.debug("匹配到 崩坏三 -> gid = 1")
     } 
     else if (msg.content.includes("原神")) {
         gid = 2;  // 原神
-        logger.debug("匹配到 原神 -> gid = 2");
+        logger.debug("匹配到 原神 -> gid = 2")
     } 
     else if (msg.content.includes("崩坏学园二") || msg.content.includes("崩坏二") || msg.content.includes("崩二")) {
         gid = 3;  // 崩坏二
-        logger.debug("匹配到 崩坏二 -> gid = 3");
+        logger.debug("匹配到 崩坏二 -> gid = 3")
     } 
     else if (msg.content.includes("未定事件簿")) {
         gid = 4;  // 未定事件簿
-        logger.debug("匹配到 未定事件簿 -> gid = 4");
+        logger.debug("匹配到 未定事件簿 -> gid = 4")
     } 
     else if (msg.content.includes("大别野") || msg.content.includes("别野")) {
         gid = 5;  // 大别野
-        logger.debug("匹配到 大别野 -> gid = 5");
+        logger.debug("匹配到 大别野 -> gid = 5")
     } 
     else if (msg.content.includes("绝区零")) {
         gid = 8;  // 绝区零
-        logger.debug("匹配到 绝区零 -> gid = 8");
+        logger.debug("匹配到 绝区零 -> gid = 8")
     }
 
     let type = 1;
@@ -320,6 +320,19 @@ export async function srtaskPushNews() {
 
 export async function zzztaskPushNews() {
     await taskPushNewsForGame(8);
+}
+
+export async function AllNewsTasks() {
+    await Promise.allSettled([
+        bbbtaskPushNews(),
+        ystaskPushNews(),
+        bbtaskPushNews(),
+        wdtaskPushNews(),
+        dbytaskPushNews(),
+        srtaskPushNews(),
+        zzztaskPushNews(),
+    ]);
+    logger.info("所有游戏公告检查任务完成");
 }
 
 export async function detalData(data: PostFullPost) {
