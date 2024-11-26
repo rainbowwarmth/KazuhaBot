@@ -301,6 +301,18 @@ export async function srtaskPushNews() {
 export async function zzztaskPushNews() {
     await taskPushNewsForGame(8);
 }
+export async function AllNewsTasks() {
+    await Promise.allSettled([
+        bbbtaskPushNews(),
+        ystaskPushNews(),
+        bbtaskPushNews(),
+        wdtaskPushNews(),
+        dbytaskPushNews(),
+        srtaskPushNews(),
+        zzztaskPushNews(),
+    ]);
+    logger.info("所有游戏公告检查任务完成");
+}
 export async function detalData(data) {
     var json;
     try {
