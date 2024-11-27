@@ -29,7 +29,7 @@ export async function bbbtaskPushNews() {
         if (!pageData.list) continue;
         for (const page of pageData.list) {
             if (ignoreReg.test(page.post.subject)) continue;
-            if (new Date().getTime() / 1000 - page.post.created_at > 79862) continue;
+            if (new Date().getTime() / 1000 - page.post.created_at > 3600) continue;
             if (await redis.get(`mysNews:${page.post.post_id}`) == `${true}`) continue;
             await redis.set(`mysNews:${page.post.post_id}`, `${true}`, { EX: 3600 * 2 });
             postIds.push(page.post.post_id);
@@ -97,7 +97,7 @@ export async function ystaskPushNews() {
         if (!pageData.list) continue;
         for (const page of pageData.list) {
             if (ignoreReg.test(page.post.subject)) continue;
-            if (new Date().getTime() / 1000 - page.post.created_at > 79862) continue;
+            if (new Date().getTime() / 1000 - page.post.created_at > 3600) continue;
             if (await redis.get(`mysNews:${page.post.post_id}`) == `${true}`) continue;
             await redis.set(`mysNews:${page.post.post_id}`, `${true}`, { EX: 3600 * 2 });
             postIds.push(page.post.post_id);
@@ -165,7 +165,7 @@ export async function bbtaskPushNews() {
         if (!pageData.list) continue;
         for (const page of pageData.list) {
             if (ignoreReg.test(page.post.subject)) continue;
-            if (new Date().getTime() / 1000 - page.post.created_at > 79862) continue;
+            if (new Date().getTime() / 1000 - page.post.created_at > 3600) continue;
             if (await redis.get(`mysNews:${page.post.post_id}`) == `${true}`) continue;
             await redis.set(`mysNews:${page.post.post_id}`, `${true}`, { EX: 3600 * 2 });
             postIds.push(page.post.post_id);
@@ -233,7 +233,7 @@ export async function wdtaskPushNews() {
         if (!pageData.list) continue;
         for (const page of pageData.list) {
             if (ignoreReg.test(page.post.subject)) continue;
-            if (new Date().getTime() / 1000 - page.post.created_at > 79862) continue;
+            if (new Date().getTime() / 1000 - page.post.created_at > 3600) continue;
             if (await redis.get(`mysNews:${page.post.post_id}`) == `${true}`) continue;
             await redis.set(`mysNews:${page.post.post_id}`, `${true}`, { EX: 3600 * 2 });
             postIds.push(page.post.post_id);
@@ -301,7 +301,7 @@ export async function dbytaskPushNews() {
         if (!pageData.list) continue;
         for (const page of pageData.list) {
             if (ignoreReg.test(page.post.subject)) continue;
-            if (new Date().getTime() / 1000 - page.post.created_at > 79862) continue;
+            if (new Date().getTime() / 1000 - page.post.created_at > 3600) continue;
             if (await redis.get(`mysNews:${page.post.post_id}`) == `${true}`) continue;
             await redis.set(`mysNews:${page.post.post_id}`, `${true}`, { EX: 3600 * 2 });
             postIds.push(page.post.post_id);
@@ -369,7 +369,7 @@ export async function srtaskPushNews() {
         if (!pageData.list) continue;
         for (const page of pageData.list) {
             if (ignoreReg.test(page.post.subject)) continue;
-            if (new Date().getTime() / 1000 - page.post.created_at > 79862) continue;
+            if (new Date().getTime() / 1000 - page.post.created_at > 3600) continue;
             if (await redis.get(`mysNews:${page.post.post_id}`) == `${true}`) continue;
             await redis.set(`mysNews:${page.post.post_id}`, `${true}`, { EX: 3600 * 2 });
             postIds.push(page.post.post_id);
@@ -437,7 +437,7 @@ export async function zzztaskPushNews() {
         if (!pageData.list) continue;
         for (const page of pageData.list) {
             if (ignoreReg.test(page.post.subject)) continue;
-            if (new Date().getTime() / 1000 - page.post.created_at > 79862) continue;
+            if (new Date().getTime() / 1000 - page.post.created_at > 3600) continue;
             if (await redis.get(`mysNews:${page.post.post_id}`) == `${true}`) continue;
             await redis.set(`mysNews:${page.post.post_id}`, `${true}`, { EX: 3600 * 2 });
             postIds.push(page.post.post_id);
