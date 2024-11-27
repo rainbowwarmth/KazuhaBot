@@ -29,7 +29,7 @@ export async function bbbtaskPushNews() {
         for (const page of pageData.list) {
             if (ignoreReg.test(page.post.subject))
                 continue;
-            if (new Date().getTime() / 1000 - page.post.created_at > 79862)
+            if (new Date().getTime() / 1000 - page.post.created_at > 3600)
                 continue;
             if (await redis.get(`mysNews:${page.post.post_id}`) == `${true}`)
                 continue;
@@ -99,7 +99,7 @@ export async function ystaskPushNews() {
         for (const page of pageData.list) {
             if (ignoreReg.test(page.post.subject))
                 continue;
-            if (new Date().getTime() / 1000 - page.post.created_at > 79862)
+            if (new Date().getTime() / 1000 - page.post.created_at > 3600)
                 continue;
             if (await redis.get(`mysNews:${page.post.post_id}`) == `${true}`)
                 continue;
@@ -169,7 +169,7 @@ export async function bbtaskPushNews() {
         for (const page of pageData.list) {
             if (ignoreReg.test(page.post.subject))
                 continue;
-            if (new Date().getTime() / 1000 - page.post.created_at > 79862)
+            if (new Date().getTime() / 1000 - page.post.created_at > 3600)
                 continue;
             if (await redis.get(`mysNews:${page.post.post_id}`) == `${true}`)
                 continue;
@@ -239,7 +239,7 @@ export async function wdtaskPushNews() {
         for (const page of pageData.list) {
             if (ignoreReg.test(page.post.subject))
                 continue;
-            if (new Date().getTime() / 1000 - page.post.created_at > 79862)
+            if (new Date().getTime() / 1000 - page.post.created_at > 3600)
                 continue;
             if (await redis.get(`mysNews:${page.post.post_id}`) == `${true}`)
                 continue;
@@ -309,7 +309,7 @@ export async function dbytaskPushNews() {
         for (const page of pageData.list) {
             if (ignoreReg.test(page.post.subject))
                 continue;
-            if (new Date().getTime() / 1000 - page.post.created_at > 79862)
+            if (new Date().getTime() / 1000 - page.post.created_at > 3600)
                 continue;
             if (await redis.get(`mysNews:${page.post.post_id}`) == `${true}`)
                 continue;
@@ -379,7 +379,7 @@ export async function srtaskPushNews() {
         for (const page of pageData.list) {
             if (ignoreReg.test(page.post.subject))
                 continue;
-            if (new Date().getTime() / 1000 - page.post.created_at > 79862)
+            if (new Date().getTime() / 1000 - page.post.created_at > 3600)
                 continue;
             if (await redis.get(`mysNews:${page.post.post_id}`) == `${true}`)
                 continue;
@@ -449,7 +449,7 @@ export async function zzztaskPushNews() {
         for (const page of pageData.list) {
             if (ignoreReg.test(page.post.subject))
                 continue;
-            if (new Date().getTime() / 1000 - page.post.created_at > 79862)
+            if (new Date().getTime() / 1000 - page.post.created_at > 3600)
                 continue;
             if (await redis.get(`mysNews:${page.post.post_id}`) == `${true}`)
                 continue;
