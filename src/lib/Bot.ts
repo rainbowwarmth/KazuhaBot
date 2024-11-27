@@ -5,15 +5,10 @@ import schedule from 'node-schedule'
 import path from 'path';
 import { IMessageEx } from '@src/lib/IMessageEx';
 import logger from '@src/lib/logger';
-import { AllNewsTasks } from '@src/plugins/mihoyo/apps/mysNew';
+import { bbbtaskPushNews, bbtaskPushNews, dbytaskPushNews, srtaskPushNews, wdtaskPushNews, ystaskPushNews, zzztaskPushNews } from '@plugin/mihoyo/apps/PushNews';
 
 
 type PluginFnc = (msg: IMessageEx) => Promise<any>;
-
-interface Task {
-    taskFunction: () => void;
-    cronExpression: string;
-}
 
 export async function init() {
     logger.mark(`-------(≡^∇^≡)-------`);
@@ -39,11 +34,20 @@ function loadPluginConfig(pluginName: string) {
 export async function initGlobals() {
     logger.info('初始化：正在创建定时任务');
 
-    const taskList = [
-        AllNewsTasks
-    ]
-
-    taskList.forEach(task => schedule.scheduleJob('0/1 * * * * ?', task));
+    ////崩坏2公告推送
+    schedule.scheduleJob("0/1 * * * * ?  ", () => bbtaskPushNews());
+    ////崩坏3公告推送
+    schedule.scheduleJob("0/1 * * * * ?  ", () => bbbtaskPushNews());
+    ////原神公告推送
+    schedule.scheduleJob("0/1 * * * * ?  ", () => ystaskPushNews());
+    ////星铁公告推送
+    schedule.scheduleJob("0/1 * * * * ?  ", () => srtaskPushNews());
+    ////未定公告推送
+    schedule.scheduleJob("0/1 * * * * ?  ", () => wdtaskPushNews());
+    ////绝区零公告推送
+    schedule.scheduleJob("0/1 * * * * ?  ", () => zzztaskPushNews());
+    ////大别野公告推送
+    schedule.scheduleJob("0/1 * * * * ?  ", () => dbytaskPushNews());
 
     function getPluginFolders(): string[] {
         const pluginsDir = path.join(_path, 'plugins');
