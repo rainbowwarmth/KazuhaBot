@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.5.3](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.5.2...v2.5.3) (2024-12-19)
+
+
+### Bug Fixes
+
+* . ([4b8213d](https://github.com/rainbowwarmth/KazuhaBot/commit/4b8213d559fb3c992bc673b6a8164ef399e73e70))
+
+
+### Feature Improvements
+
+* 外置浏览器渲染 ([ba60514](https://github.com/rainbowwarmth/KazuhaBot/commit/ba605140467691b41a176ae689bf714b45db7b77))
+
 ## [2.5.2](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.5.1...v2.5.2) (2024-11-27)
 
 
