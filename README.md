@@ -15,6 +15,7 @@
 
 > 与[KazuhaBot](https://github.com/feilongproject/KazuhaBot)对比
  * 本项目仅保留了公告推送内容，更加简洁高效。
+ * 使用外置渲染器，图片渲染更高效。
 
 > 注意V2.1.5开始使用js运行，抛弃之前的ts方法。
 
@@ -60,6 +61,21 @@ pnpm install -P
 
 打开config文件夹,选中config.example.json文件重命名为config.json文件，并更改其中的APP_ID和APP_TOKEN为机器人对应ID与TOKEN
 
+### 使用外置渲染器
+必须安装并运行[@Karinjs/puppeteer](https://github.com/KarinJS/puppeteer/)
+#### 安装方法
+```
+//使用pnpm
+pnpm init && pnpm install @karinjs/puppeteer --registry=https://registry.npmmirror.com && node .
+
+//使用Github
+git clone https://github.com/KarinJS/puppeteer
+npm run build
+node .
+```
+
+运行`@Karinjs/puppeteer`后打开config文件夹,选中打开config.json文件，将`useExternalBrowser`的值flase改为true即可
+
 ## 运行
 > 启动redis后
 
@@ -71,6 +87,7 @@ pnpm install -P
 |                           名称                                                         |        介绍           |
 |:-------------------------------------------------------------:|:------------------:|
 |[KazuhaBot](https://github.com/feilongproject/KazuhaBot)| 飞龙大佬的KazuhaBot |
+|[@Karinjs/puppeteer](https://github.com/KarinJS/puppeteer/)| Karin外置渲染器|
 
 ## 其他
 * 项目仅供学习交流使用，严禁用于任何商业用途和非法行为

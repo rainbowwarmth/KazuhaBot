@@ -15,5 +15,10 @@
         "unixsocket": "/run/redis/redis-server.sock"
     },
     "devEnv": "false",
-    "executablePath": ""
+    "render": {
+        "useExternalBrowser": false,
+        "host": "http://127.0.0.1:7005/puppeteer",
+        "authorization": "123456",
+        "timeout": 120
+    }
 }
