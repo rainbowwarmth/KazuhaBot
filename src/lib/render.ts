@@ -203,7 +203,6 @@ async function browserInit() {
         try {
             // 使用 puppeteer 启动本地浏览器
             const _browser = await puppeteer.launch({
-                executablePath: kazuha.config.executablePath || undefined,
                 headless: true,
                 args: [
                     "--disable-gpu",
