@@ -1,5 +1,4 @@
 import { IMessageEx,} from "@src/lib/core/IMessageEx"
-import logger from "@src/lib/logger/logger"
 import { redis } from '@src/lib/global/global'
 import { miGetNewsList, miGetPostFull } from "@plugin/mihoyo/models/mysNew"
 import { PostFullPost } from "@plugin/mihoyo/models/mysNew"

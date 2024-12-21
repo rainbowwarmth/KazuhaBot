@@ -2,7 +2,6 @@ import { IMessageEx } from "@src/lib/core/IMessageEx";
 import path from 'path';
 import fs from 'fs/promises';
 import { fileURLToPath } from 'url';
-import logger from "@src/lib/logger/logger";
 import isAdmin from "@src/lib/core/isAdmin";
 
 const __filename = fileURLToPath(import.meta.url);

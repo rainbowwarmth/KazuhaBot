@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'fs'; 
 import path from 'path';
 import { execSync } from 'child_process';
 import { fileURLToPath } from 'url';
@@ -108,13 +108,8 @@ const pluginPaths = fs.readdirSync(pluginsDir).filter((file) => {
   return fs.statSync(filePath).isDirectory(); // 只筛选目录
 });
 
-const excludedPlugins = ['other', 'system', 'example'];
-
+// 取消排除插件文件夹逻辑，包含所有插件文件夹
 for (const plugin of pluginPaths) {
-  if (excludedPlugins.includes(plugin)) {
-    continue; // 跳过被排除的插件
-  }
-
   const pluginPath = path.join(pluginsDir, plugin); // 插件的路径
   const pluginDistPath = path.join(distPluginsDir, plugin); // 目标路径
 

@@ -1,7 +1,6 @@
 import { redis } from "@src/lib/global/global";
 import { detalData } from "@plugin/mihoyo/apps/mysNew";
 import { sendImage } from "@src/lib/core/IMessageEx";
-import logger from "@src/lib/logger/logger";
 import { bbbmiGetNewsList, bbbmiGetPostFull, bbmiGetNewsList, bbmiGetPostFull, dbymiGetNewsList, dbymiGetPostFull, srmiGetNewsList, srmiGetPostFull, wdmiGetNewsList, wdmiGetPostFull, ysmiGetNewsList, ysmiGetPostFull, zzzmiGetNewsList, zzzmiGetPostFull } from "@plugin/mihoyo/models/mysApi"
 import render from "@src/lib/render/render";
 

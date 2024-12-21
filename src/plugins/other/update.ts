@@ -1,6 +1,5 @@
 import { promises as fs } from 'fs';
 import { join } from 'path';
-import logger from '@src/lib/logger/logger';
 import { IMessageEx } from '@src/lib/core/IMessageEx';
 import { restartBot } from '@plugin/other/restart';
 import { execCommand } from '@plugin/other/restart'

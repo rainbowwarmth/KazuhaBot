@@ -1,6 +1,5 @@
 import fetch from "node-fetch";
 import { MihoyoAPI } from "@src/lib/core/type";
-import logger from "@src/lib/logger/logger";
 
 async function bbbmiGetNewsList( type: number, pageSize = 10) {
     return fetch(`https://bbs-api-static.miyoushe.com/painter/wapi/getNewsList?gids=1&page_size=${pageSize}&type=${type}`, {

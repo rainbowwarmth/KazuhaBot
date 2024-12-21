@@ -1,6 +1,5 @@
 import cluster from 'cluster';
 import { exec } from 'child_process';
-import logger from '@src/lib/logger/logger';
 import { IMessageEx } from '@src/lib/core/IMessageEx';
 
 // 执行命令的函数

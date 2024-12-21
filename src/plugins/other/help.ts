@@ -1,6 +1,5 @@
 ﻿import fs from "fs";
 import { IMessageEx } from "@src/lib/core/IMessageEx";
-import logger from "@src/lib/logger/logger";
 
 async function helpimage(msg: IMessageEx) {
 

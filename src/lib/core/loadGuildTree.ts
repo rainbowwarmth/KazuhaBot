@@ -1,4 +1,3 @@
-import logger from "@src/lib/logger/logger";
 import { client } from "./link";
 
 async function loadGuildTree(init = false) {

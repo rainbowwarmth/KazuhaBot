@@ -18,6 +18,7 @@ export async function init() {
     await Task();
     await database();
     global.chalk = chalk;
+    global.logger = logger;
     client;
     ws;
     logger.info('初始化：正在创建频道树');

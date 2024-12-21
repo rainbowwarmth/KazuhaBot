@@ -7,7 +7,6 @@ import { fileURLToPath } from 'url';
 import fetch from 'node-fetch';
 import { config } from "@src/lib/config/config";
 import { _path, botStatus } from "@src/lib/global/global";
-import logger from "@src/lib/logger/logger";
 import { writeFileSyncEx } from "@src/lib/core/common";
 
 const __filename = fileURLToPath(import.meta.url);

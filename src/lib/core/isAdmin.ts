@@ -1,7 +1,6 @@
 import { adminId, redis } from "@src/lib/global/global";
 import { IMember } from "@src/lib/global/qq-guild-bot";
 import { client } from "./link";
-import logger from "@src/lib/logger/logger";
 
 async function isAdmin(uid: string, iMember?: IMember, srcGuild?: string): Promise<boolean> {
     if (adminId.includes(uid)) return true;
