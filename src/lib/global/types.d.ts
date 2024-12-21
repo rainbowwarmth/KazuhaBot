@@ -1,9 +1,11 @@
+import chalkModule from 'chalk';
 import { Browser } from "puppeteer";
 
 
 declare global {
   var browser: Browser | null;
   var saveGuildsTree: SaveGuild[];
+  var chalk: typeof chalkModule;
 
   interface SaveGuild {
     name: string,

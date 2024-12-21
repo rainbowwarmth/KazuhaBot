@@ -1,12 +1,13 @@
-﻿import { init } from "@src/init"
-import { loadGuildTree } from "@src/lib/Bot"
-import kazuha from "@src/kazuha";
-import { IMessageEx } from "@src/lib/IMessageEx";
-import { ws, redis, _path } from "@src/lib/global"; 
-import { IntentMessage } from "@src/lib/type";
-import logger from "@src/lib/logger";
+import { init } from "@src/init"
 import path from "path";
 import { pathToFileURL } from "url";
+import { ws } from "@src/lib/core/link";
+import logger from "@src/lib/logger/logger";
+import { IntentMessage } from "@src/lib/core/type";
+import { IMessageEx } from "@src/lib/core/IMessageEx";
+import { loadGuildTree } from "@src/lib/core/loadGuildTree";
+import { findOpts } from "@src/lib/plugins/findOpts";
+import { _path, redis } from "@src/lib/global/global";
 
 export async function initialize(){
     init().then(() => {
@@ -54,7 +55,7 @@ async function execute(msg: IMessageEx) {
             return;
         }
 
-        const opt = await kazuha.findOpts(msg);
+        const opt = await findOpts(msg);
         if (!opt || opt.directory === "err") {
             return;
         }

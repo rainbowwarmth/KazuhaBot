@@ -1,9 +1,9 @@
-import kazuha from "@src/kazuha";
-import { IMessageEx, sendImage } from "@src/lib/IMessageEx"
-import logger from "@src/lib/logger"
-import { redis } from '@src/lib/global'
+import { IMessageEx,} from "@src/lib/core/IMessageEx"
+import logger from "@src/lib/logger/logger"
+import { redis } from '@src/lib/global/global'
 import { miGetNewsList, miGetPostFull } from "@plugin/mihoyo/models/mysNew"
 import { PostFullPost } from "@plugin/mihoyo/models/mysNew"
+import render from "@src/lib/render/render"
 
 var emoticon: Map<any, any> | null = null;
 
@@ -67,7 +67,7 @@ export async function newsContentBBS(msg: IMessageEx) {
     const postFull = await miGetPostFull(gid, pagesData.list[page - 1].post.post_id)
     if (!postFull) return;
     const data = await detalData(postFull.post);
-    kazuha.render({
+    render({
         app: "mys",
         type: "mysNew",
         imgType: "jpeg",
@@ -78,7 +78,7 @@ export async function newsContentBBS(msg: IMessageEx) {
         }
     }).then((savePath: any) => {
         if (savePath) msg.sendMsgEx({ content: data.post.subject, imagePath: savePath });
-        logger.mark(kazuha.chalk.blueBright(`[${gameIds[gid]}公告] newsContentBBS/mysNew.ts`));
+        logger.mark(chalk.blueBright(`[${gameIds[gid]}公告] newsContentBBS/mysNew.ts`));
     }).catch((err: any) => {
         logger.error(err);
     });
@@ -131,7 +131,7 @@ export async function newsListBBS(msg: IMessageEx) {
         (element.post as any).created_at = new Date(element.post.created_at * 1000).toLocaleString();
     });
 
-    await kazuha.render({
+    await render({
         app: "mys",
         type: "mysNewList",
         imgType: "jpeg",
@@ -143,7 +143,7 @@ export async function newsListBBS(msg: IMessageEx) {
         }
     }).then((savePath: any) => {
         if (savePath) msg.sendMsgEx({ imagePath: savePath });
-        logger.mark(kazuha.chalk.blueBright(`[${gameName}${typeName}列表] newListBBS/mysNew.ts`));
+        logger.mark(chalk.blueBright(`[${gameName}${typeName}列表] newListBBS/mysNew.ts`));
     }).catch((err: any) => {
         logger.error(err);
     });

@@ -1,8 +1,7 @@
 import cluster from 'cluster';
 import { exec } from 'child_process';
-import logger from '@src/lib/logger';
-import kazuha from '@src/kazuha';
-import { IMessageEx } from '@src/lib/IMessageEx';
+import logger from '@src/lib/logger/logger';
+import { IMessageEx } from '@src/lib/core/IMessageEx';
 
 // 执行命令的函数
 export function execCommand(command: string): Promise<string> {
@@ -18,7 +17,7 @@ export function execCommand(command: string): Promise<string> {
 export async function restartBot(msg: IMessageEx) {
     if (cluster.isPrimary) {
         msg.sendMsgEx({ content: `kazuha-bot 正在进行重启`})
-        logger.mark(kazuha.chalk.blueBright('正在进行重启'));
+        logger.mark(chalk.blueBright('正在进行重启'));
         const worker = cluster.fork();
 
         worker.on('exit', (code) => {
@@ -29,10 +28,10 @@ export async function restartBot(msg: IMessageEx) {
             }
         });
         msg.sendMsgEx({ content: `kazuha-bot 启动成功`})
-        logger.mark(kazuha.chalk.blueBright('kazuha-bot 启动成功'));
+        logger.mark(chalk.blueBright('kazuha-bot 启动成功'));
     } else {
         msg.sendMsgEx({ content: `kazuha-bot 已启动，运行 kazuha-bot...`})
-        logger.mark(kazuha.chalk.blueBright('kazuha-bot 已启动，运行 kazuha-bot...'));
+        logger.mark(chalk.blueBright('kazuha-bot 已启动，运行 kazuha-bot...'));
         execCommand('npm start').catch((error) => {
             logger.error('启动 kazuha-bot 时发生错误:', error);
             process.exit(1); // 退出以便主进程触发重启

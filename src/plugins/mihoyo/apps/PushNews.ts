@@ -1,10 +1,9 @@
-import { redis } from "@src/lib/global";
-import { render } from "@src/lib/render";
+import { redis } from "@src/lib/global/global";
 import { detalData } from "@plugin/mihoyo/apps/mysNew";
-import { sendImage } from "@src/lib/IMessageEx";
-import logger from "@src/lib/logger";
-import { bbbmiGetNewsList, bbbmiGetPostFull, bbmiGetNewsList, bbmiGetPostFull, dbymiGetNewsList, dbymiGetPostFull, srmiGetNewsList, srmiGetPostFull, wdmiGetNewsList, wdmiGetPostFull, ysmiGetNewsList, ysmiGetPostFull, zzzmiGetNewsList, zzzmiGetPostFull } from "@plugin/mihoyo/models/mysApi";
-import kazuha from "@src/kazuha";
+import { sendImage } from "@src/lib/core/IMessageEx";
+import logger from "@src/lib/logger/logger";
+import { bbbmiGetNewsList, bbbmiGetPostFull, bbmiGetNewsList, bbmiGetPostFull, dbymiGetNewsList, dbymiGetPostFull, srmiGetNewsList, srmiGetPostFull, wdmiGetNewsList, wdmiGetPostFull, ysmiGetNewsList, ysmiGetPostFull, zzzmiGetNewsList, zzzmiGetPostFull } from "@plugin/mihoyo/models/mysApi"
+import render from "@src/lib/render/render";
 
 export async function bbbtaskPushNews() {
     const msgId = await redis.get("lastestMsgId");
@@ -61,7 +60,7 @@ export async function bbbtaskPushNews() {
                         messageType: "GUILD"
                     }));
                 }
-                logger.mark(kazuha.chalk.blueBright(`[崩坏三公告推送] taskPushNews/mysNew.js`))
+                logger.mark(chalk.blueBright(`[崩坏三公告推送] taskPushNews/mysNew.js`))
                 return Promise.all(_sendQueue).catch(err => {
                     logger.error(err);
                 });
@@ -129,7 +128,7 @@ export async function ystaskPushNews() {
                         messageType: "GUILD"
                     }));
                 }
-                logger.mark(kazuha.chalk.blueBright(`[原神公告推送] taskPushNews/mysNew.js`))
+                logger.mark(chalk.blueBright(`[原神公告推送] taskPushNews/mysNew.js`))
                 return Promise.all(_sendQueue).catch(err => {
                     logger.error(err);
                 });
@@ -197,7 +196,7 @@ export async function bbtaskPushNews() {
                         messageType: "GUILD"
                     }));
                 }
-                logger.mark(kazuha.chalk.blueBright(`[崩坏学圆2公告推送] taskPushNews/mysNew.js`))
+                logger.mark(chalk.blueBright(`[崩坏学圆2公告推送] taskPushNews/mysNew.js`))
                 return Promise.all(_sendQueue).catch(err => {
                     logger.error(err);
                 });
@@ -265,7 +264,7 @@ export async function wdtaskPushNews() {
                         messageType: "GUILD"
                     }));
                 }
-                logger.mark(kazuha.chalk.blueBright(`[未定事件簿公告推送] taskPushNews/mysNew.js`))
+                logger.mark(chalk.blueBright(`[未定事件簿公告推送] taskPushNews/mysNew.js`))
                 return Promise.all(_sendQueue).catch(err => {
                     logger.error(err);
                 });
@@ -333,7 +332,7 @@ export async function dbytaskPushNews() {
                         messageType: "GUILD"
                     }));
                 }
-                logger.mark(kazuha.chalk.blueBright(`[大别野公告推送] taskPushNews/mysNew.js`))
+                logger.mark(chalk.blueBright(`[大别野公告推送] taskPushNews/mysNew.js`))
                 return Promise.all(_sendQueue).catch(err => {
                     logger.error(err);
                 });
@@ -401,7 +400,7 @@ export async function srtaskPushNews() {
                         messageType: "GUILD"
                     }));
                 }
-                logger.mark(kazuha.chalk.blueBright(`[崩坏星穹铁道公告推送] taskPushNews/mysNew.js`))
+                logger.mark(chalk.blueBright(`[崩坏星穹铁道公告推送] taskPushNews/mysNew.js`))
                 return Promise.all(_sendQueue).catch(err => {
                     logger.error(err);
                 });
@@ -469,7 +468,7 @@ export async function zzztaskPushNews() {
                         messageType: "GUILD"
                     }));
                 }
-                logger.mark(kazuha.chalk.blueBright(`[绝区零公告推送] taskPushNews/mysNew.js`))
+                logger.mark(chalk.blueBright(`[绝区零公告推送] taskPushNews/mysNew.js`))
                 return Promise.all(_sendQueue).catch(err => {
                     logger.error(err);
                 });

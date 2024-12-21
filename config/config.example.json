@@ -14,11 +14,13 @@
     "databaseConfig": {
         "unixsocket": "/run/redis/redis-server.sock"
     },
+    "loadGuild": false,
     "devEnv": "false",
     "render": {
-        "useExternalBrowser": false,
+        "useExternalBrowser": true,
         "host": "http://127.0.0.1:7005/puppeteer",
         "authorization": "123456",
         "timeout": 120
     }
+
 }

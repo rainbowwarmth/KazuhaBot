@@ -1,9 +1,9 @@
-import { isAdmin } from "@src/plugins/other/admin";
-import { IMessageEx } from "@src/lib/IMessageEx";
+import { IMessageEx } from "@src/lib/core/IMessageEx"; 
 import path from 'path';
 import fs from 'fs/promises';
-import logger from "@src/lib/logger";
 import { fileURLToPath } from 'url';
+import logger from "@src/lib/logger/logger";
+import isAdmin from "@src/lib/core/isAdmin";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -24,50 +24,44 @@ interface CommandGroup {
 }
 
 export async function findOpts(msg: IMessageEx): Promise<{ directory: string; file: string; fnc: string; } | null> {
-    if (!msg.content) return null; // If content is empty, return null
+    if (!msg.content) return null; // 如果内容为空，返回 null
 
-    const pluginsDir = path.resolve(__dirname, '../plugins');
-    const pluginPaths = (await fs.readdir(pluginsDir)).filter(async (file) => {
-        const filePath = path.join(pluginsDir, file);
-        return (await fs.stat(filePath)).isDirectory();
-    });
+    const pluginsDir = path.resolve(__dirname, '../../plugins');
+    const pluginPaths = await getPluginPaths(pluginsDir); // 获取插件路径
 
     for (const plugin of pluginPaths) {
-        // Determine the config file path based on the plugin name
-        const configPath = ['other', 'system', 'example'].includes(plugin)
-            ? path.resolve(__dirname, `../config/command/${plugin}.json`)
-            : path.resolve(pluginsDir, plugin, 'config', 'command.json');
+        const configPath = path.resolve(pluginsDir, plugin, 'config', 'command.json'); // 直接使用 plugins 目录下的命令配置文件路径
 
         try {
-            // Check if the config file exists
-            try {
-                await fs.access(configPath);
-            } catch {
+            // 检查配置文件是否存在
+            await fs.access(configPath).catch(() => {
                 logger.warn(`未找到插件 ${plugin} 的配置文件: ${configPath}`);
-                continue;
-            }
+                return null;
+            });
 
-            // Read and parse the JSON file manually
+            // 读取并解析配置文件
             const configContent = await fs.readFile(configPath, 'utf-8');
             const fnc = JSON.parse(configContent);
             const command = fnc.command;
 
-            // Iterate over plugin command configurations
+            // 遍历插件命令配置
             for (const mainKey in command) {
                 const group = command[mainKey];
-                const groupDir = group.directory; // Use the directory field from the plugin group
+                const groupDir = group.directory; // 使用插件组中的 directory 字段
+
                 for (const key in group) {
-                    if (key === "directory") continue; // Skip directory field
+                    if (key === "directory") continue; // 跳过 directory 字段
+
                     const opt = group[key];
 
-                    // Check if the message type matches
-                    if (!opt.type?.includes(msg.messageType)) continue;
+                    // 检查消息类型是否匹配
+                    if (opt.type && !opt.type.includes(msg.messageType)) continue;
 
-                    // Check if the regex matches the message content
+                    // 检查正则是否匹配消息内容
                     const regex = opt.reg ? new RegExp(opt.reg) : null;
-                    if (!regex || !regex.test(msg.content)) continue;
+                    if (regex && !regex.test(msg.content)) continue;
 
-                    // Permission check
+                    // 权限检查
                     if (opt.permission !== "anyone") {
                         const isUserAdmin = await isAdmin(
                             msg.author.id,
@@ -77,11 +71,11 @@ export async function findOpts(msg: IMessageEx): Promise<{ directory: string; fi
                         if (!isUserAdmin) continue;
                     }
 
-                    // Return the matching command configuration
+                    // 返回匹配的命令配置
                     return {
                         directory: groupDir,
                         file: mainKey,
-                        fnc: opt.fnc,
+                        fnc: opt.fnc!,
                     };
                 }
             }
@@ -90,6 +84,21 @@ export async function findOpts(msg: IMessageEx): Promise<{ directory: string; fi
         }
     }
 
-    // Return null if no match is found
+    // 如果没有找到匹配的命令，返回 null
     return null;
+}
+
+// 获取插件目录路径
+async function getPluginPaths(pluginsDir: string) {
+    const pluginPaths: string[] = [];
+    const files = await fs.readdir(pluginsDir);
+
+    for (const file of files) {
+        const filePath = path.join(pluginsDir, file);
+        if ((await fs.stat(filePath)).isDirectory()) {
+            pluginPaths.push(file);
+        }
+    }
+
+    return pluginPaths;
 }

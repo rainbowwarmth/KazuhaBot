@@ -1,14 +1,14 @@
-﻿﻿import fs from "fs";
+import fs from "fs";
 import template from "art-template";
 import sharp from "sharp"; // 引入 sharp 库
 import puppeteer from "puppeteer";
-import { writeFileSyncEx } from "@src/lib/common";
-import { _path, botStatus } from "@src/lib/global";
-import kazuha from "@src/kazuha";
-import logger from "@src/lib/logger";
 import path from "path";
 import { fileURLToPath } from 'url';
 import fetch from 'node-fetch';
+import { config } from "@src/lib/config/config";
+import { _path, botStatus } from "@src/lib/global/global";
+import logger from "@src/lib/logger/logger";
+import { writeFileSyncEx } from "@src/lib/core/common";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -21,7 +21,7 @@ const fetchTimeout = (url: string, options: object = {}, timeout: number) => {
     return new Promise((resolve, reject) => {
         const timer = setTimeout(() => {
             reject(new Error('fetch timeout'));
-        }, kazuha.config.render.timeout * 1000);
+        }, config.render.timeout * 1000);
         fetch(url, options)
             .then(response => {
                 clearTimeout(timer);
@@ -35,8 +35,8 @@ const fetchTimeout = (url: string, options: object = {}, timeout: number) => {
 };
 
 // 渲染主函数
-export async function render(renderData: Render) {
-    const pluginsDir = path.resolve(__dirname, '../plugins');
+async function render(renderData: Render) {
+    const pluginsDir = path.resolve(__dirname, '../../plugins');
     const pluginPaths = fs.readdirSync(pluginsDir).filter((file) => {
         const filePath = path.join(pluginsDir, file);
         return fs.statSync(filePath).isDirectory();
@@ -89,7 +89,7 @@ async function doRender(renderData: Render): Promise<string | null>{
     }
 
     // 如果使用外部浏览器，则传递HTML文件给外部渲染器
-    if (kazuha.config.render.useExternalBrowser) {
+    if (config.render.useExternalBrowser) {
         const filePath = `file://${render.saveFile}`;  // 使用生成的 HTML 文件路径
         const payload = {
             file: filePath,
@@ -100,14 +100,14 @@ async function doRender(renderData: Render): Promise<string | null>{
 
         try {
             // 通过 HTTP 请求将文件路径和渲染参数传递给外部渲染器
-            const response = await fetchTimeout(kazuha.config.render.host, {
+            const response = await fetchTimeout(config.render.host, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'authorization': kazuha.config.render.authorization
+                    'authorization': config.render.authorization
                 },
                 body: JSON.stringify(payload)
-            }, kazuha.config.render.timeout);
+            }, config.render.timeout);
 
             // 检查响应是否为图像数据
             const contentType = (response as Response).headers.get('content-type');
@@ -166,7 +166,7 @@ async function doRender(renderData: Render): Promise<string | null>{
 // 浏览器初始化函数，支持外部浏览器
 async function browserInit() {
     if (global.browser) {
-        if (kazuha.config.devEnv) logger.debug(`puppeteer已经启动`);
+        if (config.devEnv) logger.debug(`puppeteer已经启动`);
         return true;
     }
     if (lock) {
@@ -175,18 +175,18 @@ async function browserInit() {
     lock = true;
     logger.mark("浏览器启动中");
 
-    if (kazuha.config.render.useExternalBrowser) {
+    if (config.render.useExternalBrowser) {
         logger.info("使用外部浏览器启动");
         try {
             // 启动外部渲染器，传递启动命令
-            const response = await fetchTimeout(kazuha.config.render.host, {
+            const response = await fetchTimeout(config.render.host, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'authorization': kazuha.config.render.authorization
+                    'authorization': config.render.authorization
                 },
                 body: JSON.stringify({ action: 'launch' })
-            }, kazuha.config.render.timeout);
+            }, config.render.timeout);
 
             // 假设外部渲染器返回一个标识字段
             const jsonResponse = await (response as Response).json();
@@ -244,4 +244,6 @@ interface Render {
         template?: string;
     };
     data: any;
-};
+}
+
+export default render;

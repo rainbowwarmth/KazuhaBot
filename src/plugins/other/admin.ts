@@ -1,7 +1,5 @@
-import { IMessageEx } from "@src/lib/IMessageEx";
-import { IMember } from "qq-bot-sdk";
-import {botStatus, redis, adminId, client} from "@src/lib/global"
-import logger from "@src/lib/logger";
+import { IMessageEx } from "@src/lib/core/IMessageEx";
+import {botStatus, redis} from "@src/lib/global/global";
 
 export async function status(msg: IMessageEx) {
     return msg.sendMsgEx({
@@ -21,24 +19,6 @@ export async function msgconnnet(msg: IMessageEx){
     return msg.sendMsgEx({
         content: msg.content
     })
-}
-
-export async function isAdmin(uid: string, iMember?: IMember, srcGuild?: string): Promise<boolean> {
-    if (adminId.includes(uid)) return true;
-    if (srcGuild) {
-        iMember = await client.guildApi.guildMember(srcGuild, uid).then(d => {
-            return d.data;
-        }).catch(err => {
-            logger.error(err);
-            return undefined;
-        });
-    }
-    if (iMember && (iMember.roles.includes("2") || iMember.roles.includes("4")))
-        return true;
-    return await redis.hGet("auth", uid).then(auth => {
-        if (auth == "admin") return true;
-        return false;
-    });
 }
 
 function timeConver(time: number) {

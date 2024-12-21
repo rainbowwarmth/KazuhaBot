@@ -1,6 +1,8 @@
 import { initialize } from "@src/index";
-import kazuha from "@src/kazuha";
+import logger from "@src/lib/logger/logger";
+import { Bot } from "@src/lib/config/config";
+import chalk from "chalk";
 
 initialize().then(() => {
-    kazuha.logger.mark(kazuha.chalk.cyan('kazuhaBot' + ' v' + kazuha.Bot.version + '启动成功'))
+    logger.mark(chalk.cyan('kazuhaBot' + ' v' + Bot.version + '启动成功'))
 })

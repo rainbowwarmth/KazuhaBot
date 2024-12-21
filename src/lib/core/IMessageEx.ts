@@ -2,9 +2,10 @@ import fs from "fs";
 import fetch from 'node-fetch';
 import FormData from 'form-data';
 import { Ark, Embed, IMember, IMessage, IUser, MessageAttachment } from "qq-bot-sdk";
-import {config} from '@src//kazuha';
-import { botStatus, client } from "@src/lib/global";
-import logger from "@src/lib/logger";
+import { config } from "@src/lib/config/config";
+import { botStatus } from "@src/lib/global/global";
+import logger from "@src/lib/logger/logger";
+import { client } from "./link";
 
 export class IMessageEx implements IMessage {
     id: string;
