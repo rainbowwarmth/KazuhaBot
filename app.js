@@ -1,5 +1,7 @@
 import { initialize } from './index.js';
-import kazuha from './kazuha.js';
+import logger from './lib/logger/logger.js';
+import { Bot } from './lib/config/config.js';
+import chalk from "chalk";
 initialize().then(() => {
-    kazuha.logger.mark(kazuha.chalk.cyan('kazuhaBot' + ' v' + kazuha.Bot.version + '启动成功'));
+    logger.mark(chalk.cyan('kazuhaBot' + ' v' + Bot.version + '启动成功'));
 });

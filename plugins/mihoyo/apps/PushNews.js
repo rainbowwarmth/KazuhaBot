@@ -1,10 +1,9 @@
-import { redis } from '../../../lib/global.js';
-import { render } from '../../../lib/render.js';
+import { redis } from '../../../lib/global/global.js';
 import { detalData } from '../../mihoyo/apps/mysNew.js';
-import { sendImage } from '../../../lib/IMessageEx.js';
-import logger from '../../../lib/logger.js';
+import { sendImage } from '../../../lib/core/IMessageEx.js';
+import logger from '../../../lib/logger/logger.js';
 import { bbbmiGetNewsList, bbbmiGetPostFull, bbmiGetNewsList, bbmiGetPostFull, dbymiGetNewsList, dbymiGetPostFull, srmiGetNewsList, srmiGetPostFull, wdmiGetNewsList, wdmiGetPostFull, ysmiGetNewsList, ysmiGetPostFull, zzzmiGetNewsList, zzzmiGetPostFull } from '../../mihoyo/models/mysApi.js';
-import kazuha from '../../../kazuha.js';
+import render from '../../../lib/render/render.js';
 export async function bbbtaskPushNews() {
     const msgId = await redis.get("lastestMsgId");
     if (!msgId)
@@ -64,7 +63,7 @@ export async function bbbtaskPushNews() {
                         messageType: "GUILD"
                     }));
                 }
-                logger.mark(kazuha.chalk.blueBright(`[崩坏三公告推送] taskPushNews/mysNew.js`));
+                logger.mark(chalk.blueBright(`[崩坏三公告推送] taskPushNews/mysNew.js`));
                 return Promise.all(_sendQueue).catch(err => {
                     logger.error(err);
                 });
@@ -134,7 +133,7 @@ export async function ystaskPushNews() {
                         messageType: "GUILD"
                     }));
                 }
-                logger.mark(kazuha.chalk.blueBright(`[原神公告推送] taskPushNews/mysNew.js`));
+                logger.mark(chalk.blueBright(`[原神公告推送] taskPushNews/mysNew.js`));
                 return Promise.all(_sendQueue).catch(err => {
                     logger.error(err);
                 });
@@ -204,7 +203,7 @@ export async function bbtaskPushNews() {
                         messageType: "GUILD"
                     }));
                 }
-                logger.mark(kazuha.chalk.blueBright(`[崩坏学圆2公告推送] taskPushNews/mysNew.js`));
+                logger.mark(chalk.blueBright(`[崩坏学圆2公告推送] taskPushNews/mysNew.js`));
                 return Promise.all(_sendQueue).catch(err => {
                     logger.error(err);
                 });
@@ -274,7 +273,7 @@ export async function wdtaskPushNews() {
                         messageType: "GUILD"
                     }));
                 }
-                logger.mark(kazuha.chalk.blueBright(`[未定事件簿公告推送] taskPushNews/mysNew.js`));
+                logger.mark(chalk.blueBright(`[未定事件簿公告推送] taskPushNews/mysNew.js`));
                 return Promise.all(_sendQueue).catch(err => {
                     logger.error(err);
                 });
@@ -344,7 +343,7 @@ export async function dbytaskPushNews() {
                         messageType: "GUILD"
                     }));
                 }
-                logger.mark(kazuha.chalk.blueBright(`[大别野公告推送] taskPushNews/mysNew.js`));
+                logger.mark(chalk.blueBright(`[大别野公告推送] taskPushNews/mysNew.js`));
                 return Promise.all(_sendQueue).catch(err => {
                     logger.error(err);
                 });
@@ -414,7 +413,7 @@ export async function srtaskPushNews() {
                         messageType: "GUILD"
                     }));
                 }
-                logger.mark(kazuha.chalk.blueBright(`[崩坏星穹铁道公告推送] taskPushNews/mysNew.js`));
+                logger.mark(chalk.blueBright(`[崩坏星穹铁道公告推送] taskPushNews/mysNew.js`));
                 return Promise.all(_sendQueue).catch(err => {
                     logger.error(err);
                 });
@@ -484,7 +483,7 @@ export async function zzztaskPushNews() {
                         messageType: "GUILD"
                     }));
                 }
-                logger.mark(kazuha.chalk.blueBright(`[绝区零公告推送] taskPushNews/mysNew.js`));
+                logger.mark(chalk.blueBright(`[绝区零公告推送] taskPushNews/mysNew.js`));
                 return Promise.all(_sendQueue).catch(err => {
                     logger.error(err);
                 });

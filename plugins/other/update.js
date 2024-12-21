@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs';
 import { join } from 'path';
-import logger from '../../lib/logger.js';
+import logger from '../../lib/logger/logger.js';
 import { restartBot } from '../other/restart.js';
 import { execCommand } from '../other/restart.js';
 export async function update(msg) {

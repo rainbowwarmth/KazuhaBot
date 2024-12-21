@@ -1,5 +1,4 @@
-import { botStatus, redis, adminId, client } from '../../lib/global.js';
-import logger from '../../lib/logger.js';
+import { botStatus, redis } from '../../lib/global/global.js';
 export async function status(msg) {
     return msg.sendMsgEx({
         content: `------状态------` +
@@ -15,25 +14,6 @@ export async function ping(msg) {
 export async function msgconnnet(msg) {
     return msg.sendMsgEx({
         content: msg.content
-    });
-}
-export async function isAdmin(uid, iMember, srcGuild) {
-    if (adminId.includes(uid))
-        return true;
-    if (srcGuild) {
-        iMember = await client.guildApi.guildMember(srcGuild, uid).then(d => {
-            return d.data;
-        }).catch(err => {
-            logger.error(err);
-            return undefined;
-        });
-    }
-    if (iMember && (iMember.roles.includes("2") || iMember.roles.includes("4")))
-        return true;
-    return await redis.hGet("auth", uid).then(auth => {
-        if (auth == "admin")
-            return true;
-        return false;
     });
 }
 function timeConver(time) {

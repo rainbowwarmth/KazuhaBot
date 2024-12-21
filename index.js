@@ -1,11 +1,12 @@
 import { init } from './init.js';
-import { loadGuildTree } from './lib/Bot.js';
-import kazuha from './kazuha.js';
-import { IMessageEx } from './lib/IMessageEx.js';
-import { ws, redis, _path } from './lib/global.js';
-import logger from './lib/logger.js';
 import path from "path";
 import { pathToFileURL } from "url";
+import { ws } from './lib/core/link.js';
+import logger from './lib/logger/logger.js';
+import { IMessageEx } from './lib/core/IMessageEx.js';
+import { loadGuildTree } from './lib/core/loadGuildTree.js';
+import { findOpts } from './lib/plugins/findOpts.js';
+import { _path, redis } from './lib/global/global.js';
 export async function initialize() {
     init().then(() => {
         ws.on('READY', (data) => {
@@ -47,7 +48,7 @@ async function execute(msg) {
             logger.error('检查消息为空，可能是图片和GIF导致的');
             return;
         }
-        const opt = await kazuha.findOpts(msg);
+        const opt = await findOpts(msg);
         if (!opt || opt.directory === "err") {
             return;
         }

@@ -1,7 +1,7 @@
-import kazuha from '../../../kazuha.js';
-import logger from '../../../lib/logger.js';
-import { redis } from '../../../lib/global.js';
+import logger from '../../../lib/logger/logger.js';
+import { redis } from '../../../lib/global/global.js';
 import { miGetNewsList, miGetPostFull } from '../../mihoyo/models/mysNew.js';
+import render from '../../../lib/render/render.js';
 var emoticon = null;
 const gameIds = {
     1: '崩坏三',
@@ -62,7 +62,7 @@ export async function newsContentBBS(msg) {
     if (!postFull)
         return;
     const data = await detalData(postFull.post);
-    kazuha.render({
+    render({
         app: "mys",
         type: "mysNew",
         imgType: "jpeg",
@@ -74,7 +74,7 @@ export async function newsContentBBS(msg) {
     }).then((savePath) => {
         if (savePath)
             msg.sendMsgEx({ content: data.post.subject, imagePath: savePath });
-        logger.mark(kazuha.chalk.blueBright(`[${gameIds[gid]}公告] newsContentBBS/mysNew.ts`));
+        logger.mark(chalk.blueBright(`[${gameIds[gid]}公告] newsContentBBS/mysNew.ts`));
     }).catch((err) => {
         logger.error(err);
     });
@@ -125,7 +125,7 @@ export async function newsListBBS(msg) {
     datas.forEach((element) => {
         element.post.created_at = new Date(element.post.created_at * 1000).toLocaleString();
     });
-    await kazuha.render({
+    await render({
         app: "mys",
         type: "mysNewList",
         imgType: "jpeg",
@@ -138,7 +138,7 @@ export async function newsListBBS(msg) {
     }).then((savePath) => {
         if (savePath)
             msg.sendMsgEx({ imagePath: savePath });
-        logger.mark(kazuha.chalk.blueBright(`[${gameName}${typeName}列表] newListBBS/mysNew.ts`));
+        logger.mark(chalk.blueBright(`[${gameName}${typeName}列表] newListBBS/mysNew.ts`));
     }).catch((err) => {
         logger.error(err);
     });
