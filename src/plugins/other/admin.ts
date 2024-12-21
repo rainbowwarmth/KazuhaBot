@@ -1,7 +1,7 @@
 import { IMessageEx } from "@src/lib/core/IMessageEx";
 import {botStatus, redis} from "@src/lib/global/global";
 
-export async function status(msg: IMessageEx) {
+async function status(msg: IMessageEx) {
     return msg.sendMsgEx({
         content: `------状态------` +
             `\n运行时间：${timeConver(new Date().getTime() - botStatus.startTime.getTime())}` +
@@ -11,11 +11,11 @@ export async function status(msg: IMessageEx) {
     });
 }
 
-export async function ping(msg: IMessageEx) {
+async function ping(msg: IMessageEx) {
     msg.sendMsgEx({ content: await redis.ping() });
 }
 
-export async function msgconnnet(msg: IMessageEx){
+async function msgconnnet(msg: IMessageEx){
     return msg.sendMsgEx({
         content: msg.content
     })
@@ -34,3 +34,5 @@ function timeConver(time: number) {
     time = parseInt(time.toFixed(0));
     return `${time}小时${m}分钟`;
 }
+
+export { status, ping, msgconnnet };

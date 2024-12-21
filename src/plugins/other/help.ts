@@ -2,8 +2,7 @@
 import { IMessageEx } from "@src/lib/core/IMessageEx";
 import logger from "@src/lib/logger/logger";
 
-
-export async function helpimage(msg: IMessageEx) {
+async function helpimage(msg: IMessageEx) {
 
     const markdown = fs.readFileSync('resources/markdown/HELP.md', 'utf-8');
     const { headings, emphasis } = extractContentFromMarkdown(markdown);
@@ -37,7 +36,7 @@ interface Commit {
     commitMessage: string;
 }
 
-export async function commits(msg: IMessageEx) {
+async function commits(msg: IMessageEx) {
     try {
         const response = await fetch('https://gitee.com/api/v5/repos/rainbowwarmth/KazuhaBot_Newmys/commits');
         if (!response.ok) {
@@ -91,7 +90,7 @@ function extractContentFromMarkdown(markdown: string): { headings: string[], emp
 }
 
 
-export async function info(msg: IMessageEx) {
+async function info(msg: IMessageEx) {
 
     const markdown = fs.readFileSync('resources/markdown/CHANGELOG.md', 'utf-8');
     const { headings, emphasis } = extractContentFromMarkdown(markdown);
@@ -111,3 +110,5 @@ export async function info(msg: IMessageEx) {
         content
     });
 }
+
+export { helpimage, commits, info };

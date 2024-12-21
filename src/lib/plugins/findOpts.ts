@@ -23,7 +23,7 @@ interface CommandGroup {
     [key: string]: CommandOption | string; // 其他字段为命令项或 directory
 }
 
-export async function findOpts(msg: IMessageEx): Promise<{ directory: string; file: string; fnc: string; } | null> {
+async function findOpts(msg: IMessageEx): Promise<{ directory: string; file: string; fnc: string; } | null> {
     if (!msg.content) return null; // 如果内容为空，返回 null
 
     const pluginsDir = path.resolve(__dirname, '../../plugins');
@@ -102,3 +102,5 @@ async function getPluginPaths(pluginsDir: string) {
 
     return pluginPaths;
 }
+
+export default findOpts;

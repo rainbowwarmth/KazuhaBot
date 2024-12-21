@@ -4,7 +4,7 @@ import logger from '@src/lib/logger/logger';
 import { IMessageEx } from '@src/lib/core/IMessageEx';
 
 // 执行命令的函数
-export function execCommand(command: string): Promise<string> {
+function execCommand(command: string): Promise<string> {
     return new Promise((resolve, reject) => {
         exec(command, { encoding: 'utf-8' }, (error, stdout) => {
             if (error) reject(error);
@@ -14,7 +14,7 @@ export function execCommand(command: string): Promise<string> {
 }
 
 // 使用 cluster 管理 Bot 重启
-export async function restartBot(msg: IMessageEx) {
+async function restartBot(msg: IMessageEx) {
     if (cluster.isPrimary) {
         msg.sendMsgEx({ content: `kazuha-bot 正在进行重启`})
         logger.mark(chalk.blueBright('正在进行重启'));
@@ -56,3 +56,5 @@ if (cluster.isPrimary) {
         process.exit(1);
     });
 }
+
+export { execCommand, restartBot };

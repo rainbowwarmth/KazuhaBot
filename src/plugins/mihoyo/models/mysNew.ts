@@ -2,7 +2,7 @@ import fetch from "node-fetch";
 import { MihoyoAPI } from "@src/lib/core/type";
 import logger from "@src/lib/logger/logger";
 
-export async function miGetNewsList(gid: number, type: number, pageSize = 10) {
+async function miGetNewsList(gid: number, type: number, pageSize = 10) {
     return fetch(`https://bbs-api-static.miyoushe.com/painter/wapi/getNewsList?gids=${gid}&page_size=${pageSize}&type=${type}`, {
         method: "GET",
         headers: { Referer: 'https://www.miyoushe.com', origin: 'https://www.miyoushe.com',
@@ -18,7 +18,7 @@ export async function miGetNewsList(gid: number, type: number, pageSize = 10) {
     });
 }
 
-export async function miGetPostFull(gid: number, postId: string) {
+async function miGetPostFull(gid: number, postId: string) {
     return fetch(`https://bbs-api.miyoushe.com/post/wapi/getPostFull?gids=${gid}&read=1&post_id=${postId}`, {
         method: "GET",
         headers: { Referer: 'https://www.miyoushe.com', origin: 'https://www.miyoushe.com',
@@ -34,13 +34,13 @@ export async function miGetPostFull(gid: number, postId: string) {
     });
 }
 
-export interface PostList {
+interface PostList {
     list: PostListInfo[];
     last_id: number;
     is_last: boolean;
 };
 
-export interface PostListInfo {
+interface PostListInfo {
     post: {
         game_id: number;
         post_id: string;
@@ -161,12 +161,12 @@ export interface PostListInfo {
     link_card_list: [];
 }
 
-export interface PostFull {
+interface PostFull {
     post: PostFullPost;
 }
 
 
-export interface PostFullPost {
+interface PostFullPost {
     post: {
         game_id: number;
         post_id: string;
@@ -268,3 +268,5 @@ export interface PostFullPost {
     forum_rank_info?: any;
     link_card_list: any[];
 }
+
+export { miGetNewsList, miGetPostFull, PostList, PostListInfo, PostFull, PostFullPost };

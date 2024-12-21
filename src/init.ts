@@ -5,7 +5,7 @@ import { Bot, config } from '@src/lib/config/config';
 import database from '@src/lib/core/database';
 import Task from '@src/lib/core/schedule';
 import { client, ws } from '@src/lib/core/link';
-import { loadGuildTree } from '@src/lib/core/loadGuildTree';
+import loadGuildTree from '@src/lib/core/loadGuildTree';
 
 export async function init() {
     logger.mark(`-------(≡^∇^≡)-------`);

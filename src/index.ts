@@ -5,8 +5,8 @@ import { ws } from "@src/lib/core/link";
 import logger from "@src/lib/logger/logger";
 import { IntentMessage } from "@src/lib/core/type";
 import { IMessageEx } from "@src/lib/core/IMessageEx";
-import { loadGuildTree } from "@src/lib/core/loadGuildTree";
-import { findOpts } from "@src/lib/plugins/findOpts";
+import loadGuildTree from "@src/lib/core/loadGuildTree";
+import findOpts from "@src/lib/plugins/findOpts";
 import { _path, redis } from "@src/lib/global/global";
 
 export async function initialize(){

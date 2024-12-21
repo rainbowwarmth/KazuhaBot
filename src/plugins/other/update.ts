@@ -5,7 +5,7 @@ import { IMessageEx } from '@src/lib/core/IMessageEx';
 import { restartBot } from '@plugin/other/restart';
 import { execCommand } from '@plugin/other/restart'
 
-export async function update(msg: IMessageEx) {
+async function update(msg: IMessageEx) {
     const projectRoot = process.cwd();
     const packageJsonPath = join(projectRoot, 'package.json');
     const gitDir = join(projectRoot, '.git');
@@ -75,3 +75,5 @@ async function fetchLatestVersion(): Promise<string> {
     const data = await response.json();
     return data['dist-tags'].latest;
 }
+
+export { update };

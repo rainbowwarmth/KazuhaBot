@@ -1,7 +1,7 @@
 import logger from "@src/lib/logger/logger";
 import { client } from "./link";
 
-export async function loadGuildTree(init = false) {
+async function loadGuildTree(init = false) {
     global.saveGuildsTree = [];
     for (const guild of (await client.meApi.meGuilds()).data) {
         if (init) logger.info(`${guild.name}(${guild.id})`);
@@ -13,3 +13,5 @@ export async function loadGuildTree(init = false) {
         global.saveGuildsTree.push({ name: guild.name, id: guild.id, channel: _guild });
     }
 }
+
+export default loadGuildTree;

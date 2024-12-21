@@ -18,7 +18,7 @@ const gameIds: { [key: number]: string } = {
 };
 
 
-export async function newsContentBBS(msg: IMessageEx) {
+async function newsContentBBS(msg: IMessageEx) {
     let gid = 2
 
     if (msg.content.includes("崩坏星穹铁道") || msg.content.includes("星铁")) {
@@ -84,7 +84,7 @@ export async function newsContentBBS(msg: IMessageEx) {
     });
 }
 
-export async function newsListBBS(msg: IMessageEx) {
+async function newsListBBS(msg: IMessageEx) {
     let gid = 2, gameName = "原神"
 
     if (msg.content.includes("崩坏星穹铁道") || msg.content.includes("星铁")) {
@@ -149,7 +149,7 @@ export async function newsListBBS(msg: IMessageEx) {
     });
 }
 
-export async function changePushTask(msg: IMessageEx) {
+async function changePushTask(msg: IMessageEx) {
     if (msg.messageType !== "GUILD") return true;
     let gid = 1;
     if (msg.content.includes("崩坏星穹铁道") || msg.content.includes("星铁")) {
@@ -215,7 +215,7 @@ export async function changePushTask(msg: IMessageEx) {
         .catch((err: any) => logger.error(err));
 }
 
-export async function detalData(data: PostFullPost) {
+async function detalData(data: PostFullPost) {
     var json;
     try {
         json = JSON.parse(data.post.content);
@@ -280,3 +280,5 @@ function getGamePrefix(gid: number): string {
 
     return gamePrefixes[gid] || "unknown"
 }
+
+export { newsContentBBS, newsListBBS, changePushTask, getGameName, getGamePrefix, detalData}
