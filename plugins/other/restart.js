@@ -2,7 +2,7 @@ import cluster from 'cluster';
 import { exec } from 'child_process';
 import logger from '../../lib/logger/logger.js';
 // 执行命令的函数
-export function execCommand(command) {
+function execCommand(command) {
     return new Promise((resolve, reject) => {
         exec(command, { encoding: 'utf-8' }, (error, stdout) => {
             if (error)
@@ -13,7 +13,7 @@ export function execCommand(command) {
     });
 }
 // 使用 cluster 管理 Bot 重启
-export async function restartBot(msg) {
+async function restartBot(msg) {
     if (cluster.isPrimary) {
         msg.sendMsgEx({ content: `kazuha-bot 正在进行重启` });
         logger.mark(chalk.blueBright('正在进行重启'));
@@ -54,3 +54,4 @@ else {
         process.exit(1);
     });
 }
+export { execCommand, restartBot };

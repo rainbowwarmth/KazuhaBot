@@ -1,5 +1,5 @@
 import { botStatus, redis } from '../../lib/global/global.js';
-export async function status(msg) {
+async function status(msg) {
     return msg.sendMsgEx({
         content: `------状态------` +
             `\n运行时间：${timeConver(new Date().getTime() - botStatus.startTime.getTime())}` +
@@ -8,10 +8,10 @@ export async function status(msg) {
             `\n内存使用：${(process.memoryUsage().rss / 1024 / 1024).toFixed(2)}MB`
     });
 }
-export async function ping(msg) {
+async function ping(msg) {
     msg.sendMsgEx({ content: await redis.ping() });
 }
-export async function msgconnnet(msg) {
+async function msgconnnet(msg) {
     return msg.sendMsgEx({
         content: msg.content
     });
@@ -30,3 +30,4 @@ function timeConver(time) {
     time = parseInt(time.toFixed(0));
     return `${time}小时${m}分钟`;
 }
+export { status, ping, msgconnnet };

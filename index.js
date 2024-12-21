@@ -4,8 +4,8 @@ import { pathToFileURL } from "url";
 import { ws } from './lib/core/link.js';
 import logger from './lib/logger/logger.js';
 import { IMessageEx } from './lib/core/IMessageEx.js';
-import { loadGuildTree } from './lib/core/loadGuildTree.js';
-import { findOpts } from './lib/plugins/findOpts.js';
+import loadGuildTree from './lib/core/loadGuildTree.js';
+import findOpts from './lib/plugins/findOpts.js';
 import { _path, redis } from './lib/global/global.js';
 export async function initialize() {
     init().then(() => {

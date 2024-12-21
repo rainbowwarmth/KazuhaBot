@@ -1,6 +1,6 @@
 import fetch from "node-fetch";
 import logger from '../../../lib/logger/logger.js';
-export async function miGetNewsList(gid, type, pageSize = 10) {
+async function miGetNewsList(gid, type, pageSize = 10) {
     return fetch(`https://bbs-api-static.miyoushe.com/painter/wapi/getNewsList?gids=${gid}&page_size=${pageSize}&type=${type}`, {
         method: "GET",
         headers: { Referer: 'https://www.miyoushe.com', origin: 'https://www.miyoushe.com',
@@ -17,7 +17,7 @@ export async function miGetNewsList(gid, type, pageSize = 10) {
         return null;
     });
 }
-export async function miGetPostFull(gid, postId) {
+async function miGetPostFull(gid, postId) {
     return fetch(`https://bbs-api.miyoushe.com/post/wapi/getPostFull?gids=${gid}&read=1&post_id=${postId}`, {
         method: "GET",
         headers: { Referer: 'https://www.miyoushe.com', origin: 'https://www.miyoushe.com',
@@ -35,3 +35,4 @@ export async function miGetPostFull(gid, postId) {
     });
 }
 ;
+export { miGetNewsList, miGetPostFull };

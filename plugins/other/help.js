@@ -1,6 +1,6 @@
 import fs from "fs";
 import logger from '../../lib/logger/logger.js';
-export async function helpimage(msg) {
+async function helpimage(msg) {
     const markdown = fs.readFileSync('resources/markdown/HELP.md', 'utf-8');
     const { headings, emphasis } = extractContentFromMarkdown(markdown);
     let content = '米游社小助手使用指南\n';
@@ -16,7 +16,7 @@ export async function helpimage(msg) {
         content
     });
 }
-export async function commits(msg) {
+async function commits(msg) {
     try {
         const response = await fetch('https://gitee.com/api/v5/repos/rainbowwarmth/KazuhaBot_Newmys/commits');
         if (!response.ok) {
@@ -61,7 +61,7 @@ function extractContentFromMarkdown(markdown) {
     const emphasis = emphasisMatch ? emphasisMatch.map(match => match.replace(/\*/g, '')) : [];
     return { headings, emphasis };
 }
-export async function info(msg) {
+async function info(msg) {
     const markdown = fs.readFileSync('resources/markdown/CHANGELOG.md', 'utf-8');
     const { headings, emphasis } = extractContentFromMarkdown(markdown);
     let content = '更新日志\n';
@@ -77,3 +77,4 @@ export async function info(msg) {
         content
     });
 }
+export { helpimage, commits, info };

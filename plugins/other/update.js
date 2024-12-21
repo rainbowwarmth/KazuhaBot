@@ -3,7 +3,7 @@ import { join } from 'path';
 import logger from '../../lib/logger/logger.js';
 import { restartBot } from '../other/restart.js';
 import { execCommand } from '../other/restart.js';
-export async function update(msg) {
+async function update(msg) {
     const projectRoot = process.cwd();
     const packageJsonPath = join(projectRoot, 'package.json');
     const gitDir = join(projectRoot, '.git');
@@ -71,3 +71,4 @@ async function fetchLatestVersion() {
     const data = await response.json();
     return data['dist-tags'].latest;
 }
+export { update };

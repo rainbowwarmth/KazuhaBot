@@ -1,6 +1,6 @@
 import fetch from "node-fetch";
 import logger from '../../../lib/logger/logger.js';
-export async function bbbmiGetNewsList(type, pageSize = 10) {
+async function bbbmiGetNewsList(type, pageSize = 10) {
     return fetch(`https://bbs-api-static.miyoushe.com/painter/wapi/getNewsList?gids=1&page_size=${pageSize}&type=${type}`, {
         method: "GET",
         headers: { Referer: 'https://www.miyoushe.com', origin: 'https://www.miyoushe.com',
@@ -17,7 +17,7 @@ export async function bbbmiGetNewsList(type, pageSize = 10) {
         return null;
     });
 }
-export async function bbbmiGetPostFull(postId) {
+async function bbbmiGetPostFull(postId) {
     return fetch(`https://bbs-api.miyoushe.com/post/wapi/getPostFull?gids=1&read=1&post_id=${postId}`, {
         method: "GET",
         headers: { Referer: 'https://www.miyoushe.com', origin: 'https://www.miyoushe.com',
@@ -34,7 +34,7 @@ export async function bbbmiGetPostFull(postId) {
         return null;
     });
 }
-export async function ysmiGetNewsList(type, pageSize = 10) {
+async function ysmiGetNewsList(type, pageSize = 10) {
     return fetch(`https://bbs-api-static.miyoushe.com/painter/wapi/getNewsList?gids=2&page_size=${pageSize}&type=${type}`, {
         method: "GET",
         headers: { Referer: 'https://www.miyoushe.com', origin: 'https://www.miyoushe.com',
@@ -51,7 +51,7 @@ export async function ysmiGetNewsList(type, pageSize = 10) {
         return null;
     });
 }
-export async function ysmiGetPostFull(postId) {
+async function ysmiGetPostFull(postId) {
     return fetch(`https://bbs-api.miyoushe.com/post/wapi/getPostFull?gids=2&read=1&post_id=${postId}`, {
         method: "GET",
         headers: { Referer: 'https://www.miyoushe.com', origin: 'https://www.miyoushe.com',
@@ -68,7 +68,7 @@ export async function ysmiGetPostFull(postId) {
         return null;
     });
 }
-export async function bbmiGetNewsList(type, pageSize = 10) {
+async function bbmiGetNewsList(type, pageSize = 10) {
     return fetch(`https://bbs-api-static.miyoushe.com/painter/wapi/getNewsList?gids=3&page_size=${pageSize}&type=${type}`, {
         method: "GET",
         headers: { Referer: 'https://www.miyoushe.com', origin: 'https://www.miyoushe.com',
@@ -85,7 +85,7 @@ export async function bbmiGetNewsList(type, pageSize = 10) {
         return null;
     });
 }
-export async function bbmiGetPostFull(postId) {
+async function bbmiGetPostFull(postId) {
     return fetch(`https://bbs-api.miyoushe.com/post/wapi/getPostFull?gids=3&read=1&post_id=${postId}`, {
         method: "GET",
         headers: { Referer: 'https://www.miyoushe.com', origin: 'https://www.miyoushe.com',
@@ -102,7 +102,7 @@ export async function bbmiGetPostFull(postId) {
         return null;
     });
 }
-export async function wdmiGetNewsList(type, pageSize = 10) {
+async function wdmiGetNewsList(type, pageSize = 10) {
     return fetch(`https://bbs-api-static.miyoushe.com/painter/wapi/getNewsList?gids=4&page_size=${pageSize}&type=${type}`, {
         method: "GET",
         headers: { Referer: 'https://www.miyoushe.com', origin: 'https://www.miyoushe.com',
@@ -119,7 +119,7 @@ export async function wdmiGetNewsList(type, pageSize = 10) {
         return null;
     });
 }
-export async function wdmiGetPostFull(postId) {
+async function wdmiGetPostFull(postId) {
     return fetch(`https://bbs-api.miyoushe.com/post/wapi/getPostFull?gids=4&read=1&post_id=${postId}`, {
         method: "GET",
         headers: { Referer: 'https://www.miyoushe.com', origin: 'https://www.miyoushe.com',
@@ -136,7 +136,7 @@ export async function wdmiGetPostFull(postId) {
         return null;
     });
 }
-export async function dbymiGetNewsList(type, pageSize = 10) {
+async function dbymiGetNewsList(type, pageSize = 10) {
     return fetch(`https://bbs-api-static.miyoushe.com/painter/wapi/getNewsList?gids=5&page_size=${pageSize}&type=${type}`, {
         method: "GET",
         headers: { Referer: 'https://www.miyoushe.com', origin: 'https://www.miyoushe.com',
@@ -153,7 +153,7 @@ export async function dbymiGetNewsList(type, pageSize = 10) {
         return null;
     });
 }
-export async function dbymiGetPostFull(postId) {
+async function dbymiGetPostFull(postId) {
     return fetch(`https://bbs-api.miyoushe.com/post/wapi/getPostFull?gids=5&read=1&post_id=${postId}`, {
         method: "GET",
         headers: { Referer: 'https://www.miyoushe.com', origin: 'https://www.miyoushe.com',
@@ -170,7 +170,7 @@ export async function dbymiGetPostFull(postId) {
         return null;
     });
 }
-export async function srmiGetNewsList(type, pageSize = 10) {
+async function srmiGetNewsList(type, pageSize = 10) {
     return fetch(`https://bbs-api-static.miyoushe.com/painter/wapi/getNewsList?gids=6&page_size=${pageSize}&type=${type}`, {
         method: "GET",
         headers: { Referer: 'https://www.miyoushe.com', origin: 'https://www.miyoushe.com',
@@ -187,7 +187,7 @@ export async function srmiGetNewsList(type, pageSize = 10) {
         return null;
     });
 }
-export async function srmiGetPostFull(postId) {
+async function srmiGetPostFull(postId) {
     return fetch(`https://bbs-api.miyoushe.com/post/wapi/getPostFull?gids=6&read=1&post_id=${postId}`, {
         method: "GET",
         headers: { Referer: 'https://www.miyoushe.com', origin: 'https://www.miyoushe.com',
@@ -204,7 +204,7 @@ export async function srmiGetPostFull(postId) {
         return null;
     });
 }
-export async function zzzmiGetNewsList(type, pageSize = 10) {
+async function zzzmiGetNewsList(type, pageSize = 10) {
     return fetch(`https://bbs-api-static.miyoushe.com/painter/wapi/getNewsList?gids=8&page_size=${pageSize}&type=${type}`, {
         method: "GET",
         headers: { Referer: 'https://www.miyoushe.com', origin: 'https://www.miyoushe.com',
@@ -221,7 +221,7 @@ export async function zzzmiGetNewsList(type, pageSize = 10) {
         return null;
     });
 }
-export async function zzzmiGetPostFull(postId) {
+async function zzzmiGetPostFull(postId) {
     return fetch(`https://bbs-api.miyoushe.com/post/wapi/getPostFull?gids=8&read=1&post_id=${postId}`, {
         method: "GET",
         headers: { Referer: 'https://www.miyoushe.com', origin: 'https://www.miyoushe.com',
@@ -239,3 +239,4 @@ export async function zzzmiGetPostFull(postId) {
     });
 }
 ;
+export { bbbmiGetNewsList, bbbmiGetPostFull, ysmiGetNewsList, ysmiGetPostFull, bbmiGetNewsList, bbmiGetPostFull, wdmiGetNewsList, wdmiGetPostFull, dbymiGetNewsList, dbymiGetPostFull, srmiGetNewsList, srmiGetPostFull, zzzmiGetNewsList, zzzmiGetPostFull };

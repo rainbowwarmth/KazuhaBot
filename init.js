@@ -5,7 +5,7 @@ import { Bot, config } from './lib/config/config.js';
 import database from './lib/core/database.js';
 import Task from './lib/core/schedule.js';
 import { client, ws } from './lib/core/link.js';
-import { loadGuildTree } from './lib/core/loadGuildTree.js';
+import loadGuildTree from './lib/core/loadGuildTree.js';
 export async function init() {
     logger.mark(`-------(≡^∇^≡)-------`);
     logger.mark(chalk.cyan(Bot.name + ' v' + Bot.version + '启动中...'));

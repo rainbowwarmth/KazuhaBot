@@ -17,7 +17,7 @@
     "loadGuild": false,
     "devEnv": "false",
     "render": {
-        "useExternalBrowser": true,
+        "useExternalBrowser": false,
         "host": "http://127.0.0.1:7005/puppeteer",
         "authorization": "123456",
         "timeout": 120

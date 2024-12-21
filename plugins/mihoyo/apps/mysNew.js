@@ -12,7 +12,7 @@ const gameIds = {
     6: '崩坏星穹铁道',
     8: '绝区零'
 };
-export async function newsContentBBS(msg) {
+async function newsContentBBS(msg) {
     let gid = 2;
     if (msg.content.includes("崩坏星穹铁道") || msg.content.includes("星铁")) {
         gid = 6; // 崩坏星穹铁道
@@ -79,7 +79,7 @@ export async function newsContentBBS(msg) {
         logger.error(err);
     });
 }
-export async function newsListBBS(msg) {
+async function newsListBBS(msg) {
     let gid = 2, gameName = "原神";
     if (msg.content.includes("崩坏星穹铁道") || msg.content.includes("星铁")) {
         gid = 6, gameName = "崩坏星穹铁道";
@@ -143,7 +143,7 @@ export async function newsListBBS(msg) {
         logger.error(err);
     });
 }
-export async function changePushTask(msg) {
+async function changePushTask(msg) {
     if (msg.messageType !== "GUILD")
         return true;
     let gid = 1;
@@ -203,7 +203,7 @@ export async function changePushTask(msg) {
     })
         .catch((err) => logger.error(err));
 }
-export async function detalData(data) {
+async function detalData(data) {
     var json;
     try {
         json = JSON.parse(data.post.content);
@@ -265,3 +265,4 @@ function getGamePrefix(gid) {
     };
     return gamePrefixes[gid] || "unknown";
 }
+export { newsContentBBS, newsListBBS, changePushTask, getGameName, getGamePrefix, detalData };
