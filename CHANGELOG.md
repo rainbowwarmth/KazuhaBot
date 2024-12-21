@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.5](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.5.4...v2.5.5) (2024-12-21)
+
+
+### Feature Improvements
+
+* logger放在全局 && 前台启动改为`node .` ([b1f33f2](https://github.com/rainbowwarmth/KazuhaBot/commit/b1f33f2d207ceea953601ba53292f6c1822fef1f))
+
 ## [2.5.4](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.5.3...v2.5.4) (2024-12-21)
 
 
