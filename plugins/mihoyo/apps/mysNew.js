@@ -1,4 +1,3 @@
-import logger from '../../../lib/logger/logger.js';
 import { redis } from '../../../lib/global/global.js';
 import { miGetNewsList, miGetPostFull } from '../../mihoyo/models/mysNew.js';
 import render from '../../../lib/render/render.js';

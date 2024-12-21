@@ -1,5 +1,4 @@
 import fs from "fs";
-import logger from '../../lib/logger/logger.js';
 async function helpimage(msg) {
     const markdown = fs.readFileSync('resources/markdown/HELP.md', 'utf-8');
     const { headings, emphasis } = extractContentFromMarkdown(markdown);

@@ -1,7 +1,6 @@
 import { redis } from '../../../lib/global/global.js';
 import { detalData } from '../../mihoyo/apps/mysNew.js';
 import { sendImage } from '../../../lib/core/IMessageEx.js';
-import logger from '../../../lib/logger/logger.js';
 import { bbbmiGetNewsList, bbbmiGetPostFull, bbmiGetNewsList, bbmiGetPostFull, dbymiGetNewsList, dbymiGetPostFull, srmiGetNewsList, srmiGetPostFull, wdmiGetNewsList, wdmiGetPostFull, ysmiGetNewsList, ysmiGetPostFull, zzzmiGetNewsList, zzzmiGetPostFull } from '../../mihoyo/models/mysApi.js';
 import render from '../../../lib/render/render.js';
 export async function bbbtaskPushNews() {

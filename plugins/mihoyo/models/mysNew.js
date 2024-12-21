@@ -1,5 +1,4 @@
 import fetch from "node-fetch";
-import logger from '../../../lib/logger/logger.js';
 async function miGetNewsList(gid, type, pageSize = 10) {
     return fetch(`https://bbs-api-static.miyoushe.com/painter/wapi/getNewsList?gids=${gid}&page_size=${pageSize}&type=${type}`, {
         method: "GET",

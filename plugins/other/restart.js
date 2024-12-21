@@ -1,6 +1,5 @@
 import cluster from 'cluster';
 import { exec } from 'child_process';
-import logger from '../../lib/logger/logger.js';
 // 执行命令的函数
 function execCommand(command) {
     return new Promise((resolve, reject) => {
