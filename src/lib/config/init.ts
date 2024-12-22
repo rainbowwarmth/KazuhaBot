@@ -1,11 +1,11 @@
 import chalk from 'chalk';
-import logger from '@src/lib/logger/logger';
-import initGlobals from '@src/lib/core/initGlobals';
+import logger from '@src/lib/config/logger';
+import initGlobals from '@src/lib/plugins/initGlobals';
 import { Bot, config } from '@src/lib/config/config';
-import database from '@src/lib/core/database';
 import Task from '@src/lib/core/schedule';
 import { client, ws } from '@src/lib/core/link';
 import loadGuildTree from '@src/lib/core/loadGuildTree';
+import database from '@src/lib/config/redis';
 
 export async function init() {
     logger.mark(`-------(≡^∇^≡)-------`);

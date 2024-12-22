@@ -1,4 +1,4 @@
-import { client } from "./link";
+import { client } from "@src/lib/core/link";
 
 async function loadGuildTree(init = false) {
     global.saveGuildsTree = [];

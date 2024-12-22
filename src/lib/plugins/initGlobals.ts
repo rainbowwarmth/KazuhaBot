@@ -2,7 +2,7 @@ import { pluginFolders } from "@src/lib/plugins/getPluginFolders";
 import * as fs from 'fs'
 import * as path from 'path'
 import { _path } from "@src/lib/global/global";
-import logger from "@src/lib/logger/logger";
+import logger from "@src/lib/config/logger";
 
 function loadPluginConfig(pluginName: string) {
     const configPath = path.join(_path, 'config', 'command', `${pluginName}.json`);

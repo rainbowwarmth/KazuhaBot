@@ -1,5 +1,5 @@
 import { redis } from "@src/lib/global/global";
-import logger from "@src/lib/logger/logger";
+import logger from "@src/lib/config/logger";
 
 async function database() {
     logger.info('初始化：正在连接数据库');

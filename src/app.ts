@@ -1,5 +1,5 @@
-import { initialize } from "@src/index";
-import logger from "@src/lib/logger/logger";
+import { initialize } from "@src/lib/index";
+import logger from "@src/lib/config/logger";
 import { Bot } from "@src/lib/config/config";
 import chalk from "chalk";
 

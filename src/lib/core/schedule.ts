@@ -1,5 +1,5 @@
 import schedule from 'node-schedule';
-import logger from '@src/lib/logger/logger';
+import logger from '@src/lib/config/logger';
 import { bbbtaskPushNews, bbtaskPushNews, dbytaskPushNews, srtaskPushNews, wdtaskPushNews, ystaskPushNews, zzztaskPushNews } from '@src/plugins/mihoyo/apps/PushNews';
 async function Task() {
     logger.info('初始化：正在创建定时任务');

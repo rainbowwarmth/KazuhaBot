@@ -1,5 +1,5 @@
 import { adminId, redis } from "@src/lib/global/global";
-import { IMember } from "@src/lib/global/qq-guild-bot";
+import { IMember } from "@src/lib/types/qq-guild-bot";
 import { client } from "./link";
 
 async function isAdmin(uid: string, iMember?: IMember, srcGuild?: string): Promise<boolean> {

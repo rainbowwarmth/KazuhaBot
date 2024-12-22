@@ -4,7 +4,7 @@ import FormData from 'form-data';
 import { Ark, Embed, IMember, IMessage, IUser, MessageAttachment } from "qq-bot-sdk";
 import { config } from "@src/lib/config/config";
 import { botStatus } from "@src/lib/global/global";
-import { client } from "./link";
+import { client } from "@src/lib/core/link";
 
 export class IMessageEx implements IMessage {
     id: string;

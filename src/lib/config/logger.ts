@@ -1,5 +1,6 @@
 import log4js from "log4js";
 import { _path } from "@src/lib/global/global"
+import { config } from "../config/config";
 
 const logger = log4js.configure({
     appenders: {
@@ -24,7 +25,7 @@ const logger = log4js.configure({
     categories: {
         default: {
             appenders: ["console"],
-            level: "all",
+            level: config.log_level,
             enableCallStack: true
         },
         error: { 
