@@ -30,8 +30,8 @@
     "@types/node-fetch": "^2.6.2",
     "@types/node-schedule": "^2.1.0",
     "@types/ws": "^8.5.12",
-    "tsx": "^4.16.2",
     "tsc-alias": "^1.8.10",
+    "tsx": "^4.16.2",
     "typescript": "^5.5.4"
   },
   "dependencies": {
@@ -46,6 +46,7 @@
     "qq-bot-sdk": "^1.9.1",
     "redis": "^4.2.0",
     "resty-client": "^0.0.5",
+    "rimraf": "^6.0.1",
     "sharp": "^0.33.5"
   },
   "publishConfig": {
