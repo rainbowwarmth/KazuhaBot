@@ -19,10 +19,6 @@
     "log": "pm2 logs --lines 400 KazuhaBot",
     "init": "node init.js"
   },
-  "bin": {
-    "kazuha-bot": "./app.js",
-    "init": "./lib/core/init.js"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rainbowwarmth/KazuhaBot"
