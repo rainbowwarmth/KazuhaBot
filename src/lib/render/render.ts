@@ -113,12 +113,12 @@ async function doRender(renderData: Render): Promise<string | null>{
             if (contentType && contentType.includes('image')) {
                 const buffer = Buffer.from(await (response as Response).arrayBuffer()); // 获取图像数据
                 fs.writeFileSync(savePic, buffer); // 保存图像
-                logger.info(`外部浏览器渲染成功，保存路径：${savePic}`);
+                logger.debug(`外部浏览器渲染成功，保存路径：${savePic}`);
             } else {
                 // 如果不是图像数据，则处理 JSON 响应
                 const jsonResponse: any = await (response as Response).json();
                 if (jsonResponse.success && jsonResponse.screenshotPath) {
-                    logger.info(`外部浏览器渲染成功: ${jsonResponse.screenshotPath}`);
+                    logger.debug(`外部浏览器渲染成功: ${jsonResponse.screenshotPath}`);
                     fs.renameSync(jsonResponse.screenshotPath, savePic);  // 直接覆盖保存图片
                 } else {
                     logger.error("外部浏览器渲染失败，未返回截图路径");
@@ -175,7 +175,7 @@ async function browserInit() {
     logger.mark("浏览器启动中");
 
     if (config.render.useExternalBrowser) {
-        logger.info("使用外部浏览器启动");
+        logger.debug("使用外部浏览器启动");
         try {
             // 启动外部渲染器，传递启动命令
             const response = await fetchTimeout(config.render.host, {
@@ -190,7 +190,7 @@ async function browserInit() {
             // 假设外部渲染器返回一个标识字段
             const jsonResponse = await (response as Response).json();
             if (jsonResponse && jsonResponse.success && jsonResponse.browserId) {
-                logger.info("外部浏览器启动成功，Browser ID: " + jsonResponse.browserId);
+                logger.debug("外部浏览器启动成功，Browser ID: " + jsonResponse.browserId);
                 global.browser = jsonResponse;  // 这里只是一个示例，根据实际返回值调整
             } else {
                 logger.error("外部浏览器返回的不是预期的浏览器实例标识");
@@ -216,7 +216,7 @@ async function browserInit() {
             });
             if (_browser && typeof _browser.newPage === 'function') {
                 global.browser = _browser;
-                logger.info("puppeteer启动成功");
+                logger.debug("puppeteer启动成功");
             } else {
                 logger.error("启动的浏览器实例无效");
             }

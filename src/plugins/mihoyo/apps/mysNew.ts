@@ -18,6 +18,7 @@ const gameIds: { [key: number]: string } = {
 
 
 async function newsContentBBS(msg: IMessageEx) {
+    logger.mark(`[${msg.guild_name}-${msg.channel_name}(${msg.guild_id}-${msg.channel_id}), ${msg.author.username}(${msg.author.id})][${msg.content}]`);
     let gid = 2
 
     if (msg.content.includes("崩坏星穹铁道") || msg.content.includes("星铁")) {
@@ -77,13 +78,14 @@ async function newsContentBBS(msg: IMessageEx) {
         }
     }).then((savePath: any) => {
         if (savePath) msg.sendMsgEx({ content: data.post.subject, imagePath: savePath });
-        logger.mark(chalk.blueBright(`[${gameIds[gid]}公告] newsContentBBS/mysNew.ts`));
+        logger.mark(chalk.blueBright(`[${gameIds[gid]}公告] newsContentBBS/mysNew.js`));
     }).catch((err: any) => {
         logger.error(err);
     });
 }
 
 async function newsListBBS(msg: IMessageEx) {
+    logger.mark(`[${msg.guild_name}-${msg.channel_name}(${msg.guild_id}-${msg.channel_id}), ${msg.author.username}(${msg.author.id})][${msg.content}]`);
     let gid = 2, gameName = "原神"
 
     if (msg.content.includes("崩坏星穹铁道") || msg.content.includes("星铁")) {
@@ -142,13 +144,14 @@ async function newsListBBS(msg: IMessageEx) {
         }
     }).then((savePath: any) => {
         if (savePath) msg.sendMsgEx({ imagePath: savePath });
-        logger.mark(chalk.blueBright(`[${gameName}${typeName}列表] newListBBS/mysNew.ts`));
+        logger.mark(chalk.blueBright(`[${gameName}${typeName}列表] newListBBS/mysNew.js`));
     }).catch((err: any) => {
         logger.error(err);
     });
 }
 
 async function changePushTask(msg: IMessageEx) {
+    logger.mark(`[${msg.guild_name}-${msg.channel_name}(${msg.guild_id}-${msg.channel_id}), ${msg.author.username}(${msg.author.id})][${msg.content}]`);
     if (msg.messageType !== "GUILD") return true;
     let gid = 1;
     if (msg.content.includes("崩坏星穹铁道") || msg.content.includes("星铁")) {
@@ -206,8 +209,8 @@ async function changePushTask(msg: IMessageEx) {
             // 发送状态信息
             msg.sendMsgEx({ content: statusMessage });
             const loggerMessage = value 
-            ? `[${gameName}开启公告推送] changePushTask/mysNew.ts` 
-            : `[${gameName}关闭公告推送] changePushTask/mysNew.ts`;
+            ? `[${gameName}开启公告推送] changePushTask/mysNew.js` 
+            : `[${gameName}关闭公告推送] changePushTask/mysNew.js`;
 
             logger.mark(loggerMessage)
         })
