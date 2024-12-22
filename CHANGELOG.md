@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.6](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.5.5...v2.5.6) (2024-12-22)
+
+
+### Feature Improvements
+
+* 日志 ([e82b584](https://github.com/rainbowwarmth/KazuhaBot/commit/e82b58431ad1f36a0990f42889a5f82642a0a54f))
+
 ## [2.5.5](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.5.4...v2.5.5) (2024-12-21)
 
 
