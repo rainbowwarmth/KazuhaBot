@@ -1,4 +1,4 @@
-import fs from 'fs'; 
+import fs from 'fs';  
 import path from 'path';
 import { execSync } from 'child_process';
 import { fileURLToPath } from 'url';
@@ -94,7 +94,6 @@ if (fs.existsSync(packageJsonPath)) {
   console.log("未找到 package.json 文件，无法复制");
 }
 
-
 // 复制 config 文件夹
 const configSourceDir = path.join(__dirname, 'config');
 const configTargetDir = path.join(__dirname, 'dist', 'config');
@@ -108,12 +107,10 @@ const pluginPaths = fs.readdirSync(pluginsDir).filter((file) => {
   return fs.statSync(filePath).isDirectory(); // 只筛选目录
 });
 
-// 取消排除插件文件夹逻辑，包含所有插件文件夹
 for (const plugin of pluginPaths) {
   const pluginPath = path.join(pluginsDir, plugin); // 插件的路径
   const pluginDistPath = path.join(distPluginsDir, plugin); // 目标路径
 
-  // 如果插件包内存在 resources 文件夹，则复制
   const pluginResourcesDir = path.join(pluginPath, 'resources');
   if (fs.existsSync(pluginResourcesDir)) {
     const pluginDistResourcesDir = path.join(pluginDistPath, 'resources');
@@ -121,7 +118,6 @@ for (const plugin of pluginPaths) {
     console.log(`已复制插件 ${plugin} 的 resources 文件夹`);
   }
 
-  // 如果插件包内存在 config 文件夹，则复制
   const pluginConfigDir = path.join(pluginPath, 'config');
   if (fs.existsSync(pluginConfigDir)) {
     const pluginDistConfigDir = path.join(pluginDistPath, 'config');
@@ -130,26 +126,4 @@ for (const plugin of pluginPaths) {
   }
 }
 
-// 删除 dist/src 目录的函数
-function deleteDir(dir) {
-  if (!fs.existsSync(dir)) {
-    console.log(`目录不存在: ${dir}`);
-    return;
-  }
-
-  const entries = fs.readdirSync(dir, { withFileTypes: true });
-  for (let entry of entries) {
-    const fullPath = path.join(dir, entry.name);
-    if (entry.isDirectory()) {
-      deleteDir(fullPath);  // 递归删除子目录
-    } else {
-      fs.unlinkSync(fullPath);  // 删除文件
-    }
-  }
-  fs.rmdirSync(dir);  // 删除空目录
-  console.log(`已删除目录: ${dir}`);
-}
-
-// 删除 dist/src 目录（如果存在）
-const srcDir = path.join(__dirname, 'dist', 'src');
-deleteDir(srcDir);
+console.log("所有插件资源和配置已复制完毕！");
