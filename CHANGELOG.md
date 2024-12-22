@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.5.7](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.5.6...v2.5.7) (2024-12-22)
+
+
+### Feature Improvements
+
+* 代码目录调整 ([e1bd673](https://github.com/rainbowwarmth/KazuhaBot/commit/e1bd673f5c635fb1facf84128ead7bab25a9d6d5))
+
+
+### Tests
+
+* npx ([de04fe6](https://github.com/rainbowwarmth/KazuhaBot/commit/de04fe604952b90c48873fc84df29e398130e900))
+
 ## [2.5.6](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.5.5...v2.5.6) (2024-12-22)
 
 
