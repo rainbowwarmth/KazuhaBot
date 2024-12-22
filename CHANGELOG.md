@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.8](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.5.7...v2.5.8) (2024-12-22)
+
+
+### Bug Fixes
+
+* 优化逻辑处理 ([4ead9ab](https://github.com/rainbowwarmth/KazuhaBot/commit/4ead9abcfb7b7e1daf13de4722a5cd3936cbc053))
+
 ## [2.5.7](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.5.6...v2.5.7) (2024-12-22)
 
 
