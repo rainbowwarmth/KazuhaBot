@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.16](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.5.15...v2.5.16) (2024-12-28)
+
+
+### Bug Fixes
+
+* 插件包复制问题 ([e7b0694](https://github.com/rainbowwarmth/KazuhaBot/commit/e7b069485dd8bab3b0a2218df23c3b339f8a5046))
+
 ## [2.5.15](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.5.14...v2.5.15) (2024-12-28)
 
 
