@@ -1,5 +1,5 @@
 import { IMessageEx } from "@src/lib/core/IMessageEx";
-import {botStatus, redis} from "@src/lib/global/global";
+import {botStatus, redis} from "@lib/global/global";
 
 async function status(msg: IMessageEx) {
     return msg.sendMsgEx({

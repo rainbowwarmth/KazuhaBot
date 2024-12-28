@@ -54,8 +54,7 @@ async function execute(msg: IMessageEx) {
         const opt = await findOpts(msg);
         if (!opt || opt.directory === "err") return;
 
-        const isSpecialDir = ["system", "example", "other"].includes(opt.directory);
-        const pluginFilePath = path.join(_path, "plugins", opt.directory, isSpecialDir ? `${opt.file}.js` : "apps", `${opt.file}.js`);
+        const pluginFilePath = path.join(_path, "plugins", opt.directory, "apps", `${opt.file}.js`);
         const pluginURL = pathToFileURL(pluginFilePath).href;
 
         logger.debug(`插件路径: ${pluginURL}`);
