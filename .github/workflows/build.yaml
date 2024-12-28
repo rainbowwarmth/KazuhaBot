@@ -3,7 +3,7 @@ name: Auto Build and Deploy to Build Branch
 on:
   push:
     branches:
-      - main  # 或你想要触发构建的主要分支
+      - 'main'  # 只监听 main 分支的提交
 
 jobs:
   build:
@@ -25,11 +25,6 @@ jobs:
         run: |
           npm install
 
-      # 使用 Release Please 自动更新版本号
-      - name: Generate new release version
-        run: |
-          npx release-please release-pr --repo-url https://github.com/rainbowwarmth/KazuhaBot --bump-minor  # 使用正确的组织和仓库名称
-
       # 运行构建
       - name: Run build
         run: |
@@ -40,7 +35,7 @@ jobs:
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-          git checkout -b build
+          git checkout -b build || git checkout build  # 如果 build 分支不存在则创建
           git add .
           git commit -m "Deploy build to build branch"
           git push --force origin build
