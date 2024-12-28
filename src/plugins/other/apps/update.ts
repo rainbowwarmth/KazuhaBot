@@ -1,8 +1,8 @@
 import { promises as fs } from 'fs';
 import { join } from 'path';
 import { IMessageEx } from '@src/lib/core/IMessageEx';
-import { restartBot } from '@plugin/other/restart';
-import { execCommand } from '@plugin/other/restart'
+import { restartBot } from '@plugin/other/apps/restart';
+import { execCommand } from '@plugin/other/apps/restart'
 
 async function update(msg: IMessageEx) {
     const projectRoot = process.cwd();
