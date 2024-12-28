@@ -10,7 +10,7 @@
   },
   "scripts": {
     ".": "node app.js",
-    "build": "tsc && tsc-alias && node init.js",
+    "build": "tsc && tsc-alias",
     "start": "pm2 startOrRestart ./config/pm2/pm2.yaml",
     "stop": "pm2 stop ./config/pm2/pm2.yaml",
     "delete": "pm2 delete ./config/pm2/pm2.yaml",
@@ -25,7 +25,7 @@
   "author": "feilongproject,rainbowwarmth",
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^22.9.0",
+    "@types/node": "^22.10.2",
     "@types/node-fetch": "^2.6.2",
     "@types/node-schedule": "^2.1.0",
     "@types/ws": "^8.5.12",
