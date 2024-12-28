@@ -1,6 +1,6 @@
 {
   "name": "kazuha-bot",
-  "version": "2.5.13",
+  "version": "2.5.14",
   "description": "QQ频道米游社推送Bot",
   "main": "app.js",
   "type": "module",
