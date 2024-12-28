@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.5.14](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.5.13...v2.5.14) (2024-12-28)
+
+
+### Bug Fixes
+
+* tsc编译配置 ([b8dc718](https://github.com/rainbowwarmth/KazuhaBot/commit/b8dc718601a87b1e5d377e0fa84f3c94ac4b5540))
+* 优化 ([56a338a](https://github.com/rainbowwarmth/KazuhaBot/commit/56a338ab7d8620f06f9a7334d73cd395d6d0bd2b))
+* 优化 ([bd647c9](https://github.com/rainbowwarmth/KazuhaBot/commit/bd647c9cfa1f99b7f5cb8958acb3dd43dfb97870))
+
 ## [2.5.13](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.5.12...v2.5.13) (2024-12-28)
 
 
