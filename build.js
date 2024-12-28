@@ -6,11 +6,9 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Step 2: Execute TypeScript compilation and handle errors
+// 执行 TypeScript 编译并捕获错误
 try {
-  console.log("Running TypeScript compiler...");
   execSync("tsc --project tsconfig.json && tsc-alias -p tsconfig.json", { stdio: 'inherit' });
-  console.log("TypeScript compilation completed successfully.");
 } catch (error) {
   console.error("TypeScript 编译过程中发生错误:", error.message);
   process.exit(1);
