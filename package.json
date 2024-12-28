@@ -2,7 +2,6 @@
   "name": "kazuha-bot",
   "version": "2.5.9",
   "description": "QQ频道米游社推送Bot",
-  "private": false,
   "main": "app.js",
   "type": "module",
   "homepage": "https://github.com/rainbowwarmth/KazuhaBot",
