@@ -33,30 +33,20 @@ npm install pnpm -g
 
 ## 安装项目
 
-### 使用PNPM安装（优先推荐）
-
-请先创建一个空目录，然后在 你创建的空目录 根目录夹打开终端，运行下述指令之一
-
-```
-// 使用PNPM
-pnpm i kazuha-bot && node node_modules\kazuha-bot\init.js
-
-// 使用PNPM镜像(网络不好首选)
-pnpm i kazuha-bot --registry=https://registry.npmmirror.com && node node_modules\kazuha-bot\init.js
-```
-
-### 使用Git安装（第二推荐）
+### 使用Git安装
 >
 > 请根据网络情况选择Github安装或Gitee安装
 
 ```
 // 使用gitee
-git clone --depth=1 https://gitee.com/rainbowwarmth/KazuhaBot -b build
-pnpm install -P
+git clone --depth=1 https://gitee.com/rainbowwarmth/KazuhaBot
+npm run build
+npm run init
 
 // 使用github
-git clone --depth=1 https://github.com/rainbowwarmth/KazuhaBot -b build
-pnpm install -P
+git clone --depth=1 https://github.com/rainbowwarmth/KazuhaBot
+npm run build
+npm run init
 ```
 
 ---
