@@ -6,15 +6,6 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-try {
-  console.log("运行 pnpm install 安装依赖...");
-  execSync("pnpm install", { stdio: 'inherit' });
-  console.log("依赖安装完成。");
-} catch (error) {
-  console.error("依赖安装错误:", error.message);
-  process.exit(1);
-}
-
 // Step 2: Execute TypeScript compilation and handle errors
 try {
   console.log("Running TypeScript compiler...");
