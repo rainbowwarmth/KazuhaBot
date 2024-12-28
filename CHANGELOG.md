@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.10](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.5.9...v2.5.10) (2024-12-28)
+
+
+### Bug Fixes
+
+* 没有触发发版 ([e413959](https://github.com/rainbowwarmth/KazuhaBot/commit/e41395903dd3ce7b825c78fa9ef8e4b039bb3079))
+
 ## [2.5.9](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.5.8...v2.5.9) (2024-12-22)
 
 
