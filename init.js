@@ -9,7 +9,7 @@ const __dirname = path.dirname(__filename);
 const currentDir = process.cwd();
 
 // 定义源目录（node_modules/kazuha-bot/dist）和目标目录（当前工作目录）
-const sourceDir = path.join(currentDir, 'node_modules', 'kazuha-bot', 'dist');
+const sourceDir = path.join(currentDir, 'dist');
 const targetDir = currentDir; // 目标目录为当前工作目录
 
 // 检查并删除目标目录下的指定文件或文件夹
@@ -65,15 +65,10 @@ function installDependencies() {
 
 // 删除目标目录中的指定文件和文件夹
 const directoriesToDelete = [
-  'lib', 'plugins', 'resources', 'config/pm2', 'config/config.example.json'
+ 'src', 'dist'
 ];
 
-directoriesToDelete.forEach((dir) => {
-  const filePath = path.join(targetDir, dir);
-  deleteIfExists(filePath);
-});
-
-// 检查并复制 dist 目录
+// 先检查并复制 dist 目录的内容
 if (fs.existsSync(sourceDir)) {
   // 执行复制
   copyDir(sourceDir, targetDir);
@@ -81,6 +76,12 @@ if (fs.existsSync(sourceDir)) {
 } else {
   console.error('未找到 “dist” 目录，无法复制!');
 }
+
+// 删除目标目录中的指定文件和文件夹（src 和 dist 目录会被删除）
+directoriesToDelete.forEach((dir) => {
+  const filePath = path.join(targetDir, dir);
+  deleteIfExists(filePath);
+});
 
 // 执行安装依赖
 installDependencies();

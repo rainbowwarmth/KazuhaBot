@@ -10,7 +10,7 @@
   },
   "scripts": {
     ".": "node app.js",
-    "build": "tsc && tsc-alias",
+    "build": "tsc && tsc-alias && node init.js",
     "start": "pm2 startOrRestart ./config/pm2/pm2.yaml",
     "stop": "pm2 stop ./config/pm2/pm2.yaml",
     "delete": "pm2 delete ./config/pm2/pm2.yaml",
