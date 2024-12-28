@@ -1,0 +1,46 @@
+name: Auto Build and Deploy to Build Branch
+
+on:
+  push:
+    branches:
+      - main  # 或你想要触发构建的主要分支
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 检出代码
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 设置 Node.js 环境
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'  # 设置 Node.js 版本
+
+      # 安装依赖
+      - name: Install dependencies
+        run: |
+          npm install
+
+      # 使用 Release Please 自动更新版本号
+      - name: Generate new release version
+        run: |
+          npx release-please release-pr --repo-url https://github.com/<your-org>/<your-repo> --bump-minor  # 使用正确的组织和仓库名称
+
+      # 运行构建
+      - name: Run build
+        run: |
+          npm run build
+
+      # 发布构建产物到 build 分支
+      - name: Push build to build branch
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git checkout -b build
+          git add .
+          git commit -m "Deploy build to build branch"
+          git push --force origin build

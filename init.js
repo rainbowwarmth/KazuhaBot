@@ -27,6 +27,11 @@ function deleteIfExists(filePath) {
 
 // 递归复制目录函数
 function copyDir(src, dest) {
+  if (!fs.existsSync(src)) {
+    console.error(`源目录不存在: ${src}`);
+    return;
+  }
+
   // 创建目标目录
   fs.mkdirSync(dest, { recursive: true });
   const entries = fs.readdirSync(src, { withFileTypes: true });
@@ -68,9 +73,14 @@ directoriesToDelete.forEach((dir) => {
   deleteIfExists(filePath);
 });
 
-// 执行复制
-copyDir(sourceDir, targetDir);
-console.log('“dist” 目录的内容已复制到项目根目录下!');
+// 检查并复制 dist 目录
+if (fs.existsSync(sourceDir)) {
+  // 执行复制
+  copyDir(sourceDir, targetDir);
+  console.log('“dist” 目录的内容已复制到项目根目录下!');
+} else {
+  console.error('未找到 “dist” 目录，无法复制!');
+}
 
 // 执行安装依赖
 installDependencies();

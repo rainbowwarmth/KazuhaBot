@@ -1,4 +1,4 @@
-import fs from 'fs';   
+import fs from 'fs';  
 import path from 'path';
 import { execSync } from 'child_process';
 import { fileURLToPath } from 'url';
@@ -6,7 +6,6 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Step 1: Run pnpm install to install dependencies
 try {
   console.log("运行 pnpm install 安装依赖...");
   execSync("pnpm install", { stdio: 'inherit' });
@@ -27,7 +26,7 @@ try {
 }
 
 /**
- * 给 lib 目录中的 .js 文件添加 .js 后缀到 import 路径
+ * 给 dist 目录中的 .js 文件添加 .js 后缀到 import 路径
  * @param {string} dir 要处理的目录路径
  */
 function addJsSuffixToImports(dir) {
@@ -64,18 +63,14 @@ function addJsSuffixToImports(dir) {
   }
 }
 
-// 获取 lib 目录
-const libDir = path.join(__dirname, "lib");
+// 获取 dist 目录
+const distDir = path.join(__dirname, "dist");
 
-// 开始处理 lib 目录下的文件
-addJsSuffixToImports(libDir);
+// 开始处理 dist 目录下的文件
+addJsSuffixToImports(distDir);
 console.log("所有文件已处理完毕！");
 
-/**
- * 复制文件夹的函数
- * @param {string} sourceDir 源目录
- * @param {string} targetDir 目标目录
- */
+// 复制文件夹的函数
 function copyDir(sourceDir, targetDir) {
   if (!fs.existsSync(targetDir)) {
     fs.mkdirSync(targetDir, { recursive: true });
@@ -97,12 +92,11 @@ function copyDir(sourceDir, targetDir) {
 
 // 复制资源文件夹
 const sourceDir = path.join(__dirname, 'resources');
-const targetDir = path.join(__dirname, 'lib', 'resources');
+const targetDir = path.join(__dirname, 'dist', 'resources');
 copyDir(sourceDir, targetDir);
 
-// 复制 package.json
 const packageJsonPath = path.join(__dirname, 'package.json');
-const distPackageJsonPath = path.join(__dirname, 'lib', 'package.json');
+const distPackageJsonPath = path.join(__dirname, 'dist', 'package.json');
 
 if (fs.existsSync(packageJsonPath)) {
   fs.copyFileSync(packageJsonPath, distPackageJsonPath);
@@ -113,12 +107,12 @@ if (fs.existsSync(packageJsonPath)) {
 
 // 复制 config 文件夹
 const configSourceDir = path.join(__dirname, 'config');
-const configTargetDir = path.join(__dirname, 'lib', 'config');
+const configTargetDir = path.join(__dirname, 'dist', 'config');
 copyDir(configSourceDir, configTargetDir);
 
 // 复制插件目录内的 resources 和 config 文件夹
 const pluginsDir = path.join(__dirname, 'src/plugins');
-const libPluginsDir = path.join(__dirname, 'lib/plugins');
+const distPluginsDir = path.join(__dirname, 'dist/plugins');
 const pluginPaths = fs.readdirSync(pluginsDir).filter((file) => {
   const filePath = path.join(pluginsDir, file);
   return fs.statSync(filePath).isDirectory(); // 只筛选目录
@@ -126,19 +120,19 @@ const pluginPaths = fs.readdirSync(pluginsDir).filter((file) => {
 
 for (const plugin of pluginPaths) {
   const pluginPath = path.join(pluginsDir, plugin); // 插件的路径
-  const pluginLibPath = path.join(libPluginsDir, plugin); // 目标路径
+  const pluginDistPath = path.join(distPluginsDir, plugin); // 目标路径
 
   const pluginResourcesDir = path.join(pluginPath, 'resources');
   if (fs.existsSync(pluginResourcesDir)) {
-    const pluginLibResourcesDir = path.join(pluginLibPath, 'resources');
-    copyDir(pluginResourcesDir, pluginLibResourcesDir);
+    const pluginDistResourcesDir = path.join(pluginDistPath, 'resources');
+    copyDir(pluginResourcesDir, pluginDistResourcesDir);
     console.log(`已复制插件 ${plugin} 的 resources 文件夹`);
   }
 
   const pluginConfigDir = path.join(pluginPath, 'config');
   if (fs.existsSync(pluginConfigDir)) {
-    const pluginLibConfigDir = path.join(pluginLibPath, 'config');
-    copyDir(pluginConfigDir, pluginLibConfigDir);
+    const pluginDistConfigDir = path.join(pluginDistPath, 'config');
+    copyDir(pluginConfigDir, pluginDistConfigDir);
     console.log(`已复制插件 ${plugin} 的 config 文件夹`);
   }
 }
