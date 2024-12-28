@@ -5,14 +5,12 @@ import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-// 获取当前工作目录
 const currentDir = process.cwd();
-
-// 定义源目录（node_modules/kazuha-bot/dist）和目标目录（当前工作目录）
 const sourceDir = path.join(currentDir, 'dist');
-const targetDir = currentDir; // 目标目录为当前工作目录
+const targetDir = currentDir; // 目标目录为项目根目录
+const pluginsDir = path.join(currentDir, 'src', 'plugins'); // 插件目录路径
 
-// 检查并删除目标目录下的指定文件或文件夹
+// 检查并删除目标目录中的指定文件或文件夹
 function deleteIfExists(filePath) {
   if (fs.existsSync(filePath)) {
     if (fs.lstatSync(filePath).isDirectory()) {
@@ -32,7 +30,6 @@ function copyDir(src, dest) {
     return;
   }
 
-  // 创建目标目录
   fs.mkdirSync(dest, { recursive: true });
   const entries = fs.readdirSync(src, { withFileTypes: true });
 
@@ -42,11 +39,9 @@ function copyDir(src, dest) {
     const destPath = path.join(dest, entry.name);
 
     if (entry.isDirectory()) {
-      // 如果是目录，递归调用复制函数
-      copyDir(srcPath, destPath);
+      copyDir(srcPath, destPath); // 如果是目录，递归复制
     } else {
-      // 如果是文件，直接复制
-      fs.copyFileSync(srcPath, destPath);
+      fs.copyFileSync(srcPath, destPath); // 如果是文件，直接复制
     }
   }
 }
@@ -55,7 +50,6 @@ function copyDir(src, dest) {
 function installDependencies() {
   try {
     console.log('运行 pnpm install...');
-    // Ensure pnpm install runs in the target directory (which is set to the root)
     execSync('pnpm install --registry=https://registry.npmmirror.com', { stdio: 'inherit', cwd: currentDir });
     console.log('依赖项安装成功!');
   } catch (error) {
@@ -63,21 +57,46 @@ function installDependencies() {
   }
 }
 
-// 删除目标目录中的指定文件和文件夹
-const directoriesToDelete = [
- 'src', 'dist'
-];
+// 删除目标目录中的指定文件和文件夹（src 和 dist 目录会被删除）
+const directoriesToDelete = ['src', 'dist'];
 
-// 先检查并复制 dist 目录的内容
 if (fs.existsSync(sourceDir)) {
-  // 执行复制
-  copyDir(sourceDir, targetDir);
+  copyDir(sourceDir, targetDir); // 先复制 dist 目录到根目录
   console.log('“dist” 目录的内容已复制到项目根目录下!');
 } else {
   console.error('未找到 “dist” 目录，无法复制!');
 }
 
-// 删除目标目录中的指定文件和文件夹（src 和 dist 目录会被删除）
+// 复制插件包中的 config 和 resources 目录到根目录 plugins/<plugin_name> 下
+const pluginDirs = fs.readdirSync(pluginsDir, { withFileTypes: true }).filter((dir) => dir.isDirectory());
+
+pluginDirs.forEach((pluginDir) => {
+  const pluginSrcDir = path.join(pluginsDir, pluginDir.name); // 插件包的源目录
+  const pluginTargetDir = path.join(targetDir, 'plugins', pluginDir.name); // 插件包的目标目录
+
+  // 复制 config 目录
+  const configDir = path.join(pluginSrcDir, 'config');
+  if (fs.existsSync(configDir)) {
+    fs.mkdirSync(pluginTargetDir, { recursive: true }); // 创建插件包目标目录
+    const pluginConfigDir = path.join(pluginTargetDir, 'config');
+    copyDir(configDir, pluginConfigDir); // 执行复制
+    console.log(`插件 ${pluginDir.name} 的 config 目录已复制到根目录下 plugins/${pluginDir.name}`);
+  } else {
+    console.error(`未找到插件 ${pluginDir.name} 的 config 目录!`);
+  }
+
+  // 复制 resources 目录
+  const resourcesDir = path.join(pluginSrcDir, 'resources');
+  if (fs.existsSync(resourcesDir)) {
+    const pluginResourcesDir = path.join(pluginTargetDir, 'resources');
+    copyDir(resourcesDir, pluginResourcesDir); // 执行复制
+    console.log(`插件 ${pluginDir.name} 的 resources 目录已复制到根目录下 plugins/${pluginDir.name}`);
+  } else {
+    console.error(`未找到插件 ${pluginDir.name} 的 resources 目录!`);
+  }
+});
+
+// 删除目标目录中的指定文件和文件夹
 directoriesToDelete.forEach((dir) => {
   const filePath = path.join(targetDir, dir);
   deleteIfExists(filePath);
