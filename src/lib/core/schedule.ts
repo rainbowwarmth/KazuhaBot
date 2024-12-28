@@ -1,6 +1,6 @@
 import schedule from 'node-schedule';
 import logger from '@src/lib/config/logger';
-import { bbbtaskPushNews, bbtaskPushNews, dbytaskPushNews, srtaskPushNews, wdtaskPushNews, ystaskPushNews, zzztaskPushNews } from '@src/plugins/mihoyo/apps/PushNews';
+import { bbbtaskPushNews, bbtaskPushNews, dbytaskPushNews, srtaskPushNews, wdtaskPushNews, ystaskPushNews, zzztaskPushNews } from '@src/plugins/mihoyo/apps/mysNew';
 async function Task() {
     logger.info('初始化：正在创建定时任务');
     ////崩坏2公告推送

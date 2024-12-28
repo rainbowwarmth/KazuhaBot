@@ -13,4 +13,4 @@ function getPluginFolders(): string[] {
 
 const pluginFolders = getPluginFolders();
 
-export { pluginFolders }
+export default pluginFolders;

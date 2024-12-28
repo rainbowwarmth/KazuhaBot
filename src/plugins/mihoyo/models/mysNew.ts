@@ -1,37 +1,90 @@
 import fetch from "node-fetch";
 import { MihoyoAPI } from "@src/lib/core/type";
 
-async function miGetNewsList(gid: number, type: number, pageSize = 10) {
-    return fetch(`https://bbs-api-static.miyoushe.com/painter/wapi/getNewsList?gids=${gid}&page_size=${pageSize}&type=${type}`, {
-        method: "GET",
-        headers: { Referer: 'https://www.miyoushe.com', origin: 'https://www.miyoushe.com',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36 Edg/130.0.0.0' }
-    }).then(res => {
-        return res.json();
-    }).then((json: MihoyoAPI<PostList>) => {
+const headers = {
+    Referer: 'https://www.miyoushe.com',
+    origin: 'https://www.miyoushe.com',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36 Edg/130.0.0.0'
+};
+
+async function fetchMihoyoAPI<T>(url: string): Promise<T | null> {
+    try {
+        const res = await fetch(url, { method: "GET", headers });
+        const json: MihoyoAPI<T> = await res.json();
         if (json.data) return json.data;
         else throw new Error("not found data");
-    }).catch(err => {
+    } catch (err) {
         logger.error(err);
         return null;
-    });
+    }
+}
+
+async function miGetNewsList(gid: number, type: number, pageSize = 10) {
+    const url = `https://bbs-api-static.miyoushe.com/painter/wapi/getNewsList?gids=${gid}&page_size=${pageSize}&type=${type}`;
+    return fetchMihoyoAPI<PostList>(url);
 }
 
 async function miGetPostFull(gid: number, postId: string) {
-    return fetch(`https://bbs-api.miyoushe.com/post/wapi/getPostFull?gids=${gid}&read=1&post_id=${postId}`, {
-        method: "GET",
-        headers: { Referer: 'https://www.miyoushe.com', origin: 'https://www.miyoushe.com',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36 Edg/130.0.0.0' }
-    }).then(res => {
-        return res.json();
-    }).then((json: MihoyoAPI<PostFull>) => {
-        if (json.data) return json.data;
-        else throw new Error("not found data");
-    }).catch(err => {
-        logger.error(err);
-        return null;
-    });
+    const url = `https://bbs-api.miyoushe.com/post/wapi/getPostFull?gids=${gid}&read=1&post_id=${postId}`;
+    return fetchMihoyoAPI<PostFull>(url);
 }
+
+async function bbbmiGetNewsList(type: number, pageSize = 10) {
+    return miGetNewsList(1, type, pageSize);
+}
+
+async function bbbmiGetPostFull(postId: string) {
+    return miGetPostFull(1, postId);
+}
+
+async function ysmiGetNewsList(type: number, pageSize = 10) {
+    return miGetNewsList(2, type, pageSize);
+}
+
+async function ysmiGetPostFull(postId: string) {
+    return miGetPostFull(2, postId);
+}
+
+async function bbmiGetNewsList(type: number, pageSize = 10) {
+    return miGetNewsList(3, type, pageSize);
+}
+
+async function bbmiGetPostFull(postId: string) {
+    return miGetPostFull(3, postId);
+}
+
+async function wdmiGetNewsList(type: number, pageSize = 10) {
+    return miGetNewsList(4, type, pageSize);
+}
+
+async function wdmiGetPostFull(postId: string) {
+    return miGetPostFull(4, postId);
+}
+
+async function dbymiGetNewsList(type: number, pageSize = 10) {
+    return miGetNewsList(5, type, pageSize);
+}
+
+async function dbymiGetPostFull(postId: string) {
+    return miGetPostFull(5, postId);
+}
+
+async function srmiGetNewsList(type: number, pageSize = 10) {
+    return miGetNewsList(6, type, pageSize);
+}
+
+async function srmiGetPostFull(postId: string) {
+    return miGetPostFull(6, postId);
+}
+
+async function zzzmiGetNewsList(type: number, pageSize = 10) {
+    return miGetNewsList(8, type, pageSize);
+}
+
+async function zzzmiGetPostFull(postId: string) {
+    return miGetPostFull(8, postId);
+}
+
 
 interface PostList {
     list: PostListInfo[];
@@ -267,4 +320,10 @@ interface PostFullPost {
     link_card_list: any[];
 }
 
-export { miGetNewsList, miGetPostFull, PostList, PostListInfo, PostFull, PostFullPost };
+export {
+    miGetNewsList, miGetPostFull, PostList, PostListInfo, PostFull, PostFullPost,
+    bbbmiGetNewsList, bbbmiGetPostFull, ysmiGetNewsList, ysmiGetPostFull,
+    bbmiGetNewsList, bbmiGetPostFull, wdmiGetNewsList, wdmiGetPostFull,
+    dbymiGetNewsList, dbymiGetPostFull, srmiGetNewsList, srmiGetPostFull,
+    zzzmiGetNewsList, zzzmiGetPostFull
+};

@@ -2,83 +2,55 @@ import fs from "fs";
 import { _path, redis } from "@src/lib/global/global";
 
 export function writeFileSyncEx(filePath: string, data: string | Buffer, options?: fs.WriteFileOptions) {
+    const pathPart = filePath.split("/").slice(0, -1);
+    const dirPath = pathPart.join("/");
 
-    const pathPart = filePath.split("/");
-    pathPart.pop();
-
-    if (fs.existsSync(pathPart.join("/"))) {
-        fs.writeFileSync(filePath, data, options);
-
-    } else {
-        var _p = "";
-        for (const [iv, _part] of pathPart.entries()) {
-            //if (iv + 1 == pathPart.length) break;
-            _p += `${_part}/`;
-            if (fs.existsSync(_p)) continue;
-            else fs.mkdirSync(_p);
-        }
-        writeFileSyncEx(filePath, data, options);
+    if (!fs.existsSync(dirPath)) {
+        fs.mkdirSync(dirPath, { recursive: true });
     }
+    fs.writeFileSync(filePath, data, options);
 }
 
 export function sleep(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 export function cacheJson<T>(opt: "w" | "r", app: string, data?: T): T | boolean | null {
     const jsonPath = `${_path}/generate/cache/${app}.json`;
     try {
-        if (opt == "r") {
+        if (opt === "r") {
             if (!fs.existsSync(jsonPath)) return null;
-            const data = fs.readFileSync(jsonPath, { encoding: "utf8" });
-            const json: T = JSON.parse(data);
-            return json;
+            const jsonData = fs.readFileSync(jsonPath, "utf8");
+            return JSON.parse(jsonData) as T;
         } else {
             writeFileSyncEx(jsonPath, JSON.stringify(data), { encoding: "utf8" });
             return true;
         }
     } catch (error) {
         logger.error(error);
-        if (opt == "r") return null;
-        else return false;
+        return opt === "r" ? null : false;
     }
 }
 
 export async function redisCache(type: "r" | "w", key: string, field: string, data?: string, expire?: number): Promise<string | null> {
-    if (type == "r") {
+    if (type === "r") {
         return await redis.hGet(key, field) || null;
-    };
-    if (type == "w") {
-        redis.hSet(key, field, data!).then(() => {
-            if (expire)
-                redis.expire(key, expire);
-        });
-
+    }
+    if (type === "w") {
+        await redis.hSet(key, field, data!);
+        if (expire) {
+            await redis.expire(key, expire);
+        }
     }
     return null;
 }
 
 export const Format = {
-    /**
-     * string to number
-     * @param d string
-     * @returns number
-     */
-    int: (d: string): number => {
-        return parseInt(d);
+    int: (d: string): number => parseInt(d),
+    comma: (num: number, fix = 0): string => {
+        const [integer, decimal] = num.toFixed(fix).split('.');
+        return integer.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + (decimal ? '.' + decimal : '');
     },
-
-    comma: (num: number, fix = 0) => {
-        num = parseFloat((num * 1).toFixed(fix));
-        let [integer, decimal] = num.toString().split('.');
-        integer = integer.replace(/\d(?=(\d{3})+$)/g, '$&,');
-        return `${integer}${decimal ? '.' + decimal : ''}`;
-    },
-    pct: (num: number, fix = 1) => {
-        return num.toFixed(fix) + '%';
-    },
-    percent: (num: number, fix = 1) => {
-        return Format.pct(num * 100, fix);
-    }
-
-}
+    pct: (num: number, fix = 1): string => num.toFixed(fix) + '%',
+    percent: (num: number, fix = 1): string => Format.pct(num * 100, fix)
+};

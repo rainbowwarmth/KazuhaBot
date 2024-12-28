@@ -1,4 +1,4 @@
-import { pluginFolders } from "@src/lib/plugins/getPluginFolders";
+import pluginFolders from "@src/lib/plugins/getPluginFolders";
 import * as fs from 'fs'
 import * as path from 'path'
 import { _path } from "@src/lib/global/global";

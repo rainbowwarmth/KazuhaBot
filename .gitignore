@@ -2,6 +2,5 @@ node_modules
 config/pm2
 config/config.json
 generate
-pnpm-lock.json
-package-lock.json
 pnpm-lock.yaml
+dist

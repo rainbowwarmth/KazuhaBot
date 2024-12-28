@@ -2,37 +2,28 @@
 import { IMessageEx } from "@src/lib/core/IMessageEx";
 
 async function helpimage(msg: IMessageEx) {
-
-    const markdown = fs.readFileSync('resources/markdown/HELP.md', 'utf-8');
-    const { headings, emphasis } = extractContentFromMarkdown(markdown);
-    let content = '米游社小助手使用指南\n';
-
-    // 将解析后的标题和强调内容按顺序添加到content中
-    for (let i = 0; i < headings.length; i++) {
-        content += `\n功能名:${headings[i]}\n`;
-        if (emphasis[i]) {
-            content += `命令:${emphasis[i]}\n`;
-        }
-    
-    }
-
-    // 发送格式化后的消息内容
-    return msg.sendMsgEx({
-        content
-    });
+    const content = await generateContentFromMarkdown('resources/markdown/HELP.md', '米游社小助手使用指南', '功能名', '命令');
+    return msg.sendMsgEx({ content });
 }
 
-interface Commit {
-    commit: {
-        author: {
-            name: string;
-            date: string;
-        };
-        message: string;
-    };
-    authorName: string;
-    authorDate: string;
-    commitMessage: string;
+async function info(msg: IMessageEx) {
+    const content = await generateContentFromMarkdown('resources/markdown/CHANGELOG.md', '更新日志', '版本', '内容');
+    return msg.sendMsgEx({ content });
+}
+
+async function generateContentFromMarkdown(filePath: string, title: string, headingLabel: string, emphasisLabel: string): Promise<string> {
+    const markdown = fs.readFileSync(filePath, 'utf-8');
+    const { headings, emphasis } = extractContentFromMarkdown(markdown);
+    let content = `${title}\n`;
+
+    for (let i = 0; i < headings.length; i++) {
+        content += `\n${headingLabel}:${headings[i]}\n`;
+        if (emphasis[i]) {
+            content += `${emphasisLabel}:${emphasis[i]}\n`;
+        }
+    }
+
+    return content;
 }
 
 async function commits(msg: IMessageEx) {
@@ -43,31 +34,18 @@ async function commits(msg: IMessageEx) {
         }
         const data = await response.json();
 
-        // 提取项目中的信息
-        const extractedData = data.slice(0, 15).map((commit: Commit) => {
-            const messageWithoutLinks = commit.commit.message.replace(/\./g, ' ');
-            return {
-                authorName: commit.commit.author.name,
-                authorDate: commit.commit.author.date,
-                commitMessage: messageWithoutLinks,
-            };
-        });
-        // 循环遍历提取的数据发送到控制台
-        extractedData.forEach((commit: Commit) => {
-            logger.info('Author Name:', commit.authorName);
-            logger.info('Author Date:', commit.authorDate);
-            logger.info('Commit Message:', commit.commitMessage);
-            logger.info('\n');
-        });
+        const extractedData = data.slice(0, 15).map((commit: Commit) => ({
+            authorName: commit.commit.author.name,
+            authorDate: commit.commit.author.date,
+            commitMessage: commit.commit.message.replace(/\./g, ' '),
+        }));
 
         let content = '提交日志\n';
         extractedData.forEach((commit: Commit) => {
             content += `\n作者：${commit.authorName}\n时间：${commit.authorDate}\n内容：${commit.commitMessage}\n`;
         });
 
-        return msg.sendMsgEx({
-            content: content
-        });
+        return msg.sendMsgEx({ content });
 
     } catch (error) {
         logger.error('Error fetching or parsing data:', error);
@@ -88,26 +66,17 @@ function extractContentFromMarkdown(markdown: string): { headings: string[], emp
     return { headings, emphasis };
 }
 
-
-async function info(msg: IMessageEx) {
-
-    const markdown = fs.readFileSync('resources/markdown/CHANGELOG.md', 'utf-8');
-    const { headings, emphasis } = extractContentFromMarkdown(markdown);
-    let content = '更新日志\n';
-
-    // 将解析后的标题和强调内容按顺序添加到content中
-    for (let i = 0; i < headings.length; i++) {
-        content += `\n版本:${headings[i]}\n`;
-        if (emphasis[i]) {
-            content += `内容:${emphasis[i]}\n`;
-        }
-    
-    }
-
-    // 发送格式化后的消息内容
-    return msg.sendMsgEx({
-        content
-    });
+interface Commit {
+    commit: {
+        author: {
+            name: string;
+            date: string;
+        };
+        message: string;
+    };
+    authorName: string;
+    authorDate: string;
+    commitMessage: string;
 }
 
 export { helpimage, commits, info };
