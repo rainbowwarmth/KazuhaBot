@@ -28,7 +28,7 @@ jobs:
       # 使用 Release Please 自动更新版本号
       - name: Generate new release version
         run: |
-          npx release-please release-pr --repo-url https://github.com/<your-org>/<your-repo> --bump-minor  # 使用正确的组织和仓库名称
+          npx release-please release-pr --repo-url https://github.com/rainbowwarmth/KazuhaBot --bump-minor  # 使用正确的组织和仓库名称
 
       # 运行构建
       - name: Run build
