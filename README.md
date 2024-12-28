@@ -5,9 +5,6 @@
 </p>
 <h1 align = "center">KazuhaBot_NewMys</h1>
 
-[![Node.js Package](https://github.com/rainbowwarmth/KazuhaBot/actions/workflows/npm-publish-github-packages.yml/badge.svg?branch=main)](https://github.com/rainbowwarmth/KazuhaBot/actions/workflows/npm-publish-github-packages.yml)
-[![npm version](https://img.shields.io/npm/v/kazuha-bot.svg)](https://www.npmjs.com/package/kazuha-bot)
-
 ## 使用方法
 >
 > 前往[QQ开放平台](https://q.qq.com/)，注册QQ机器人获取APPID和TOKEN
@@ -39,14 +36,12 @@ npm install pnpm -g
 
 ```
 // 使用gitee
-git clone --depth=1 https://gitee.com/rainbowwarmth/KazuhaBot
-npm run build
-npm run init
+git clone --depth=1 https://gitee.com/rainbowwarmth/KazuhaBot -b build
+pnpm i
 
 // 使用github
-git clone --depth=1 https://github.com/rainbowwarmth/KazuhaBot
-npm run build
-npm run init
+git clone --depth=1 https://github.com/rainbowwarmth/KazuhaBot -b build
+pnpm i
 ```
 
 ---
