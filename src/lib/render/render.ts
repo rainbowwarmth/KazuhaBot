@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url';
 import fetch from 'node-fetch';
 import { config } from "@src/lib/config/config";
 import { _path, botStatus } from "@src/lib/global/global";
-import { writeFileSyncEx } from "@src/lib/common/common";
+import common from "@src/lib/common/common";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -58,7 +58,7 @@ async function doRender(renderData: Render): Promise<string | null> {
     html[`${app}.${type}`] = fs.readFileSync(render.resFile, "utf8");
     const tmpHtml = template.render(html[`${app}.${type}`], data);
     if (!render.saveFile) throw new Error("render.saveFile is undefined");
-    writeFileSyncEx(render.saveFile, tmpHtml);
+    common(render.saveFile, tmpHtml);
 
     if (config.render.useExternalBrowser) {
         return await renderWithExternalBrowser(render, savePic, tempPic);

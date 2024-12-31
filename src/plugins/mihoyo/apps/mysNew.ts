@@ -4,47 +4,51 @@ import { miGetNewsList, miGetPostFull, PostFullPost } from "@plugin/mihoyo/model
 import render from "@src/lib/render/render";
 import { bbbmiGetNewsList, bbbmiGetPostFull, bbmiGetNewsList, bbmiGetPostFull, dbymiGetNewsList, dbymiGetPostFull, srmiGetNewsList, srmiGetPostFull, wdmiGetNewsList, wdmiGetPostFull, ysmiGetNewsList, ysmiGetPostFull, zzzmiGetNewsList, zzzmiGetPostFull } from "@plugin/mihoyo/models/mysNew";
 
-var emoticon: Map<any, any> | null = null;
+const emoticon: Map<any, any> | null = null;
 
-const gameIds: { [key: number]: string } = {
-    1: '崩坏三',
-    2: '原神',
-    3: '崩坏二',
-    4: '未定事件簿',
-    5: '大别野',
-    6: '崩坏星穹铁道',
-    8: '绝区零'
+const gameIds: Record<number, string> = {
+    1: '崩坏三', 2: '原神', 3: '崩坏二', 4: '未定事件簿', 5: '大别野', 6: '崩坏星穹铁道', 8: '绝区零'
 };
 
-const gamePrefixes: { [key: number]: string } = {
-    1: "bbb",
-    2: "ys",
-    3: "bb",
-    4: "wd",
-    5: "dby",
-    6: "sr",
-    8: "zzz"
+const gamePrefixes: Record<number, string> = {
+    1: "bbb", 2: "ys", 3: "bb", 4: "wd", 5: "dby", 6: "sr", 8: "zzz"
 };
 
-function getGameIdAndName(content: string): { gid: number, gameName: string } {
-    if (content.includes("崩坏星穹铁道") || content.includes("星铁")) return { gid: 6, gameName: "崩坏星穹铁道" };
-    if (content.includes("崩坏三") || content.includes("崩三")) return { gid: 1, gameName: "崩坏三" };
-    if (content.includes("原神")) return { gid: 2, gameName: "原神" };
-    if (content.includes("崩坏学园二") || content.includes("崩坏二") || content.includes("崩二")) return { gid: 3, gameName: "崩坏二" };
-    if (content.includes("未定事件簿")) return { gid: 4, gameName: "未定事件簿" };
-    if (content.includes("大别野") || content.includes("别野")) return { gid: 5, gameName: "大别野" };
-    if (content.includes("绝区零")) return { gid: 8, gameName: "绝区零" };
+const gameKeywords = [
+    { id: 6, name: "崩坏星穹铁道", keywords: ["崩坏星穹铁道", "星铁"] },
+    { id: 1, name: "崩坏三", keywords: ["崩坏三", "崩三"] },
+    { id: 2, name: "原神", keywords: ["原神"] },
+    { id: 3, name: "崩坏二", keywords: ["崩坏学园二", "崩坏二", "崩二"] },
+    { id: 4, name: "未定事件簿", keywords: ["未定事件簿"] },
+    { id: 5, name: "大别野", keywords: ["大别野", "别野"] },
+    { id: 8, name: "绝区零", keywords: ["绝区零"] }
+];
+
+const typeKeywords = [
+    { type: 1, name: "公告", keywords: ["公告"] },
+    { type: 3, name: "资讯", keywords: ["资讯"] },
+    { type: 2, name: "活动", keywords: ["活动"] }
+];
+
+function getGameIdAndName(content: string) {
+    for (const game of gameKeywords) {
+        if (game.keywords.some(keyword => content.includes(keyword))) {
+            return { gid: game.id, gameName: game.name };
+        }
+    }
     return { gid: 2, gameName: "原神" };
 }
 
-function getTypeAndName(content: string): { type: number, typeName: string } {
-    if (content.includes("公告")) return { type: 1, typeName: "公告" };
-    if (content.includes("资讯")) return { type: 3, typeName: "资讯" };
-    if (content.includes("活动")) return { type: 2, typeName: "活动" };
+function getTypeAndName(content: string) {
+    for (const type of typeKeywords) {
+        if (type.keywords.some(keyword => content.includes(keyword))) {
+            return { type: type.type, typeName: type.name };
+        }
+    }
     return { type: 1, typeName: "公告" };
 }
 
-export async function handleNewsContent(msg: IMessageEx, gid: number, type: number, page: number) {
+async function handleNewsContent(msg: IMessageEx, gid: number, type: number, page: number) {
     const pagesData = await miGetNewsList(gid, type);
     if (!pagesData) return;
 
@@ -62,27 +66,22 @@ export async function handleNewsContent(msg: IMessageEx, gid: number, type: numb
         type: "mysNew",
         imgType: "jpeg",
         render: { saveId: msg.author.id },
-        data: {
-            dataConent: data.post.content,
-            data,
-        }
-    }).then((savePath: any) => {
+        data: { dataConent: data.post.content, data }
+    }).then(savePath => {
         if (savePath) msg.sendMsgEx({ content: data.post.subject, imagePath: savePath });
         logger.mark(chalk.blueBright(`[${gameIds[gid]}公告] newsContentBBS/mysNew.js`));
-    }).catch((err: any) => {
-        logger.error(err);
-    });
+    }).catch(logger.error);
 }
 
-export async function handleNewsList(msg: IMessageEx, gid: number, gameName: string, type: number, typeName: string) {
+async function handleNewsList(msg: IMessageEx, gid: number, gameName: string, type: number, typeName: string) {
     const data = await miGetNewsList(gid, type);
     if (!data) return;
 
     const datas = data.list;
     if (datas.length === 0) return true;
 
-    datas.forEach((element: { post: { created_at: number; }; }) => {
-        (element.post as any).created_at = new Date(element.post.created_at * 1000).toLocaleString();
+    datas.forEach(element => {
+        element.post.created_at = new Date(element.post.created_at * 1000).toLocaleString() as unknown as number;
     });
 
     await render({
@@ -90,25 +89,18 @@ export async function handleNewsList(msg: IMessageEx, gid: number, gameName: str
         type: "mysNewList",
         imgType: "jpeg",
         render: { saveId: msg.author.id },
-        data: {
-            datas,
-            typeName,
-            gameName
-        }
-    }).then((savePath: any) => {
+        data: { datas, typeName, gameName }
+    }).then(savePath => {
         if (savePath) msg.sendMsgEx({ imagePath: savePath });
         logger.mark(chalk.blueBright(`[${gameName}${typeName}列表] newListBBS/mysNew.js`));
-    }).catch((err: any) => {
-        logger.error(err);
-    });
+    }).catch(logger.error);
 }
 
 export async function newsContentBBS(msg: IMessageEx) {
     logger.mark(`[${msg.guild_name}-${msg.channel_name}(${msg.guild_id}-${msg.channel_id}), ${msg.author.username}(${msg.author.id})][${msg.content}]`);
     const { gid } = getGameIdAndName(msg.content);
     const { type } = getTypeAndName(msg.content);
-    const _page = msg.content.match(/[0-9]+/);
-    const page = _page ? parseInt(_page[0]) : 1;
+    const page = parseInt(msg.content.match(/[0-9]+/)?.[0] || "1");
     await handleNewsContent(msg, gid, type, page);
 }
 
@@ -139,37 +131,32 @@ export async function changePushTask(msg: IMessageEx) {
 
             logger.mark(loggerMessage);
         })
-        .catch((err: any) => logger.error(err));
+        .catch(logger.error);
 }
 
-export async function taskPushNews(gamePrefix: string, getNewsList: Function, getPostFull: Function, ignoreReg: RegExp, logMessage: string) {
+async function taskPushNews(gamePrefix: string, getNewsList: Function, getPostFull: Function, ignoreReg: RegExp, logMessage: string) {
     const msgId = await redis.get("lastestMsgId");
     if (!msgId) return;
 
-    const sendChannels: string[] = [];
-    const _newsPushChannels = await redis.hGetAll(`config:${gamePrefix}newsPush`).catch(err => { logger.error(err); });
-    if (!_newsPushChannels) return;
+    const sendChannels = await redis.hGetAll(`config:${gamePrefix}newsPush`).then(channels =>
+        Object.keys(channels).filter(channel => channels[channel] === "true")
+    ).catch(logger.error);
 
-    for (const channel in _newsPushChannels) {
-        if (_newsPushChannels[channel] == "true")
-            sendChannels.push(channel);
-    }
-    if (sendChannels.length == 0) return;
+    if (!sendChannels || !sendChannels.length) return;
 
     logger.debug(logMessage);
     const pagesData = [{ type: "公告", list: (await getNewsList(1))?.list }, { type: "资讯", list: (await getNewsList(3))?.list }];
-    const postIds: string[] = [];
+    const postIds = [];
 
     for (const pageData of pagesData) {
         if (!pageData.list) continue;
         for (const page of pageData.list) {
-            if (ignoreReg.test(page.post.subject)) continue;
-            if (new Date().getTime() / 1000 - page.post.created_at > 3600) continue;
-            if (await redis.get(`mysNews:${page.post.post_id}`) == `${true}`) continue;
-            await redis.set(`mysNews:${page.post.post_id}`, `${true}`, { EX: 3600 * 2 });
+            if (ignoreReg.test(page.post.subject) || new Date().getTime() / 1000 - page.post.created_at > 3600 || await redis.get(`mysNews:${page.post.post_id}`) === "true") continue;
+            await redis.set(`mysNews:${page.post.post_id}`, "true", { EX: 7200 });
             postIds.push(page.post.post_id);
         }
     }
+
     for (const postId of postIds) {
         const postFull = await getPostFull(postId);
         if (!postFull) return;
@@ -179,96 +166,58 @@ export async function taskPushNews(gamePrefix: string, getNewsList: Function, ge
             type: "mysNew",
             imgType: "jpeg",
             render: { saveId: data.post.post_id },
-            data: {
-                dataConent: data.post.content,
-                data,
-            }
+            data: { dataConent: data.post.content, data }
         }).then(savePath => {
             if (savePath) {
-                const _sendQueue: Promise<any>[] = [];
-                for (const sendChannel of sendChannels) {
-                    _sendQueue.push(sendImage({
-                        msgId,
-                        content: data.post.subject,
-                        imagePath: savePath,
-                        channelId: sendChannel,
-                        messageType: "GUILD"
-                    }));
-                }
+                const sendQueue = sendChannels.map((channel: string) => sendImage({
+                    msgId,
+                    content: data.post.subject,
+                    imagePath: savePath,
+                    channelId: channel,
+                    messageType: "GUILD"
+                }));
                 logger.mark(chalk.blueBright(`[${logMessage}] taskPushNews/mysNew.js`));
-                return Promise.all(_sendQueue).catch(err => {
-                    logger.error(err);
-                });
+                return Promise.all(sendQueue).catch(logger.error);
             }
-        }).catch(err => {
-            logger.error(err);
-        });
+        }).catch(logger.error);
     }
 
     logger.debug(`${logMessage}检查完成`);
 }
 
-export async function bbbtaskPushNews() {
-    await taskPushNews("bbb", bbbmiGetNewsList, bbbmiGetPostFull, /已开奖|封禁名单|商品资讯|活动资讯/, "崩坏三官方公告推送");
-}
-
-export async function ystaskPushNews() {
-    await taskPushNews("ys", ysmiGetNewsList, ysmiGetPostFull, /已开奖|绘画|战绩|攻略|工具更新|积分赛|绘画征集|内容专题页|作品展示|开售|贩卖|新品|养成计算器|集中反馈|纪行|冒险助力|封禁名单|大别野/, "原神官方公告推送");
-}
-
-export async function bbtaskPushNews() {
-    await taskPushNews("bb", bbmiGetNewsList, bbmiGetPostFull, /已开奖/, "崩坏学园2官方公告推送");
-}
-
-export async function wdtaskPushNews() {
-    await taskPushNews("wd", wdmiGetNewsList, wdmiGetPostFull, /已开奖/, "未定事件簿官方公告推送");
-}
-
-export async function dbytaskPushNews() {
-    await taskPushNews("dby", dbymiGetNewsList, dbymiGetPostFull, /已开奖/, "大别野官方公告推送");
-}
-
-export async function srtaskPushNews() {
-    await taskPushNews("sr", srmiGetNewsList, srmiGetPostFull, /已开奖|绘画征集|攻略|工具更新|新品|实物|展示视频|封禁|意见反馈|黑塔•协议|无名勋礼/, "崩坏星穹铁道官方公告推送");
-}
-
-export async function zzztaskPushNews() {
-    await taskPushNews("zzz", zzzmiGetNewsList, zzzmiGetPostFull, /已开奖|战绩|新品|攻略|丽都城募|商城/, "绝区零官方公告推送");
-}
+export const bbbtaskPushNews = () => taskPushNews("bbb", bbbmiGetNewsList, bbbmiGetPostFull, /已开奖|封禁名单|商品资讯|活动资讯/, "崩坏三官方公告推送");
+export const ystaskPushNews = () => taskPushNews("ys", ysmiGetNewsList, ysmiGetPostFull, /已开奖|绘画|战绩|攻略|工具更新|积分赛|绘画征集|内容专题页|作品展示|开售|贩卖|新品|养成计算器|集中反馈|纪行|冒险助力|封禁名单|大别野/, "原神官方公告推送");
+export const bbtaskPushNews = () => taskPushNews("bb", bbmiGetNewsList, bbmiGetPostFull, /已开奖/, "崩坏学园2官方公告推送");
+export const wdtaskPushNews = () => taskPushNews("wd", wdmiGetNewsList, wdmiGetPostFull, /已开奖/, "未定事件簿官方公告推送");
+export const dbytaskPushNews = () => taskPushNews("dby", dbymiGetNewsList, dbymiGetPostFull, /已开奖/, "大别野官方公告推送");
+export const srtaskPushNews = () => taskPushNews("sr", srmiGetNewsList, srmiGetPostFull, /已开奖|绘画征集|攻略|工具更新|新品|实物|展示视频|封禁|意见反馈|黑塔•协议|无名勋礼/, "崩坏星穹铁道官方公告推送");
+export const zzztaskPushNews = () => taskPushNews("zzz", zzzmiGetNewsList, zzzmiGetPostFull, /已开奖|战绩|新品|攻略|丽都城募|商城/, "绝区零官方公告推送");
 
 export async function detalData(data: PostFullPost) {
-    var json;
+    let json;
     try {
         json = JSON.parse(data.post.content);
-    } catch (error) { }
+    } catch { }
 
-    if (typeof json == "object") {
-        if (json.imgs && json.imgs.length > 0) {
-            for (const val of json.imgs) {
-                data.post.content = ` <div class="ql-image-box"><img src="${val}?x-oss-process=image//resize,s_600/quality,q_80/auto-orient,0/interlace,1/format,jpg"></div>`;
-            }
-        }
+    if (typeof json === "object" && json.imgs?.length) {
+        json.imgs.forEach((val: string) => {
+            data.post.content = ` <div class="ql-image-box"><img src="${val}?x-oss-process=image//resize,s_600/quality,q_80/auto-orient,0/interlace,1/format,jpg"></div>`;
+        });
     } else {
-        for (const img of data.post.images) {
-            data.post.content = data.post.content.replace(img, img + "?x-oss-process=image//resize,s_600/quality,q_80/auto-orient,0/interlace,1/format,jpg");
-        }
-        data.post.content = data.post.content.replace(/_\([^)]*\)/g, function (t, e) {
+        data.post.images.forEach(img => {
+            data.post.content = data.post.content.replace(img, `${img}?x-oss-process=image//resize,s_600/quality,q_80/auto-orient,0/interlace,1/format,jpg`);
+        });
+        data.post.content = data.post.content.replace(/_\([^)]*\)/g, t => {
             t = t.replace(/_\(|\)/g, "");
-            if (emoticon?.has(t)) {
-                return `<img class="emoticon-image" src="${emoticon.get(t)}"/>`;
-            } else {
-                return "";
-            }
+            return emoticon?.has(t) ? `<img class="emoticon-image" src="${emoticon.get(t)}"/>` : "";
         });
-        var arrEntities: { [key: string]: string } = { 'lt': '<', 'gt': '>', 'nbsp': ' ', 'amp': '&', 'quot': '"' };
-        data.post.content = data.post.content.replace(/&(lt|gt|nbsp|amp|quot);/ig, function (all, t) {
-            return arrEntities[t];
-        });
+        const arrEntities = { 'lt': '<', 'gt': '>', 'nbsp': ' ', 'amp': '&', 'quot': '"' };
+        data.post.content = data.post.content.replace(/&(lt|gt|nbsp|amp|quot);/ig, (_, t: keyof typeof arrEntities) => arrEntities[t]);
     }
-    (data.post as any).created_time = new Date(data.post.created_at * 1000).toLocaleString();
-    for (const i in data.stat) {
-        (data as any).stat[i] = data.stat[i] > 10000 ? (data.stat[i] / 10000).toFixed(2) + "万" : data.stat[i];
-    }
+    data.post.created_at = new Date(data.post.created_at * 1000).toLocaleString() as unknown as number;
+    Object.keys(data.stat).forEach(key => {
+        data.stat[key] = data.stat[key] > 10000 ? parseFloat((data.stat[key] / 10000).toFixed(2)) : data.stat[key];
+    });
 
     return data;
 }
