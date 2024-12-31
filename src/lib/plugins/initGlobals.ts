@@ -7,7 +7,7 @@ import logger from "@src/lib/config/logger";
 function loadPluginConfig(pluginName: string) {
     const configPath = path.join(_path, 'config', 'command', `${pluginName}.json`);
     try {
-        const config = require(configPath);
+        const config = import(configPath);
         return config;
     } catch (err) {
         logger.error(`加载插件配置文件失败: ${configPath}`, err);
@@ -26,8 +26,13 @@ async function initGlobals() {
                     logger.warn(`插件配置文件 ${pluginConfigPath} 不存在，跳过加载`);
                 } else {
                     logger.mark(`插件配置文件 ${pluginConfigPath} 发生变化，正在进行热更新`);
-                    delete require.cache[require.resolve(pluginConfigPath)];
-                    loadPluginConfig(pluginName);
+                    import(pluginConfigPath)
+                    .then(()=> {
+                        loadPluginConfig(pluginName);
+                    })
+                    .catch(err => {
+                        logger.error(`加载插件配置文件失败: ${pluginConfigPath}`, err);
+                    });
                 }
             });
         });
@@ -46,8 +51,13 @@ async function initGlobals() {
                     logger.warn(`配置文件 ${configFilePath} 不存在，跳过加载`);
                 } else {
                     logger.mark(`配置文件 ${configFilePath} 发生变化，正在进行热更新`);
-                    delete require.cache[require.resolve(configFilePath)];
-                    loadPluginConfig(folderName);
+                    import(configFilePath)
+                    .then(()=> {
+                        loadPluginConfig(folderName);
+                    })
+                    .catch(err => {
+                        logger.error(`加载插件配置文件失败: ${configFilePath}`, err);
+                    });
                 }
             });
         });

@@ -209,31 +209,31 @@ export async function taskPushNews(gamePrefix: string, getNewsList: Function, ge
 }
 
 export async function bbbtaskPushNews() {
-    await taskPushNews("bbb", bbbmiGetNewsList, bbbmiGetPostFull, /已开奖|封禁名单|商品资讯|活动资讯/, "崩坏三官方公告检查中");
+    await taskPushNews("bbb", bbbmiGetNewsList, bbbmiGetPostFull, /已开奖|封禁名单|商品资讯|活动资讯/, "崩坏三官方公告推送");
 }
 
 export async function ystaskPushNews() {
-    await taskPushNews("ys", ysmiGetNewsList, ysmiGetPostFull, /已开奖|战绩|攻略|工具更新|积分赛|绘画征集|内容专题页|作品展示|开售|贩卖|新品|养成计算器|集中反馈|纪行|冒险助力|封禁名单|大别野/, "原神官方公告检查中");
+    await taskPushNews("ys", ysmiGetNewsList, ysmiGetPostFull, /已开奖|绘画|战绩|攻略|工具更新|积分赛|绘画征集|内容专题页|作品展示|开售|贩卖|新品|养成计算器|集中反馈|纪行|冒险助力|封禁名单|大别野/, "原神官方公告推送");
 }
 
 export async function bbtaskPushNews() {
-    await taskPushNews("bb", bbmiGetNewsList, bbmiGetPostFull, /已开奖/, "崩坏学园2官方公告检查中");
+    await taskPushNews("bb", bbmiGetNewsList, bbmiGetPostFull, /已开奖/, "崩坏学园2官方公告推送");
 }
 
 export async function wdtaskPushNews() {
-    await taskPushNews("wd", wdmiGetNewsList, wdmiGetPostFull, /已开奖/, "未定事件簿官方公告检查中");
+    await taskPushNews("wd", wdmiGetNewsList, wdmiGetPostFull, /已开奖/, "未定事件簿官方公告推送");
 }
 
 export async function dbytaskPushNews() {
-    await taskPushNews("dby", dbymiGetNewsList, dbymiGetPostFull, /已开奖/, "大别野官方公告检查中");
+    await taskPushNews("dby", dbymiGetNewsList, dbymiGetPostFull, /已开奖/, "大别野官方公告推送");
 }
 
 export async function srtaskPushNews() {
-    await taskPushNews("sr", srmiGetNewsList, srmiGetPostFull, /已开奖|绘画征集|攻略|工具更新|新品|实物|展示视频|封禁|意见反馈|黑塔•协议|无名勋礼/, "崩坏星穹铁道官方公告检查中");
+    await taskPushNews("sr", srmiGetNewsList, srmiGetPostFull, /已开奖|绘画征集|攻略|工具更新|新品|实物|展示视频|封禁|意见反馈|黑塔•协议|无名勋礼/, "崩坏星穹铁道官方公告推送");
 }
 
 export async function zzztaskPushNews() {
-    await taskPushNews("zzz", zzzmiGetNewsList, zzzmiGetPostFull, /已开奖|战绩|新品|攻略|丽都城募|商城/, "绝区零官方公告检查中");
+    await taskPushNews("zzz", zzzmiGetNewsList, zzzmiGetPostFull, /已开奖|战绩|新品|攻略|丽都城募|商城/, "绝区零官方公告推送");
 }
 
 export async function detalData(data: PostFullPost) {
