@@ -1,6 +1,6 @@
 import pluginFolders from "@src/lib/plugins/getPluginFolders";
-import * as fs from 'fs'
-import * as path from 'path'
+import * as fs from 'fs';
+import * as path from 'path';
 import { _path } from "@src/lib/global/global";
 import logger from "@src/lib/config/logger";
 
@@ -15,52 +15,39 @@ function loadPluginConfig(pluginName: string) {
     }
 }
 
-async function initGlobals() {
-    logger.info('初始化：正在创建热加载监听');
-    pluginFolders.forEach(pluginName => {
-        const pluginConfigPath = path.join(_path, 'plugins', pluginName, 'config', 'command.json');
-        
-        fs.watchFile(pluginConfigPath, () => {
-            fs.access(pluginConfigPath, fs.constants.F_OK, (err) => {
-                if (err) {
-                    logger.warn(`插件配置文件 ${pluginConfigPath} 不存在，跳过加载`);
-                } else {
-                    logger.mark(`插件配置文件 ${pluginConfigPath} 发生变化，正在进行热更新`);
-                    import(pluginConfigPath)
-                    .then(()=> {
-                        loadPluginConfig(pluginName);
-                    })
-                    .catch(err => {
-                        logger.error(`加载插件配置文件失败: ${pluginConfigPath}`, err);
-                    });
-                }
-            });
+function setupFileWatcher(configFilePath: string, pluginName: string) {
+    fs.watchFile(configFilePath, () => {
+        fs.access(configFilePath, fs.constants.F_OK, (err) => {
+            if (err) {
+                logger.warn(`配置文件 ${configFilePath} 不存在，跳过加载`);
+            } else {
+                logger.mark(`配置文件 ${configFilePath} 发生变化，正在进行热更新`);
+                import(configFilePath)
+                .then(() => {
+                    loadPluginConfig(pluginName);
+                })
+                .catch(err => {
+                    logger.error(`加载插件配置文件失败: ${configFilePath}`, err);
+                });
+            }
         });
     });
+}
+
+async function initGlobals() {
+    logger.info('初始化：正在创建热加载监听');
     
-    // 根目录 config/command/ 中的特定文件热更新逻辑
+    pluginFolders.forEach(pluginName => {
+        const pluginConfigPath = path.join(_path, 'plugins', pluginName, 'config', 'command.json');
+        setupFileWatcher(pluginConfigPath, pluginName);
+    });
+    
     const configDirPath = path.join(_path, 'config', 'command');
     const specificFolders = ['other', 'system', 'example'];
     
     specificFolders.forEach(folderName => {
         const configFilePath = path.join(configDirPath, `${folderName}.json`);
-        
-        fs.watchFile(configFilePath, () => {
-            fs.access(configFilePath, fs.constants.F_OK, (err) => {
-                if (err) {
-                    logger.warn(`配置文件 ${configFilePath} 不存在，跳过加载`);
-                } else {
-                    logger.mark(`配置文件 ${configFilePath} 发生变化，正在进行热更新`);
-                    import(configFilePath)
-                    .then(()=> {
-                        loadPluginConfig(folderName);
-                    })
-                    .catch(err => {
-                        logger.error(`加载插件配置文件失败: ${configFilePath}`, err);
-                    });
-                }
-            });
-        });
+        setupFileWatcher(configFilePath, folderName);
     });
 }
 

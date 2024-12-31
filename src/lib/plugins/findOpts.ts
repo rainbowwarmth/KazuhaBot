@@ -1,4 +1,4 @@
-import { IMessageEx } from "@src/lib/core/IMessageEx"; 
+import { IMessageEx } from "@src/lib/core/IMessageEx";
 import path from 'path';
 import fs from 'fs/promises';
 import { fileURLToPath } from 'url';
@@ -35,8 +35,7 @@ async function findOpts(msg: IMessageEx): Promise<{ directory: string; file: str
                 return null;
             });
 
-            const configContent = await fs.readFile(configPath, 'utf-8');
-            const command = JSON.parse(configContent).command;
+            const command = JSON.parse(await fs.readFile(configPath, 'utf-8')).command;
 
             for (const mainKey in command) {
                 const group = command[mainKey];
@@ -52,14 +51,11 @@ async function findOpts(msg: IMessageEx): Promise<{ directory: string; file: str
                     const regex = opt.reg ? new RegExp(opt.reg) : null;
                     if (regex && !regex.test(msg.content)) continue;
 
-                    if (opt.permission !== "anyone") {
-                        const isUserAdmin = await isAdmin(
-                            msg.author.id,
-                            msg.messageType === "GUILD" ? msg.member : undefined,
-                            msg.messageType === "DIRECT" ? msg.src_guild_id : undefined
-                        );
-                        if (!isUserAdmin) continue;
-                    }
+                    if (opt.permission !== "anyone" && !(await isAdmin(
+                        msg.author.id,
+                        msg.messageType === "GUILD" ? msg.member : undefined,
+                        msg.messageType === "DIRECT" ? msg.src_guild_id : undefined
+                    ))) continue;
 
                     return {
                         directory: groupDir,

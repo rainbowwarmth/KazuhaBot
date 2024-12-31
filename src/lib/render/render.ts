@@ -1,6 +1,6 @@
 import fs from "fs";
 import template from "art-template";
-import sharp from "sharp"; // 引入 sharp 库
+import sharp from "sharp";
 import puppeteer from "puppeteer";
 import path from "path";
 import { fileURLToPath } from 'url';
@@ -12,15 +12,11 @@ import { writeFileSyncEx } from "@src/lib/common/common";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const html: { [key: string]: string } = {};
-var lock = false;
-
-// 外部浏览器选项
+let lock = false;
 
 const fetchTimeout = (url: string, options: object = {}, timeout: number) => {
     return new Promise((resolve, reject) => {
-        const timer = setTimeout(() => {
-            reject(new Error('fetch timeout'));
-        }, config.render.timeout * 1000);
+        const timer = setTimeout(() => reject(new Error('fetch timeout')), config.render.timeout * 1000);
         fetch(url, options)
             .then(response => {
                 clearTimeout(timer);
@@ -33,203 +29,175 @@ const fetchTimeout = (url: string, options: object = {}, timeout: number) => {
     });
 };
 
-// 渲染主函数
 async function render(renderData: Render) {
     const pluginsDir = path.resolve(__dirname, '../../plugins');
-    const pluginPaths = fs.readdirSync(pluginsDir).filter((file) => {
-        const filePath = path.join(pluginsDir, file);
-        return fs.statSync(filePath).isDirectory();
-    });
+    const pluginPaths = fs.readdirSync(pluginsDir).filter(file => fs.statSync(path.join(pluginsDir, file)).isDirectory());
     const excludedPlugins = ['other', 'system', 'example'];
 
-    // 为每个插件生成HTML文件路径
     for (const plugin of pluginPaths) {
-        if (excludedPlugins.includes(plugin)) {
-            continue;
-        }
-        if (renderData.render.template) {
-            renderData.render.resFile = `${_path}/plugins/${plugin}/resources/html/${renderData.app}/${renderData.type}/${renderData.render.template}.html`;
-        } else {
-            renderData.render.resFile = `${_path}/plugins/${plugin}/resources/html/${renderData.app}/${renderData.type}/index.html`;
-        }
-
-        if (excludedPlugins.includes(plugin)) {
-            renderData.data.resPath = `${_path}/`;
-        } else {
-            renderData.data.resPath = `${_path}/plugins/mihoyo/resources/`;
-        }
+        if (excludedPlugins.includes(plugin)) continue;
+        renderData.render.resFile = `${_path}/plugins/${plugin}/resources/html/${renderData.app}/${renderData.type}/${renderData.render.template || 'index'}.html`;
+        renderData.data.resPath = excludedPlugins.includes(plugin) ? `${_path}/` : `${_path}/plugins/mihoyo/resources/`;
     }
 
-    if (!renderData.render.saveFile)
-        renderData.render.saveFile = `${_path}/data/html/${renderData.app}/${renderData.type}/${renderData.render.saveId}.html`;
+    renderData.render.saveFile ||= `${_path}/data/html/${renderData.app}/${renderData.type}/${renderData.render.saveId}.html`;
 
-    // 调用渲染函数
-    return await doRender(renderData).catch(err => {
+    try {
+        return await doRender(renderData);
+    } catch (err) {
         logger.error(err);
-    });
+    }
 }
 
-// 渲染HTML并生成截图
-async function doRender(renderData: Render): Promise<string | null>{
-    var { app, type, imgType, render, data } = renderData;
+async function doRender(renderData: Render): Promise<string | null> {
+    const { app, type, imgType, render, data } = renderData;
     const savePic = `${render.saveFile}.${imgType}`;
     const tempPic = `${render.saveFile}_temp.${imgType}`;
 
-    // 读取模板文件并生成HTML
-    if (!render.resFile) {
-        throw new Error("render.resFile is undefined");
-    }
+    if (!render.resFile) throw new Error("render.resFile is undefined");
     html[`${app}.${type}`] = fs.readFileSync(render.resFile, "utf8");
-    var tmpHtml = template.render(html[`${app}.${type}`], data);
-    if (render.saveFile) {
-        writeFileSyncEx(render.saveFile, tmpHtml);  // 保存生成的HTML文件
-    } else {
-        throw new Error("render.saveFile is undefined");
-    }
+    const tmpHtml = template.render(html[`${app}.${type}`], data);
+    if (!render.saveFile) throw new Error("render.saveFile is undefined");
+    writeFileSyncEx(render.saveFile, tmpHtml);
 
-    // 如果使用外部浏览器，则传递HTML文件给外部渲染器
     if (config.render.useExternalBrowser) {
-        const filePath = `file://${render.saveFile}`;  // 使用生成的 HTML 文件路径
-        const payload = {
-            file: filePath,
-            pageGotoParams: {
-                waitUntil: "networkidle2"
-            }
-        };
-
-        try {
-            // 通过 HTTP 请求将文件路径和渲染参数传递给外部渲染器
-            const response = await fetchTimeout(config.render.host, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'authorization': config.render.authorization
-                },
-                body: JSON.stringify(payload)
-            }, config.render.timeout);
-
-            // 检查响应是否为图像数据
-            const contentType = (response as Response).headers.get('content-type');
-            if (contentType && contentType.includes('image')) {
-                const buffer = Buffer.from(await (response as Response).arrayBuffer()); // 获取图像数据
-                fs.writeFileSync(savePic, buffer); // 保存图像
-                logger.debug(`外部浏览器渲染成功，保存路径：${savePic}`);
-            } else {
-                // 如果不是图像数据，则处理 JSON 响应
-                const jsonResponse: any = await (response as Response).json();
-                if (jsonResponse.success && jsonResponse.screenshotPath) {
-                    logger.debug(`外部浏览器渲染成功: ${jsonResponse.screenshotPath}`);
-                    fs.renameSync(jsonResponse.screenshotPath, savePic);  // 直接覆盖保存图片
-                } else {
-                    logger.error("外部浏览器渲染失败，未返回截图路径");
-                }
-            }
-        } catch (err) {
-            logger.error("外部浏览器请求失败", err);
-        }
+        return await renderWithExternalBrowser(render, savePic, tempPic);
     } else {
-        // 如果不使用外部浏览器，使用 puppeteer 本地渲染
-        if (!(await browserInit())) return null;
-        if (!global.browser) return null;
-        const page = await global.browser.newPage();
-        await page.goto(`file://${renderData.render.saveFile}`, { waitUntil: "networkidle0" })
-            .then(() => page.$("#container"))
-            .then(async (body) => {
-                await body?.screenshot({
-                    type: imgType,
-                    encoding: "binary",
-                    quality: 100,
-                    path: savePic,
-                    omitBackground: true,
-                });
-                // 使用 sharp 压缩截图
-                await sharp(savePic)
-                    .jpeg({ quality: 80 })  // 设置压缩质量
-                    .toFile(tempPic);  // 覆盖原文件，生成压缩版本
-                fs.renameSync(tempPic, savePic);
-            })
-            .catch(err => {
-                logger.error(err);
-            });
-        await page.close();
-    }
-
-    if (fs.existsSync(savePic)) {
-        botStatus.imageRenderNum++;
-        return savePic;
-    } else {
-        return null;
+        return await renderWithPuppeteer(renderData, savePic, tempPic);
     }
 }
 
-// 浏览器初始化函数，支持外部浏览器
+async function renderWithExternalBrowser(render: any, savePic: string, tempPic: string): Promise<string | null> {
+    const filePath = `file://${render.saveFile}`;
+    const payload = {
+        file: filePath,
+        pageGotoParams: { waitUntil: "networkidle2" }
+    };
+
+    try {
+        const response = await fetchTimeout(config.render.host, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': config.render.authorization
+            },
+            body: JSON.stringify(payload)
+        }, config.render.timeout);
+
+        const contentType = (response as Response).headers.get('content-type');
+        if (contentType && contentType.includes('image')) {
+            const buffer = Buffer.from(await (response as Response).arrayBuffer());
+            fs.writeFileSync(savePic, buffer);
+            logger.debug(`外部浏览器渲染成功，保存路径：${savePic}`);
+        } else {
+            const jsonResponse: any = await (response as Response).json();
+            if (jsonResponse.success && jsonResponse.screenshotPath) {
+                logger.debug(`外部浏览器渲染成功: ${jsonResponse.screenshotPath}`);
+                fs.renameSync(jsonResponse.screenshotPath, savePic);
+            } else {
+                logger.error("外部浏览器渲染失败，未返回截图路径");
+            }
+        }
+    } catch (err) {
+        logger.error("外部浏览器请求失败", err);
+    }
+
+    return fs.existsSync(savePic) ? savePic : null;
+}
+
+async function renderWithPuppeteer(renderData: Render, savePic: string, tempPic: string): Promise<string | null> {
+    if (!(await browserInit())) return null;
+    if (!global.browser) return null;
+    const page = await global.browser.newPage();
+    try {
+        await page.goto(`file://${renderData.render.saveFile}`, { waitUntil: "networkidle0" });
+        const body = await page.$("#container");
+        await body?.screenshot({
+            type: renderData.imgType,
+            encoding: "binary",
+            quality: 100,
+            path: savePic,
+            omitBackground: true,
+        });
+        await sharp(savePic).jpeg({ quality: 80 }).toFile(tempPic);
+        fs.renameSync(tempPic, savePic);
+    } catch (err) {
+        logger.error(err);
+    } finally {
+        await page.close();
+    }
+
+    return fs.existsSync(savePic) ? savePic : null;
+}
+
 async function browserInit() {
     if (global.browser) {
         if (config.devEnv) logger.debug(`puppeteer已经启动`);
         return true;
     }
-    if (lock) {
-        return false;
-    }
+    if (lock) return false;
     lock = true;
     logger.mark("浏览器启动中");
 
-    if (config.render.useExternalBrowser) {
-        logger.debug("使用外部浏览器启动");
-        try {
-            // 启动外部渲染器，传递启动命令
-            const response = await fetchTimeout(config.render.host, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'authorization': config.render.authorization
-                },
-                body: JSON.stringify({ action: 'launch' })
-            }, config.render.timeout);
-
-            // 假设外部渲染器返回一个标识字段
-            const jsonResponse = await (response as Response).json();
-            if (jsonResponse && jsonResponse.success && jsonResponse.browserId) {
-                logger.debug("外部浏览器启动成功，Browser ID: " + jsonResponse.browserId);
-                global.browser = jsonResponse;  // 这里只是一个示例，根据实际返回值调整
-            } else {
-                logger.error("外部浏览器返回的不是预期的浏览器实例标识");
-            }
-        } catch (err) {
-            logger.error("外部浏览器初始化失败", err);
+    try {
+        if (config.render.useExternalBrowser) {
+            await initExternalBrowser();
+        } else {
+            await initPuppeteer();
         }
-    } else {
-        try {
-            // 使用 puppeteer 启动本地浏览器
-            const _browser = await puppeteer.launch({
-                headless: true,
-                args: [
-                    "--disable-gpu",
-                    "--disable-dev-shm-usage",
-                    "--disable-setuid-sandbox",
-                    "--no-first-run",
-                    "--no-sandbox",
-                    "--no-zygote",
-                    "--single-process",
-                    "--window-size=1920,1080"
-                ]
-            });
-            if (_browser && typeof _browser.newPage === 'function') {
-                global.browser = _browser;
-                logger.debug("puppeteer启动成功");
-            } else {
-                logger.error("启动的浏览器实例无效");
-            }
-            global.browser?.on("disconnected", function () {
-                logger.error("Chromium实例关闭或崩溃！");
-                global.browser = null;
-            });
-        } catch (err) {
-            logger.error("启动 puppeteer 浏览器失败", err);
-        }
+    } catch (err) {
+        logger.error("浏览器初始化失败", err);
+    } finally {
+        lock = false;
     }
-    lock = false;
     return true;
+}
+
+async function initExternalBrowser() {
+    logger.debug("使用外部浏览器启动");
+    const response = await fetchTimeout(config.render.host, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'authorization': config.render.authorization
+        },
+        body: JSON.stringify({ action: 'launch' })
+    }, config.render.timeout);
+
+    const jsonResponse = await (response as Response).json();
+    if (jsonResponse?.success && jsonResponse.browserId) {
+        logger.debug("外部浏览器启动成功，Browser ID: " + jsonResponse.browserId);
+        global.browser = jsonResponse;
+    } else {
+        throw new Error("外部浏览器返回的不是预期的浏览器实例标识");
+    }
+}
+
+async function initPuppeteer() {
+    const _browser = await puppeteer.launch({
+        headless: true,
+        args: [
+            "--disable-gpu",
+            "--disable-dev-shm-usage",
+            "--disable-setuid-sandbox",
+            "--no-first-run",
+            "--no-sandbox",
+            "--no-zygote",
+            "--single-process",
+            "--window-size=1920,1080"
+        ]
+    });
+
+    if (_browser && typeof _browser.newPage === 'function') {
+        global.browser = _browser;
+        logger.debug("puppeteer启动成功");
+        global.browser.on("disconnected", () => {
+            logger.error("Chromium实例关闭或崩溃！");
+            global.browser = null;
+        });
+    } else {
+        throw new Error("启动的浏览器实例无效");
+    }
 }
 
 interface Render {

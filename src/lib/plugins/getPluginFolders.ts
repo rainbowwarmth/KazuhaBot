@@ -1,16 +1,11 @@
-import * as fs from 'fs'
-import * as path from 'path'
+import { readdirSync, statSync } from 'fs';
+import { join } from 'path';
 
-const _path = process.cwd()
+const pluginsDir = join(process.cwd(), 'plugins');
 
-function getPluginFolders(): string[] {
-    const pluginsDir = path.join(_path, 'plugins');
-    return fs.readdirSync(pluginsDir).filter(folder => {
-        const fullPath = path.join(pluginsDir, folder);
-        return fs.statSync(fullPath).isDirectory() && !['other', 'example', 'system'].includes(folder);
-    });
-}
-
-const pluginFolders = getPluginFolders();
+const pluginFolders = readdirSync(pluginsDir).filter(folder => {
+    const fullPath = join(pluginsDir, folder);
+    return statSync(fullPath).isDirectory() && !['other', 'example', 'system'].includes(folder);
+});
 
 export default pluginFolders;

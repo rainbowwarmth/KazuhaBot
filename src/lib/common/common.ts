@@ -2,26 +2,21 @@ import fs from "fs";
 import { _path, redis } from "@src/lib/global/global";
 
 export function writeFileSyncEx(filePath: string, data: string | Buffer, options?: fs.WriteFileOptions) {
-    const pathPart = filePath.split("/").slice(0, -1);
-    const dirPath = pathPart.join("/");
-
+    const dirPath = filePath.split("/").slice(0, -1).join("/");
     if (!fs.existsSync(dirPath)) {
         fs.mkdirSync(dirPath, { recursive: true });
     }
     fs.writeFileSync(filePath, data, options);
 }
 
-export function sleep(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
+export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 export function cacheJson<T>(opt: "w" | "r", app: string, data?: T): T | boolean | null {
     const jsonPath = `${_path}/generate/cache/${app}.json`;
     try {
         if (opt === "r") {
             if (!fs.existsSync(jsonPath)) return null;
-            const jsonData = fs.readFileSync(jsonPath, "utf8");
-            return JSON.parse(jsonData) as T;
+            return JSON.parse(fs.readFileSync(jsonPath, "utf8")) as T;
         } else {
             writeFileSyncEx(jsonPath, JSON.stringify(data), { encoding: "utf8" });
             return true;
