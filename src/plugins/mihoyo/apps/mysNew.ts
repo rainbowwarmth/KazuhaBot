@@ -185,13 +185,13 @@ async function taskPushNews(gamePrefix: string, getNewsList: Function, getPostFu
     logger.debug(`${logMessage}检查完成`);
 }
 
-export const bbbtaskPushNews = () => taskPushNews("bbb", bbbmiGetNewsList, bbbmiGetPostFull, /已开奖|封禁名单|商品资讯|活动资讯/, "崩坏三官方公告推送");
-export const ystaskPushNews = () => taskPushNews("ys", ysmiGetNewsList, ysmiGetPostFull, /已开奖|绘画|战绩|攻略|工具更新|积分赛|绘画征集|内容专题页|作品展示|开售|贩卖|新品|养成计算器|集中反馈|纪行|冒险助力|封禁名单|大别野/, "原神官方公告推送");
-export const bbtaskPushNews = () => taskPushNews("bb", bbmiGetNewsList, bbmiGetPostFull, /已开奖/, "崩坏学园2官方公告推送");
-export const wdtaskPushNews = () => taskPushNews("wd", wdmiGetNewsList, wdmiGetPostFull, /已开奖/, "未定事件簿官方公告推送");
-export const dbytaskPushNews = () => taskPushNews("dby", dbymiGetNewsList, dbymiGetPostFull, /已开奖/, "大别野官方公告推送");
-export const srtaskPushNews = () => taskPushNews("sr", srmiGetNewsList, srmiGetPostFull, /已开奖|绘画征集|攻略|工具更新|新品|实物|展示视频|封禁|意见反馈|黑塔•协议|无名勋礼/, "崩坏星穹铁道官方公告推送");
-export const zzztaskPushNews = () => taskPushNews("zzz", zzzmiGetNewsList, zzzmiGetPostFull, /已开奖|战绩|新品|攻略|丽都城募|商城/, "绝区零官方公告推送");
+export const bbbtaskPushNews = () => taskPushNews("bbb", bbbmiGetNewsList, bbbmiGetPostFull, /已开奖|封禁名单|商品资讯|活动资讯|反馈/, "崩坏三官方公告推送");
+export const ystaskPushNews = () => taskPushNews("ys", ysmiGetNewsList, ysmiGetPostFull, /手办|突围赛|揭晓|公开赛|枫达杯|生日月历|征集活动|亮相|版本内容页|周边|贩售|已开奖|绘画|战绩|攻略|工具更新|积分赛|绘画征集|内容专题页|作品展示|开售|贩卖|新品|养成计算器|集中反馈|纪行|冒险助力|封禁名单|大别野/, "原神官方公告推送");
+export const bbtaskPushNews = () => taskPushNews("bb", bbmiGetNewsList, bbmiGetPostFull, /已开奖|反馈/, "崩坏学园2官方公告推送");
+export const wdtaskPushNews = () => taskPushNews("wd", wdmiGetNewsList, wdmiGetPostFull, /已开奖|反馈/, "未定事件簿官方公告推送");
+export const dbytaskPushNews = () => taskPushNews("dby", dbymiGetNewsList, dbymiGetPostFull, /已开奖|反馈/, "大别野官方公告推送");
+export const srtaskPushNews = () => taskPushNews("sr", srmiGetNewsList, srmiGetPostFull, /已开奖|绘画征集|攻略|工具更新|新品|实物|展示视频|封禁|意见反馈|黑塔•协议|无名勋礼|反馈/, "崩坏星穹铁道官方公告推送");
+export const zzztaskPushNews = () => taskPushNews("zzz", zzzmiGetNewsList, zzzmiGetPostFull, /已开奖|战绩|新品|攻略|丽都城募|商城|反馈/, "绝区零官方公告推送");
 
 export async function detalData(data: PostFullPost) {
     let json;
