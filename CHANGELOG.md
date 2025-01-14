@@ -1,29 +1,5 @@
 # Changelog
 
-## [2.5.17](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.5.16...v2.5.17) (2024-12-31)
-
-
-### Bug Fixes
-
-* 细节优化 ([493f882](https://github.com/rainbowwarmth/KazuhaBot/commit/493f8824774011675657c7fb1bf319dbfb743b58))
-* 细节优化 ([9cb921e](https://github.com/rainbowwarmth/KazuhaBot/commit/9cb921e63b81778b3ba7e0b9acd2b8dac7aaa3cd))
-* 调整结构 ([3f89e63](https://github.com/rainbowwarmth/KazuhaBot/commit/3f89e636d3ab97b24ba359c129861a62f71daa9b))
-* 配置文件修改退出 ([e41cf33](https://github.com/rainbowwarmth/KazuhaBot/commit/e41cf336f7a2bca377db9692ea4db201ee8170e2))
-
-
-### Code Refactoring
-
-* 优化ws和加载配置文件 ([a2955ef](https://github.com/rainbowwarmth/KazuhaBot/commit/a2955ef73f47ac62f345679a1e27b93cd89d9c51))
-* 优化代码 ([e0e89c8](https://github.com/rainbowwarmth/KazuhaBot/commit/e0e89c8bddb26c692dfa1d9f5931a25d73e2505c))
-* 重构部分代码 ([6ca5a39](https://github.com/rainbowwarmth/KazuhaBot/commit/6ca5a398cddd1b87409ce76ff4a2ebe9b90de260))
-
-## [2.5.16](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.5.15...v2.5.16) (2024-12-28)
-
-
-### Bug Fixes
-
-* 插件包复制问题 ([e7b0694](https://github.com/rainbowwarmth/KazuhaBot/commit/e7b069485dd8bab3b0a2218df23c3b339f8a5046))
-
 ## [2.5.15](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.5.14...v2.5.15) (2024-12-28)
 
 

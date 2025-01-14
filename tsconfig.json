@@ -13,7 +13,6 @@
     "paths": {
       "*": ["./*", "./*.js"],
       "@src/*": ["src/*"],
-      "@lib/*": ["src/lib/*"],
       "@types/*": ["src/types/*"],
       "@plugin/*": ["src/plugins/*"]
     },
