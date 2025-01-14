@@ -1,0 +1,34 @@
+name: Auto Build and Deploy to Build Branch
+on:
+  push:
+    branches:
+      - 'main'  # 只监听 main 分支的提交
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # 检出代码
+      - name: Checkout code
+        uses: actions/checkout@v3
+      # 设置 Node.js 环境
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'  # 设置 Node.js 版本
+      # 安装依赖
+      - name: Install dependencies
+        run: |
+          npm install
+      # 运行构建
+      - name: Run build
+        run: |
+          npm run build
+      # 发布构建产物到 build 分支
+      - name: Push build to build branch
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git checkout -b dev || git checkout dev  # 如果 build 分支不存在则创建
+          git add .
+          git commit -m "编译提交"
+          git push --force origin build
