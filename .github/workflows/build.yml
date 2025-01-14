@@ -2,7 +2,7 @@ name: Auto Build and Deploy to Build Branch
 on:
   push:
     branches:
-      - 'main'  # 只监听 main 分支的提交
+      - 'dev'  # 只监听 main 分支的提交
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -28,7 +28,7 @@ jobs:
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-          git checkout -b dev || git checkout dev  # 如果 build 分支不存在则创建
+          git checkout -b main || git checkout main  # 如果 build 分支不存在则创建
           git add .
           git commit -m "编译提交"
           git push --force origin build
