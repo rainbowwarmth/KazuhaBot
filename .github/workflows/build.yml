@@ -24,11 +24,11 @@ jobs:
         run: |
           npm run build
       # 发布构建产物到 build 分支
-      - name: Push build to build branch
+      - name: Push build to main branch
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
           git checkout -b main || git checkout main  # 如果 build 分支不存在则创建
           git add .
           git commit -m "编译提交"
-          git push --force origin build
+          git push --force origin main
