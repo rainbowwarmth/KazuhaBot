@@ -36,12 +36,11 @@ npm install pnpm -g
 
 ```
 // 使用gitee
-git clone --depth=1 https://gitee.com/rainbowwarmth/KazuhaBot -b build
+git clone --depth=1 https://gitee.com/rainbowwarmth/KazuhaBot
 pnpm i
 
 // 使用github
-git clone --depth=1 https://github.com/rainbowwarmth/KazuhaBot -b build
-pnpm i
+git clone --depth=1 https://github.com/rainbowwarmth/KazuhaBot
 ```
 
 ---
