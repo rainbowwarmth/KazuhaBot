@@ -157,7 +157,7 @@ export async function taskPushNews(gamePrefix, getNewsList, getPostFull, logMess
         for (const page of pageData.list) {
             if (ignoreReg.test(page.post.subject))
                 continue;
-            if (new Date().getTime() / 1000 - page.post.created_at > 48484)
+            if (new Date().getTime() / 1000 - page.post.created_at > 3600)
                 continue;
             if (await redis.get(`mysNews:${page.post.post_id}`) == `${true}`)
                 continue;
