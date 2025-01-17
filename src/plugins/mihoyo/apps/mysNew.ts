@@ -209,7 +209,7 @@ export async function taskPushNews(gamePrefix: string, getNewsList: Function, ge
 }
 
 export async function bbbtaskPushNews() {
-    await taskPushNews("bbb", bbbmiGetNewsList, bbbmiGetPostFull, /已开奖|封禁名单|商品资讯|活动资讯/, "崩坏三官方公告检查中");
+    await taskPushNews("bbb", bbbmiGetNewsList, bbbmiGetPostFull, /已开奖|封禁名单|商品资讯|活动资讯|近期更新|征集活动/, "崩坏三官方公告检查中");
 }
 
 export async function ystaskPushNews() {
