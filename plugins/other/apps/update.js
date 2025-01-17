@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs';
 import { join } from 'path';
-import { restartBot } from '../other/restart.js';
-import { execCommand } from '../other/restart.js';
+import { restartBot } from './restart.js';
+import { execCommand } from './restart.js';
 async function update(msg) {
     const projectRoot = process.cwd();
     const packageJsonPath = join(projectRoot, 'package.json');
