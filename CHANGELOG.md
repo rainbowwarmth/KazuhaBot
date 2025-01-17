@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.5.18](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.5.17...v2.5.18) (2025-01-17)
+
+
+### Feature Improvements
+
+* 公告推送关键词设置优化 ([e841869](https://github.com/rainbowwarmth/KazuhaBot/commit/e841869006174754d00f0404f6b776abad94ba6f))
+* 米游社公告代码优化 ([02baa65](https://github.com/rainbowwarmth/KazuhaBot/commit/02baa6528b2374f06425de8fc2632897c49589d1))
+
+
+### Docs
+
+* 文档更新 ([2197931](https://github.com/rainbowwarmth/KazuhaBot/commit/219793191ea18231094dd313b33a958943b560fc))
+
 ## [2.5.15](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.5.14...v2.5.15) (2024-12-28)
 
 
