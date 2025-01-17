@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.5.19](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.5.18...v2.5.19) (2025-01-17)
+
+
+### Bug Fixes
+
+* . ([237616a](https://github.com/rainbowwarmth/KazuhaBot/commit/237616a4c340fbd3c891b116810e56f3c5f123ed))
+
+
+### Feature Improvements
+
+* 调整部分js文件路径 ([c473cea](https://github.com/rainbowwarmth/KazuhaBot/commit/c473cea9f7cdc2856dbddc2e1aaf595f2c0ec502))
+
 ## [2.5.18](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.5.17...v2.5.18) (2025-01-17)
 
 
