@@ -3,21 +3,18 @@ const headers = {
     Referer: 'https://www.miyoushe.com',
     origin: 'https://www.miyoushe.com',
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36 Edg/130.0.0.0'
-};
+}
+
 async function fetchMihoyoAPI(url) {
-    try {
-        const res = await fetch(url, { method: "GET", headers });
-        const json = await res.json();
-        if (json.data)
-            return json.data;
-        else
-            throw new Error("not found data");
-    }
-    catch (err) {
-        logger.error(err);
-        return null;
+    const res = await fetch(url, { method: "GET", headers });
+    const json = await res.json();
+    if (json.data){
+        return json.data;
+    } else {
+        throw new Error("not found data");
     }
 }
+
 async function miGetNewsList(gid, type, pageSize = 10) {
     const url = `https://bbs-api-static.miyoushe.com/painter/wapi/getNewsList?gids=${gid}&page_size=${pageSize}&type=${type}`;
     return fetchMihoyoAPI(url);

@@ -4,3 +4,4 @@ config/config.json
 data
 pnpm-lock.yaml
 dist
+logs

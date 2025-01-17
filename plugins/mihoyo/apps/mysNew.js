@@ -52,17 +52,15 @@ function getTypeAndName(content) {
 }
 export async function handleNewsContent(msg, gid, type, page) {
     const pagesData = await miGetNewsList(gid, type);
-    if (!pagesData)
-        return;
+    if (!pagesData)return;
     if (page <= 0 || page > pagesData.list.length) {
         msg.sendMsgEx({ content: "目前只查前10条最新的公告，请输入1-10之间的整数。" });
         return true;
     }
     const postFull = await miGetPostFull(gid, pagesData.list[page - 1].post.post_id);
-    if (!postFull)
-        return;
+    if (!postFull)return;
     const data = await detalData(postFull.post);
-    render({
+    const savePath = await render({
         app: "mys",
         type: "mysNew",
         imgType: "jpeg",
@@ -71,25 +69,22 @@ export async function handleNewsContent(msg, gid, type, page) {
             dataConent: data.post.content,
             data,
         }
-    }).then((savePath) => {
-        if (savePath)
-            msg.sendMsgEx({ content: data.post.subject, imagePath: savePath });
-        logger.mark(chalk.blueBright(`[${gameIds[gid]}公告] newsContentBBS/mysNew.js`));
-    }).catch((err) => {
-        logger.error(err);
     });
-}
+    
+    if (savePath) {
+        msg.sendMsgEx({ content: data.post.subject, imagePath: savePath });
+    }
+        logger.mark(chalk.blueBright(`[${gameIds[gid]}公告] newsContentBBS/mysNew.js`));
+    }
 export async function handleNewsList(msg, gid, gameName, type, typeName) {
     const data = await miGetNewsList(gid, type);
-    if (!data)
-        return;
+    if (!data)return;
     const datas = data.list;
-    if (datas.length === 0)
-        return true;
+    if (datas.length === 0)return true;
     datas.forEach((element) => {
         element.post.created_at = new Date(element.post.created_at * 1000).toLocaleString();
     });
-    await render({
+    const savePath = await render({
         app: "mys",
         type: "mysNewList",
         imgType: "jpeg",
@@ -99,13 +94,12 @@ export async function handleNewsList(msg, gid, gameName, type, typeName) {
             typeName,
             gameName
         }
-    }).then((savePath) => {
-        if (savePath)
-            msg.sendMsgEx({ imagePath: savePath });
-        logger.mark(chalk.blueBright(`[${gameName}${typeName}列表] newListBBS/mysNew.js`));
-    }).catch((err) => {
-        logger.error(err);
-    });
+    })
+
+    if (savePath){
+        msg.sendMsgEx({ imagePath: savePath });
+    }
+    logger.mark(chalk.blueBright(`[${gameName}${typeName}列表] newListBBS/mysNew.js`));
 }
 export async function newsContentBBS(msg) {
     logger.mark(`[${msg.guild_name}-${msg.channel_name}(${msg.guild_id}-${msg.channel_id}), ${msg.author.username}(${msg.author.id})][${msg.content}]`);
@@ -145,18 +139,15 @@ export async function changePushTask(msg) {
 export async function taskPushNews(gamePrefix, getNewsList, getPostFull, logMessage) {
     const ignoreReg = getIgnoreReg(gamePrefix);
     const msgId = await redis.get("lastestMsgId");
-    if (!msgId)
-        return;
+    if (!msgId)return;
     const sendChannels = [];
     const _newsPushChannels = await redis.hGetAll(`config:${gamePrefix}newsPush`).catch(err => { logger.error(err); });
-    if (!_newsPushChannels)
-        return;
+    if (!_newsPushChannels)return;
     for (const channel in _newsPushChannels) {
         if (_newsPushChannels[channel] == "true")
             sendChannels.push(channel);
     }
-    if (sendChannels.length == 0)
-        return;
+    if (sendChannels.length == 0)return;
     logger.debug(logMessage);
     const pagesData = [{ type: "公告", list: (await getNewsList(1))?.list }, { type: "资讯", list: (await getNewsList(3))?.list }];
     const postIds = [];
@@ -179,7 +170,7 @@ export async function taskPushNews(gamePrefix, getNewsList, getPostFull, logMess
         if (!postFull)
             return;
         const data = await detalData(postFull.post);
-        await render({
+        const savePath = await render({
             app: "mys",
             type: "mysNew",
             imgType: "jpeg",
@@ -188,27 +179,24 @@ export async function taskPushNews(gamePrefix, getNewsList, getPostFull, logMess
                 dataConent: data.post.content,
                 data,
             }
-        }).then(savePath => {
-            if (savePath) {
-                const _sendQueue = [];
-                for (const sendChannel of sendChannels) {
-                    _sendQueue.push(sendImage({
-                        msgId,
-                        content: data.post.subject,
-                        imagePath: savePath,
-                        channelId: sendChannel,
-                        messageType: "GUILD"
-                    }));
-                }
-                logger.mark(chalk.blueBright(`[${logMessage}] taskPushNews/mysNew.js`));
-                return Promise.all(_sendQueue).catch(err => {
-                    logger.error(err);
-                });
-            }
-        }).catch(err => {
+        })
+        if (savePath) {
+            const _sendQueue = [];
+            for (const sendChannel of sendChannels) {
+            _sendQueue.push(sendImage({
+                msgId,
+                content: data.post.subject,
+                imagePath: savePath,
+                channelId: sendChannel,
+                messageType: "GUILD"
+            }));
+        }
+        logger.mark(chalk.blueBright(`[${logMessage}] taskPushNews/mysNew.js`));
+        return Promise.all(_sendQueue).catch(err => {
             logger.error(err);
         });
     }
+}
     logger.debug(`${logMessage}检查完成`);
 }
 export async function bbbtaskPushNews() {
