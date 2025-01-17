@@ -2,7 +2,10 @@ name: Auto Build and Deploy to Build Branch
 on:
   push:
     branches:
-      - 'dev'  # 只监听 main 分支的提交
+      - 'dev'  # 只监听 dev 分支的提交
+    paths:
+      - '**/*'  # 监听所有文件变化，包括文件夹和子文件
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -10,25 +13,76 @@ jobs:
       # 检出代码
       - name: Checkout code
         uses: actions/checkout@v3
+
       # 设置 Node.js 环境
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '16'  # 设置 Node.js 版本
+
       # 安装依赖
       - name: Install dependencies
         run: |
           npm install
+
       # 运行构建
       - name: Run build
         run: |
           npm run build
-      # 发布构建产物到 build 分支
-      - name: Push build to main branch
+
+      # 获取修改过的文件
+      - name: Get changed files
+        id: files
+        run: |
+          echo "::set-output name=files::$(git diff --name-only HEAD^ HEAD)"
+
+      # 处理文件并生成对应的 dist 文件
+      - name: Process files
+        id: process_files
+        run: |
+          CHANGED_FILES=$(echo "${{ steps.files.outputs.files }}" | tr '\n' ' ')
+          UPDATED_FILES=""
+
+          for file in $CHANGED_FILES; do
+            if [[ "$file" == *.ts ]]; then
+              # 编译 TypeScript 文件并复制到 dist 目录
+              js_file="${file%.ts}.js"
+              cp "$file" "dist/$js_file"
+              UPDATED_FILES="$UPDATED_FILES dist/$js_file "
+            else
+              # 对于其它文件，直接复制到 dist 目录
+              cp "$file" "dist/$file"
+              UPDATED_FILES="$UPDATED_FILES dist/$file "
+            fi
+          done
+
+          echo "::set-output name=updated_files::${UPDATED_FILES}"
+
+      # 获取 dist 目录下的文件，并与修改过的文件进行对比
+      - name: Compare files
+        id: compare_files
+        run: |
+          UPDATED_FILES="${{ steps.process_files.outputs.updated_files }}"
+          CHANGED_FILES=$(echo "${{ steps.files.outputs.files }}" | tr '\n' ' ')
+
+          CHANGES_DETECTED=false
+
+          for file in $UPDATED_FILES; do
+            # 如果文件存在于修改列表中并且内容不同，则标记为更改
+            if echo "$CHANGED_FILES" | grep -q "$(basename $file)"; then
+              git diff --exit-code --quiet "$file" || CHANGES_DETECTED=true
+            fi
+          done
+
+          echo "::set-output name=changes_detected::$CHANGES_DETECTED"
+
+      # 如果有变化，则提交到 build 分支
+      - name: Commit and push changes
+        if: steps.compare_files.outputs.changes_detected == 'true'
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
           git checkout -b main || git checkout main  # 如果 build 分支不存在则创建
-          git add .
+          git add dist/*  # 提交 dist 目录下的修改
           git commit -m "编译提交"
           git push --force origin main
