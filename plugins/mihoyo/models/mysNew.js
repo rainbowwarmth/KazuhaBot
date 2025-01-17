@@ -68,5 +68,5 @@ async function zzzmiGetNewsList(type, pageSize = 10) {
 async function zzzmiGetPostFull(postId) {
     return miGetPostFull(8, postId);
 }
-;
+
 export { miGetNewsList, miGetPostFull, bbbmiGetNewsList, bbbmiGetPostFull, ysmiGetNewsList, ysmiGetPostFull, bbmiGetNewsList, bbmiGetPostFull, wdmiGetNewsList, wdmiGetPostFull, dbymiGetNewsList, dbymiGetPostFull, srmiGetNewsList, srmiGetPostFull, zzzmiGetNewsList, zzzmiGetPostFull };

@@ -3,6 +3,8 @@ import { redis } from '../../../lib/global/global.js';
 import { miGetNewsList, miGetPostFull } from "../../mihoyo/models/mysNew.js";
 import render from "../../../lib/render/render.js";
 import { bbbmiGetNewsList, bbbmiGetPostFull, bbmiGetNewsList, bbmiGetPostFull, dbymiGetNewsList, dbymiGetPostFull, srmiGetNewsList, srmiGetPostFull, wdmiGetNewsList, wdmiGetPostFull, ysmiGetNewsList, ysmiGetPostFull, zzzmiGetNewsList, zzzmiGetPostFull } from "../../mihoyo/models/mysNew.js";
+import {getIgnoreReg} from '../models/cfg.js'
+
 var emoticon = null;
 const gameIds = {
     1: '崩坏三',
@@ -140,7 +142,8 @@ export async function changePushTask(msg) {
     })
         .catch((err) => logger.error(err));
 }
-export async function taskPushNews(gamePrefix, getNewsList, getPostFull, ignoreReg, logMessage) {
+export async function taskPushNews(gamePrefix, getNewsList, getPostFull, logMessage) {
+    const ignoreReg = getIgnoreReg(gamePrefix);
     const msgId = await redis.get("lastestMsgId");
     if (!msgId)
         return;
@@ -163,7 +166,7 @@ export async function taskPushNews(gamePrefix, getNewsList, getPostFull, ignoreR
         for (const page of pageData.list) {
             if (ignoreReg.test(page.post.subject))
                 continue;
-            if (new Date().getTime() / 1000 - page.post.created_at > 3600)
+            if (new Date().getTime() / 1000 - page.post.created_at > 48484)
                 continue;
             if (await redis.get(`mysNews:${page.post.post_id}`) == `${true}`)
                 continue;
@@ -209,25 +212,25 @@ export async function taskPushNews(gamePrefix, getNewsList, getPostFull, ignoreR
     logger.debug(`${logMessage}检查完成`);
 }
 export async function bbbtaskPushNews() {
-    await taskPushNews("bbb", bbbmiGetNewsList, bbbmiGetPostFull, /已开奖|封禁名单|商品资讯|活动资讯/, "崩坏三官方公告检查中");
+    await taskPushNews("bbb", bbbmiGetNewsList, bbbmiGetPostFull, "崩坏三官方公告检查中");
 }
 export async function ystaskPushNews() {
-    await taskPushNews("ys", ysmiGetNewsList, ysmiGetPostFull, /已开奖|战绩|攻略|工具更新|积分赛|绘画征集|内容专题页|作品展示|开售|贩卖|新品|养成计算器|集中反馈|纪行|冒险助力|封禁名单|大别野/, "原神官方公告检查中");
+    await taskPushNews("ys", ysmiGetNewsList, ysmiGetPostFull, "原神官方公告检查中");
 }
 export async function bbtaskPushNews() {
-    await taskPushNews("bb", bbmiGetNewsList, bbmiGetPostFull, /已开奖/, "崩坏学园2官方公告检查中");
+    await taskPushNews("bb", bbmiGetNewsList, bbmiGetPostFull, "崩坏学园2官方公告检查中");
 }
 export async function wdtaskPushNews() {
-    await taskPushNews("wd", wdmiGetNewsList, wdmiGetPostFull, /已开奖/, "未定事件簿官方公告检查中");
+    await taskPushNews("wd", wdmiGetNewsList, wdmiGetPostFull, "未定事件簿官方公告检查中");
 }
 export async function dbytaskPushNews() {
-    await taskPushNews("dby", dbymiGetNewsList, dbymiGetPostFull, /已开奖/, "大别野官方公告检查中");
+    await taskPushNews("dby", dbymiGetNewsList, dbymiGetPostFull, "大别野官方公告检查中");
 }
 export async function srtaskPushNews() {
-    await taskPushNews("sr", srmiGetNewsList, srmiGetPostFull, /已开奖|绘画征集|攻略|工具更新|新品|实物|展示视频|封禁|意见反馈|黑塔•协议|无名勋礼/, "崩坏星穹铁道官方公告检查中");
+    await taskPushNews("sr", srmiGetNewsList, srmiGetPostFull, "崩坏星穹铁道官方公告检查中");
 }
 export async function zzztaskPushNews() {
-    await taskPushNews("zzz", zzzmiGetNewsList, zzzmiGetPostFull, /已开奖|战绩|新品|攻略|丽都城募|商城/, "绝区零官方公告检查中");
+    await taskPushNews("zzz", zzzmiGetNewsList, zzzmiGetPostFull, "绝区零官方公告检查中");
 }
 export async function detalData(data) {
     var json;

@@ -1,0 +1,74 @@
+{
+    "desc": "命令总览json,按照顺序进行匹配",
+    "command": {
+        "mysNew": {
+            "directory": "mihoyo",
+            "newsContentBBS": {
+                "reg": "^#(原神|未定事件簿|绝区零|大别野|别野|崩坏星穹铁道|星铁|铁道|星穹铁道|崩坏三|崩三|崩坏二|崩坏学圆二|崩二)?(公告|活动|资讯)[0-9]*$",
+                "fnc": "newsContentBBS",
+                "type": ["GUILD", "DIRECT"],
+                "permission": "anyone",
+                "describe": "米游社社区官方公告"
+            },
+            "newsListBBS": {
+                "reg": "^#(原神|未定事件簿|绝区零|大别野|别野|崩坏星穹铁道|星铁|铁道|星穹铁道|崩坏三|崩三|崩坏二|崩坏学圆二|崩二)?(公告|活动|资讯)列表$",
+                "fnc": "newsListBBS",
+                "type": ["GUILD", "DIRECT"],
+                "permission": "anyone",
+                "describe": "米游社社区官方公告列表"
+            },
+            "changePushTask": {
+                "reg": "^#(开启|关闭)(原神|未定事件簿|绝区零|大别野|别野|崩坏星穹铁道|星铁|铁道|星穹铁道|崩坏三|崩三|崩坏二|崩坏学圆二|崩二)公告推送$",
+                "fnc": "changePushTask",
+                "type": ["GUILD", "DIRECT"],
+                "describe": "开启/关闭公告推送"
+            }
+        },
+        "PushNews": {
+            "directory": "mihoyo",
+            "bbbtaskPushNews": {
+                "reg": "^#测试崩坏三公告推送$",
+                "fnc": "bbbtaskPushNews",
+                "type": ["GUILD", "DIRECT"],
+                "describe": "【#开启/关闭崩坏三公告推送】"
+            },
+            "ystaskPushNews": {
+                "reg": "^#测试原神公告推送$",
+                "fnc": "ystaskPushNews",
+                "type": ["GUILD", "DIRECT"],
+                "describe": "【#开启/关闭原神公告推送】"
+            },
+            "bbtaskPushNews": {
+                "reg": "^#测试崩坏学园二公告推送$",
+                "fnc": "bbtaskPushNews",
+                "type": ["GUILD", "DIRECT"],
+                "describe": "【#开启/关闭崩坏学园二公告推送】"
+            },
+            "wdtaskPushNews": {
+                "reg": "^#测试未定事件簿公告推送$",
+                "fnc": "wdtaskPushNews",
+                "type": ["GUILD", "DIRECT"],
+                "describe": "【#开启/关闭未定事件簿公告推送】"
+            },
+            "dbytaskPushNews": {
+                "reg": "^#测试大别野公告推送$",
+                "fnc": "dbytaskPushNews",
+                "type": ["GUILD", "DIRECT"],
+                "describe": "【#开启/关闭大别野公告推送】"
+            },
+            "srtaskPushNews": {
+                "reg": "^#测试崩坏星穹铁道公告推送$",
+                "fnc": "srtaskPushNews",
+                "type": ["GUILD", "DIRECT"],
+                "describe": "【#开启/关闭原神公告推送】"
+            },
+            "zzztaskPushNews": {
+                "reg": "^#测试绝区零公告推送$",
+                "fnc": "zzztaskPushNews",
+                "type": ["GUILD", "DIRECT"],
+                "describe": "【#开启/关闭绝区零公告推送】"
+            }
+
+        }
+    }
+}

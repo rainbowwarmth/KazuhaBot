@@ -10,13 +10,11 @@
   },
   "scripts": {
     ".": "node app.js",
-    "build": "tsc && tsc-alias && node init.js",
     "start": "pm2 startOrRestart ./config/pm2/pm2.yaml",
     "stop": "pm2 stop ./config/pm2/pm2.yaml",
     "delete": "pm2 delete ./config/pm2/pm2.yaml",
     "save": "pm2 save --force",
-    "log": "pm2 logs --lines 400 KazuhaBot",
-    "init": "node init.js"
+    "log": "pm2 logs --lines 400 KazuhaBot"
   },
   "repository": {
     "type": "git",
@@ -28,10 +26,7 @@
     "@types/node": "^22.9.0",
     "@types/node-fetch": "^2.6.2",
     "@types/node-schedule": "^2.1.0",
-    "@types/ws": "^8.5.12",
-    "tsc-alias": "^1.8.10",
-    "tsx": "^4.16.2",
-    "typescript": "^5.5.4"
+    "@types/ws": "^8.5.12"
   },
   "dependencies": {
     "art-template": "^4.13.2",
@@ -46,6 +41,7 @@
     "redis": "^4.2.0",
     "resty-client": "^0.0.5",
     "rimraf": "^6.0.1",
-    "sharp": "^0.33.5"
+    "sharp": "^0.33.5",
+    "yaml": "^2.7.0"
   }
 }

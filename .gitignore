@@ -1,6 +1,6 @@
 node_modules
 config/pm2
 config/config.json
-generate
+data
 pnpm-lock.yaml
 dist
