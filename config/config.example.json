@@ -19,7 +19,8 @@
     "devEnv": "false",
     "render": {
         "useExternalBrowser": false,
-        "host": "http://127.0.0.1:7005/puppeteer",
+        "host": "http://127.0.0.1",
+        "port": "7005",
         "authorization": "123456",
         "timeout": 120
     }
