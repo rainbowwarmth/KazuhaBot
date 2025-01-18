@@ -1,4 +1,5 @@
 import fetch from "node-fetch"
+
 const headers = {
     Referer: 'https://www.miyoushe.com',
     origin: 'https://www.miyoushe.com',
@@ -6,13 +7,9 @@ const headers = {
 }
 
 async function fetchMihoyoAPI(url) {
-    const res = await fetch(url, { method: "GET", headers })
-    const json = await res.json()
-    if (json.data){
-        return json.data
-    } else {
-        throw new Error("not found data")
-    }
+    const res = await fetch(url, { method: "GET", headers });
+    const json = await res.json();
+    return json.data || Promise.reject(new Error("No data found"));
 }
 
 async function miGetNewsList(gid, type, pageSize = 10) {
