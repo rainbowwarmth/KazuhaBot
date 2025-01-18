@@ -1,5 +1,23 @@
 # Changelog
 
+## [2.5.20](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.5.19...v2.5.20) (2025-01-18)
+
+
+### Bug Fixes
+
+* 调整html和图片保存位置 ([2c4a12b](https://github.com/rainbowwarmth/KazuhaBot/commit/2c4a12b38766f26bfc5e6f01bed9a98319aa1fc5))
+
+
+### Feature Improvements
+
+* appID、token 检测 ([344e0c6](https://github.com/rainbowwarmth/KazuhaBot/commit/344e0c6b23c55de5772f432272d6b2d340cf704f))
+* 代码优化 ([9483e17](https://github.com/rainbowwarmth/KazuhaBot/commit/9483e172c43f297a8e99df178a91239ed81b68c1))
+* 优化部分内容 ([af3e35b](https://github.com/rainbowwarmth/KazuhaBot/commit/af3e35b12853ce0b57b772ae8a6e6ff59ada4c6b))
+* 依赖更新 ([48bb3fe](https://github.com/rainbowwarmth/KazuhaBot/commit/48bb3fea2d39918bfd55d93d86d5eba4273c00b9))
+* 删除无用依赖 ([b8fa4ee](https://github.com/rainbowwarmth/KazuhaBot/commit/b8fa4eedf20315b3849b9ffb19ed24eb1c16fe5c))
+* 删除无用依赖 ([9d1493c](https://github.com/rainbowwarmth/KazuhaBot/commit/9d1493ce2ea787ede881a919aae11d5a9310c049))
+* 浏览器状态检测 ([719a358](https://github.com/rainbowwarmth/KazuhaBot/commit/719a358a4878551e884386ca15a98e005c7e92b6))
+
 ## [2.5.19](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.5.18...v2.5.19) (2025-01-17)
 
 
