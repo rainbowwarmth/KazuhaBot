@@ -1,7 +1,7 @@
 node_modules
 config/pm2
 config/config.json
-data
+temp
 pnpm-lock.yaml
 dist
 logs
