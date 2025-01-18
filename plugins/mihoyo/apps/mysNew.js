@@ -3,7 +3,7 @@ import { redis } from '../../../lib/global/global.js';
 import { miGetNewsList, miGetPostFull } from "../../mihoyo/models/mysNew.js";
 import render from "../../../lib/render/render.js";
 import { bbbmiGetNewsList, bbbmiGetPostFull, bbmiGetNewsList, bbmiGetPostFull, dbymiGetNewsList, dbymiGetPostFull, srmiGetNewsList, srmiGetPostFull, wdmiGetNewsList, wdmiGetPostFull, ysmiGetNewsList, ysmiGetPostFull, zzzmiGetNewsList, zzzmiGetPostFull } from "../../mihoyo/models/mysNew.js";
-import {getIgnoreReg} from '../models/cfg.js'
+import getIgnoreReg from '../models/cfg.js'
 
 var emoticon = null;
 const gameIds = {
@@ -199,25 +199,25 @@ export async function taskPushNews(gamePrefix, getNewsList, getPostFull, logMess
     logger.debug(`${logMessage}检查完成`);
 }
 export async function bbbtaskPushNews() {
-    await taskPushNews("bbb", bbbmiGetNewsList, bbbmiGetPostFull, "崩坏三官方公告检查中");
+    await taskPushNews("bbb", bbbmiGetNewsList, bbbmiGetPostFull, "崩坏三官方公告推送");
 }
 export async function ystaskPushNews() {
-    await taskPushNews("ys", ysmiGetNewsList, ysmiGetPostFull, "原神官方公告检查中");
+    await taskPushNews("ys", ysmiGetNewsList, ysmiGetPostFull, "原神官方公告推送");
 }
 export async function bbtaskPushNews() {
-    await taskPushNews("bb", bbmiGetNewsList, bbmiGetPostFull, "崩坏学园2官方公告检查中");
+    await taskPushNews("bb", bbmiGetNewsList, bbmiGetPostFull, "崩坏学园2官方公告推送");
 }
 export async function wdtaskPushNews() {
-    await taskPushNews("wd", wdmiGetNewsList, wdmiGetPostFull, "未定事件簿官方公告检查中");
+    await taskPushNews("wd", wdmiGetNewsList, wdmiGetPostFull, "未定事件簿官方公告推送");
 }
 export async function dbytaskPushNews() {
-    await taskPushNews("dby", dbymiGetNewsList, dbymiGetPostFull, "大别野官方公告检查中");
+    await taskPushNews("dby", dbymiGetNewsList, dbymiGetPostFull, "大别野官方公告推送");
 }
 export async function srtaskPushNews() {
-    await taskPushNews("sr", srmiGetNewsList, srmiGetPostFull, "崩坏星穹铁道官方公告检查中");
+    await taskPushNews("sr", srmiGetNewsList, srmiGetPostFull, "崩坏星穹铁道官方公告推送");
 }
 export async function zzztaskPushNews() {
-    await taskPushNews("zzz", zzzmiGetNewsList, zzzmiGetPostFull, "绝区零官方公告检查中");
+    await taskPushNews("zzz", zzzmiGetNewsList, zzzmiGetPostFull, "绝区零官方公告推送");
 }
 
 export async function detalData(data) {

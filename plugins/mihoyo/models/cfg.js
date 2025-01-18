@@ -15,7 +15,7 @@ const configFile = fs.readFileSync(configFilePath, 'utf8');
 const config = parse(configFile);
 
 // 根据游戏前缀加载 ignoreReg 正则
-export function getIgnoreReg(gamePrefix) {
+function getIgnoreReg(gamePrefix) {
     const gameConfig = config[gamePrefix];
     if (!gameConfig || !gameConfig.ignoreReg) {
         console.error(`未找到 ${gamePrefix} 的 ignoreReg 配置`);
@@ -23,3 +23,5 @@ export function getIgnoreReg(gamePrefix) {
     }
     return new RegExp(gameConfig.ignoreReg.join('|'));
 }
+
+export default getIgnoreReg
