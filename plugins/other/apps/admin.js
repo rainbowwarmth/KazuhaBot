@@ -1,4 +1,4 @@
-import { botStatus, redis } from "../../../lib/global/global.js";
+import { botStatus, redis } from "../../../lib/global/global.js"
 async function status(msg) {
     return msg.sendMsgEx({
         content: `------状态------` +
@@ -9,7 +9,7 @@ async function status(msg) {
     });
 }
 async function ping(msg) {
-    msg.sendMsgEx({ content: await redis.ping() });
+    msg.sendMsgEx({ content: await redis.ping() })
 }
 async function msgconnnet(msg) {
     return msg.sendMsgEx({
@@ -19,15 +19,15 @@ async function msgconnnet(msg) {
 function timeConver(time) {
     time /= 1000;
     if (time < 60) {
-        return "不足1分钟";
+        return "不足1分钟"
     }
-    time /= 60;
-    time = parseInt(time.toFixed(0));
-    const m = time % 60;
+    time /= 60
+    time = parseInt(time.toFixed(0))
+    const m = time % 60
     if (time < 60)
-        return `${m}分钟`;
-    time /= 60;
-    time = parseInt(time.toFixed(0));
-    return `${time}小时${m}分钟`;
+        return `${m}分钟`
+    time /= 60
+    time = parseInt(time.toFixed(0))
+    return `${time}小时${m}分钟`
 }
-export { status, ping, msgconnnet };
+export { status, ping, msgconnnet }
