@@ -22,19 +22,13 @@
   },
   "author": "feilongproject,rainbowwarmth",
   "license": "MIT",
-  "devDependencies": {
-    "@types/node": "^22.9.0",
-    "@types/node-fetch": "^2.6.2",
-    "@types/node-schedule": "^2.1.0",
-    "@types/ws": "^8.5.12"
-  },
   "dependencies": {
     "art-template": "^4.13.2",
     "chalk": "^4.0.0",
     "form-data": "^4.0.1",
     "log4js": "^6.5.2",
-    "node-fetch": "^2.6.6",
-    "node-schedule": "^2.1.0",
+    "node-fetch": "^3.3.2",
+    "node-schedule": "^2.1.1",
     "pm2": "^5.3.0",
     "puppeteer": "^15.4.0",
     "qq-bot-sdk": "^1.9.1",
@@ -42,6 +36,7 @@
     "resty-client": "^0.0.5",
     "rimraf": "^6.0.1",
     "sharp": "^0.33.5",
+    "ws": "^8.18.0",
     "yaml": "^2.7.0"
   }
 }
