@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.5.21](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.5.20...v2.5.21) (2025-01-26)
+
+
+### Bug Fixes
+
+* 原神新增关键词 ([4fa55dc](https://github.com/rainbowwarmth/KazuhaBot/commit/4fa55dc9a5bc78201c73e38c370b70aba1ae5471))
+* 原神新增关键词 ([48a2757](https://github.com/rainbowwarmth/KazuhaBot/commit/48a27570f1e7732609f890d5bcedc8873b5fb2d6))
+* 新增关键词 ([6a553f3](https://github.com/rainbowwarmth/KazuhaBot/commit/6a553f36df50ac22e770309bd5e6032c275739fe))
+* 新增关键词 ([79b143b](https://github.com/rainbowwarmth/KazuhaBot/commit/79b143be69589f0e174100a5556c74d207ef97f2))
+* 新增关键词 ([ab9a7bd](https://github.com/rainbowwarmth/KazuhaBot/commit/ab9a7bdf2ee68c50a6ec943e7731a28eccac6a16))
+
+
+### Feature Improvements
+
+* 定时任务加载 ([6e4ddd5](https://github.com/rainbowwarmth/KazuhaBot/commit/6e4ddd508ecdb3f1d65bbedff3ee6dee241cbc03))
+
 ## [2.5.20](https://github.com/rainbowwarmth/KazuhaBot/compare/v2.5.19...v2.5.20) (2025-01-18)
 
 
