@@ -1,0 +1,41 @@
+{
+    "desc": "命令总览json,按照顺序进行匹配",
+    "command": {
+        "admin": {
+            "directory": "other",
+            "ping": {
+                "reg": "^#ping$",
+                "fnc": "ping",
+                "type": ["DIRECT"],
+                "describe": "检测数据库是否正常"
+            },
+            "status": {
+                "reg": "^#(状态|status)$",
+                "fnc": "status",
+                "type": ["GUILD", "DIRECT"],
+                "describe": "查询bot状态"
+            }
+        },
+        "help": {
+            "directory": "other",
+            "helpimage": {
+                "reg": "^#help$",
+                "fnc": "helpimage",
+                "type": ["GUILD","DIRECT"],
+                "describe": "help信息"
+            },
+            "commits": {
+                "reg": "^#提交日志$",
+                "fnc": "commits",
+                "type": ["GUILD","DIRECT"],
+                "describe": "help信息"
+            },
+            "info": {
+                "reg": "^#版本$",
+                "fnc": "info",
+                "type": ["GUILD","DIRECT"],
+                "describe": "help信息"
+            }
+        }
+    }
+}
