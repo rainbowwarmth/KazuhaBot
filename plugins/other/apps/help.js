@@ -1,4 +1,6 @@
 import fs from "fs";
+import HttpClient from '../../../lib/core/HttpClient.js'
+
 async function helpimage(msg) {
     const content = await generateContentFromMarkdown('resources/markdown/HELP.md', '米游社小助手使用指南', '功能名', '命令')
     return msg.sendMsgEx({ content })
@@ -21,10 +23,8 @@ async function generateContentFromMarkdown(filePath, title, headingLabel, emphas
 }
 async function commits(msg) {
     try {
-        const response = await fetch('https://gitee.com/api/v5/repos/rainbowwarmth/KazuhaBot_Newmys/commits')
-        if (!response.ok) {
-            throw new Error('Failed to fetch data')
-        }
+        const client = new HttpClient();
+        const response = await client.get('https://gitee.com/api/v5/repos/rainbowwarmth/KazuhaBot_Newmys/commits')
         const data = await response.json()
         const extractedData = data.slice(0, 15).map((commit) => ({
             authorName: commit.commit.author.name,
