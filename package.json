@@ -1,0 +1,51 @@
+{
+  "name": "kazuha-bot",
+  "version": "2.5.15",
+  "description": "QQ频道米游社推送Bot",
+  "main": "app.js",
+  "type": "module",
+  "homepage": "https://github.com/rainbowwarmth/KazuhaBot",
+  "bugs": {
+    "url": "https://github.com/rainbowwarmth/KazuhaBot/issues"
+  },
+  "scripts": {
+    ".": "node app.js",
+    "build": "tsc && tsc-alias && node init.js",
+    "start": "pm2 startOrRestart ./config/pm2/pm2.yaml",
+    "stop": "pm2 stop ./config/pm2/pm2.yaml",
+    "delete": "pm2 delete ./config/pm2/pm2.yaml",
+    "save": "pm2 save --force",
+    "log": "pm2 logs --lines 400 KazuhaBot",
+    "init": "node init.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rainbowwarmth/KazuhaBot"
+  },
+  "author": "feilongproject,rainbowwarmth",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "@types/node-fetch": "^2.6.2",
+    "@types/node-schedule": "^2.1.0",
+    "@types/ws": "^8.5.12",
+    "tsc-alias": "^1.8.10",
+    "tsx": "^4.16.2",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "art-template": "^4.13.2",
+    "chalk": "^4.0.0",
+    "form-data": "^4.0.1",
+    "log4js": "^6.5.2",
+    "node-fetch": "^2.6.6",
+    "node-schedule": "^2.1.0",
+    "pm2": "^5.3.0",
+    "puppeteer": "^15.4.0",
+    "qq-bot-sdk": "^1.9.1",
+    "redis": "^4.2.0",
+    "resty-client": "^0.0.5",
+    "rimraf": "^6.0.1",
+    "sharp": "^0.33.5"
+  }
+}
