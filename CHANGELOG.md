@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/rainbowwarmth/KazuhaBot/compare/v1.0.0...v1.0.1) (2025-03-01)
+
+
+### Bug Fixes
+
+* 日志 ([c79ef4d](https://github.com/rainbowwarmth/KazuhaBot/commit/c79ef4d67a2be56a86ef32ddc80fe3e4ccbd1306))
+
 ## 1.0.0 (2025-03-01)
 
 
