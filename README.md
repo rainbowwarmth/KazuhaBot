@@ -73,6 +73,8 @@ node .
 
 在终端输入`node .`运行
 
+## 注意事项
+ · 若出现无法截图问题可尝试在根目录运行`node node_modules/puppeteer/install.js`手动下载浏览器解决
 ## 致谢
 
 |                           名称                                                         |        介绍           |
