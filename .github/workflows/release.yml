@@ -12,7 +12,7 @@ jobs:
     steps:
       # 1. 检出代码
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # 2. 获取当前版本号
       - name: Get current version from package.json
@@ -45,7 +45,7 @@ jobs:
       # 5. 使用 release-please 创建 PR，而不是直接发布
       - name: Release Please Action (PR Mode)
         if: env.VERSION_UPDATED == 'true'
-        uses: GoogleCloudPlatform/release-please-action@v3
+        uses: GoogleCloudPlatform/release-please-action@v4
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
           release-type: node
@@ -71,7 +71,9 @@ jobs:
       # 6. 上传构建的发行包（在 PR 合并时执行）
       - name: Upload release assets
         if: env.VERSION_UPDATED == 'true'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: my-release-asset
-          path: ./path/to/your/build/artifacts/*.tar.gz
+          path: |
+            ./path/to/your/build/artifacts/*.tar.gz
+            ./path/to/other-assets/*.zip  # 支持多路径模式
