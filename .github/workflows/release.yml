@@ -3,86 +3,78 @@ name: Release
 on:
   push:
     branches:
-      - master  # 监听 master 分支的推送事件
+      - master  # 监听 main 分支的推送事件
 
 jobs:
   release-please:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. 检出代码（配置权限以允许后续推送）
+      # 1. 检出代码
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          persist-credentials: true  # 保留 Git 凭证
-          fetch-depth: 0            # 获取完整提交历史
 
-      # 2. 自动更新版本号并推送（核心新增逻辑）
-      - name: Auto Bump Version
-        run: |
-          # 使用 npm 自动递增修订号（保留原版本号格式）
-          npm version patch --no-git-tag-version
-          
-          # 配置 Git 身份（与 GitHub 账户解耦）
-          git config --global user.name "GitHub Actions Bot"
-          git config --global user.email "actions-bot@noreply.github.com"
-          
-          # 提交版本更新（添加 [skip ci] 防止循环触发）
-          git add package.json
-          git commit -m "chore: auto bump version [skip ci]"
-          
-          # 强制推送至当前分支（覆盖可能存在的 release-please 提交）
-          git push origin HEAD:master --force
-
-      # 3. 获取更新后的版本号（关键顺序调整）
-      - name: Get updated version
+      # 2. 获取当前版本号
+      - name: Get current version from package.json
         id: get_version
         run: |
-          UPDATED_VERSION=$(jq -r '.version' package.json)
-          echo "Updated version: $UPDATED_VERSION"
-          echo "VERSION=$UPDATED_VERSION" >> $GITHUB_ENV
+          VERSION=$(jq -r '.version' package.json)
+          echo "Current version: $VERSION"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
 
-      # 4. 获取最新的 Release 版本号（优化 API 请求）
-      - name: Get latest release
+      # 3. 获取最新的 Release 版本号
+      - name: Get latest release version
         id: get_latest_release
         run: |
-          LATEST_TAG=$(gh api repos/${{ github.repository }}/releases/latest --jq '.tag_name')
-          echo "Latest release: $LATEST_TAG"
-          echo "LATEST_RELEASE=$LATEST_TAG" >> $GITHUB_ENV
+          LATEST_RELEASE=$(curl --silent "https://api.github.com/repos/${{ github.repository }}/releases/latest" | jq -r '.tag_name')
+          echo "Latest release version: $LATEST_RELEASE"
+          echo "LATEST_RELEASE=$LATEST_RELEASE" >> $GITHUB_ENV
 
-      # 5. 智能版本比较逻辑（处理语义化版本）
-      - name: Version Comparison
-        id: version_check
+      # 4. 判断版本号是否有更新
+      - name: Check if version has changed
+        id: check_version
         run: |
           if [ "$VERSION" != "$LATEST_RELEASE" ]; then
-            echo "::notice::New version $VERSION detected"
-            echo "UPDATE_FLAG=1" >> $GITHUB_ENV
+            echo "Version has changed. Proceeding with release."
+            echo "VERSION_UPDATED=true" >> $GITHUB_ENV
           else
-            echo "::warning::Version $VERSION already released"
-            echo "UPDATE_FLAG=0" >> $GITHUB_ENV
+            echo "No version update detected. Skipping release."
+            echo "VERSION_UPDATED=false" >> $GITHUB_ENV
           fi
 
-      # 6. 条件执行 release-please（优化触发逻辑）
-      - name: Release Please
-        if: env.UPDATE_FLAG == '1'
+      # 5. 使用 release-please 创建 PR，而不是直接发布
+      - name: Release Please Action (PR Mode)
+        if: env.VERSION_UPDATED == 'true'
         uses: GoogleCloudPlatform/release-please-action@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.ACCESS_TOKEN }}
           release-type: node
-          bump-minor-pre-major: true
-          monorepo-tags: false
-          changelog-sections: |
-            {"feat": "🚀 Features","fix": "🐛 Bug Fixes","perf": "⚡ Performance"}
-          pull-request-title-pattern: "chore(release): ${version}"
+          package-name: standard-version
+          version: ${{ env.VERSION }}
+          changelog-types: |
+            [
+              {"type": "types", "section": "🎯 Types", "hidden": false},
+              {"type": "revert", "section": "⏪ Reverts", "hidden": false},
+              {"type": "feat", "section": "🚀 Features", "hidden": false},
+              {"type": "fix", "section": "🐛 Bug Fixes", "hidden": false},
+              {"type": "improvement", "section": "✨ Feature Improvements", "hidden": false},
+              {"type": "docs", "section": "📚 Docs", "hidden": false},
+              {"type": "style", "section": "💄 Styling", "hidden": false},
+              {"type": "refactor", "section": "♻️ Code Refactoring", "hidden": false},
+              {"type": "perf", "section": "⚡ Performance Improvements", "hidden": false},
+              {"type": "test", "section": "✅ Tests", "hidden": false},
+              {"type": "build", "section": "📦 Build System", "hidden": false},
+              {"type": "ci", "section": "🔧 CI", "hidden": false}
+            ]
+          create-pr: true  # 设置为 true 以生成发布 PR 而不是直接发布
+          commit-convention: angular
 
-      # 7. 资产上传优化（支持动态路径）
-      - name: Upload Assets
-        if: env.UPDATE_FLAG == '1'
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # 6. 上传构建的发行包（在 PR 合并时执行）
+      - name: Upload release assets
+        if: env.VERSION_UPDATED == 'true'
+        uses: actions/upload-artifact@v4
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/*.zip
-          asset_name: build-artifacts-${{ env.VERSION }}.zip
-          asset_content_type: application/zip
+          name: my-release-asset
+          path: |
+            ./path/to/your/build/artifacts/*.tar.gz
+            ./path/to/other-assets/*.zip  # 支持多路径模式
