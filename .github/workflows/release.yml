@@ -14,17 +14,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. 自动更新版本号并推送（核心新增逻辑）
-      - name: Auto Bump Version
-        run: |
-          npm version patch --no-git-tag-version
-          git config --global user.name "GitHub Actions Bot"
-          git config --global user.email "actions-bot@noreply.github.com"
-          git add package.json
-          git commit -m "chore: auto bump version [skip ci]"
-          git push origin HEAD:master --force
-        
-      # 3. 获取当前版本号
+      # 2. 获取当前版本号
       - name: Get current version from package.json
         id: get_version
         run: |
@@ -32,7 +22,7 @@ jobs:
           echo "Current version: $VERSION"
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
-      # 4. 获取最新的 Release 版本号
+      # 3. 获取最新的 Release 版本号
       - name: Get latest release version
         id: get_latest_release
         run: |
@@ -40,19 +30,19 @@ jobs:
           echo "Latest release version: $LATEST_RELEASE"
           echo "LATEST_RELEASE=$LATEST_RELEASE" >> $GITHUB_ENV
 
-      # 5. 智能版本比较逻辑（处理语义化版本）
-      - name: Version Comparison
-        id: version_check
+      # 4. 判断版本号是否有更新
+      - name: Check if version has changed
+        id: check_version
         run: |
           if [ "$VERSION" != "$LATEST_RELEASE" ]; then
-            echo "::notice::New version $VERSION detected"
-            echo "UPDATE_FLAG=1" >> $GITHUB_ENV
+            echo "Version has changed. Proceeding with release."
+            echo "VERSION_UPDATED=true" >> $GITHUB_ENV
           else
-            echo "::warning::Version $VERSION already released"
-            echo "UPDATE_FLAG=0" >> $GITHUB_ENV
+            echo "No version update detected. Skipping release."
+            echo "VERSION_UPDATED=false" >> $GITHUB_ENV
           fi
 
-      # 6. 使用 release-please 创建 PR，而不是直接发布
+      # 5. 使用 release-please 创建 PR，而不是直接发布
       - name: Release Please Action (PR Mode)
         if: env.VERSION_UPDATED == 'true'
         uses: GoogleCloudPlatform/release-please-action@v4
@@ -79,7 +69,7 @@ jobs:
           create-pr: true  # 设置为 true 以生成发布 PR 而不是直接发布
           commit-convention: angular
 
-      # 7. 上传构建的发行包（在 PR 合并时执行）
+      # 6. 上传构建的发行包（在 PR 合并时执行）
       - name: Upload release assets
         if: env.VERSION_UPDATED == 'true'
         uses: actions/upload-artifact@v4
