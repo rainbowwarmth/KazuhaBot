@@ -67,6 +67,7 @@ jobs:
               {"type": "ci", "section": "🔧 CI", "hidden": false}
             ]
           create-pr: true  # 设置为 true 以生成发布 PR 而不是直接发布
+          commit-convention: angular
 
       # 6. 上传构建的发行包（在 PR 合并时执行）
       - name: Upload release assets
