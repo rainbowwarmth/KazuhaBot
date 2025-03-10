@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://github.com/rainbowwarmth/KazuhaBot/compare/v1.0.1...v1.1.0) (2025-03-10)
+
+
+### Features
+
+* 更换fetch为axios ([37f8a93](https://github.com/rainbowwarmth/KazuhaBot/commit/37f8a939c750b586a89d92a7a23da59b9ca6188b))
+
+
+### Bug Fixes
+
+* excute未定义 ([1390075](https://github.com/rainbowwarmth/KazuhaBot/commit/1390075621343c82ad6e2af4a08ec1ec7e900722))
+
 ## [1.0.1](https://github.com/rainbowwarmth/KazuhaBot/compare/v1.0.0...v1.0.1) (2025-03-01)
 
 
