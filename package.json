@@ -25,6 +25,7 @@
   "dependencies": {
     "@js-temporal/polyfill": "^0.4.4",
     "art-template": "^4.13.2",
+    "axios": "^1.8.2",
     "chalk": "^4.0.0",
     "form-data": "^4.0.1",
     "log4js": "^6.9.1",
