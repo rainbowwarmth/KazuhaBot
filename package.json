@@ -38,5 +38,10 @@
     "sharp": "^0.33.5",
     "ws": "^8.18.0",
     "yaml": "^2.7.0"
+  },
+  "imports": {
+    "#core": "./lib/core/index.js",
+    "#global": "./lib/global/global.js",
+    "#render": "./lib/render/index.js"
   }
 }

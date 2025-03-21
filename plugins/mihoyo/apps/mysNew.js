@@ -1,10 +1,10 @@
-import { sendImage } from "../../../lib/core/message.js"
-import { redis } from '../../../lib/global/global.js'
-import { miGetNewsList, miGetPostFull } from "../../mihoyo/models/mysApi.js"
-import render from "../../../lib/render/index.js"
-import { bbbmiGetNewsList, bbbmiGetPostFull, bbmiGetNewsList, bbmiGetPostFull, dbymiGetNewsList, dbymiGetPostFull, srmiGetNewsList, srmiGetPostFull, wdmiGetNewsList, wdmiGetPostFull, ysmiGetNewsList, ysmiGetPostFull, zzzmiGetNewsList, zzzmiGetPostFull } from "../../mihoyo/models/mysApi.js"
-import getIgnoreReg from '../models/cfg.js'
+import render from "#render"
+import { redis } from '#global'
+import { sendImage } from "#core"
 import base from '../models/base.js'
+import getIgnoreReg from '../models/cfg.js'
+import { miGetNewsList, miGetPostFull } from "../../mihoyo/models/mysApi.js"
+import { bbbmiGetNewsList, bbbmiGetPostFull, bbmiGetNewsList, bbmiGetPostFull, dbymiGetNewsList, dbymiGetPostFull, srmiGetNewsList, srmiGetPostFull, wdmiGetNewsList, wdmiGetPostFull, ysmiGetNewsList, ysmiGetPostFull, zzzmiGetNewsList, zzzmiGetPostFull } from "../../mihoyo/models/mysApi.js"
 
 const resPath = base
 

@@ -1,5 +1,5 @@
 import fs from "fs";
-import HttpClient from '../../../lib/core/HttpClient.js'
+import { HttpClient } from '#core'
 
 async function helpimage(msg) {
     const content = await generateContentFromMarkdown('resources/markdown/HELP.md', '米游社小助手使用指南', '功能名', '命令')

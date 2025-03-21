@@ -1,4 +1,4 @@
-import { botStatus, redis } from "../../../lib/global/global.js"
+import { botStatus, redis } from "#global"
 async function status(msg) {
     return msg.sendMsgEx({
         content: `------状态------` +
