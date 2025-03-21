@@ -1,0 +1,28 @@
+{
+    "initConfig": {
+        "appID": "APPID",
+        "token": "TOKEN",
+        "intents": [
+            "GUILD_MESSAGES",
+            "DIRECT_MESSAGE"
+        ],
+        "sandbox": false,
+        "adminId": [
+            "2492083538938174755"
+        ]
+    },
+    "databaseConfig": {
+        "unixsocket": "/run/redis/redis-server.sock"
+    },
+    "log_level": "all",
+    "loadGuild": false,
+    "devEnv": "false",
+    "render": {
+        "useExternalBrowser": false,
+        "host": "http://127.0.0.1",
+        "port": "7005",
+        "authorization": "123456",
+        "timeout": 120
+    }
+
+}
