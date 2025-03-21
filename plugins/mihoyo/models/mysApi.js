@@ -1,4 +1,4 @@
-import HttpClient from "../../../lib/core/HttpClient.js";
+import HttpClient from "../../../lib/core/httpclient.js";
 const apiClient = new HttpClient({
     baseURL: 'https://bbs-api-static.miyoushe.com',
     defaultHeaders: {

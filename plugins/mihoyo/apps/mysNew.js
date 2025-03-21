@@ -1,4 +1,4 @@
-import { sendImage } from "../../../lib/core/IMessageEx.js"
+import { sendImage } from "../../../lib/core/message.js"
 import { redis } from '../../../lib/global/global.js'
 import { miGetNewsList, miGetPostFull } from "../../mihoyo/models/mysApi.js"
 import render from "../../../lib/render/index.js"
