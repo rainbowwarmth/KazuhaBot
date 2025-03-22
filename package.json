@@ -39,6 +39,7 @@
     "yaml": "^2.7.0"
   },
   "imports": {
+    "#config": "./lib/config/index.js",
     "#core": "./lib/core/index.js",
     "#global": "./lib/global/global.js",
     "#render": "./lib/render/index.js"
