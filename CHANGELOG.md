@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.1.0](https://github.com/rainbowwarmth/KazuhaBot/compare/v1.0.1...v1.1.0) (2025-03-22)
+
+
+### Features
+
+* 更换fetch为axios ([37f8a93](https://github.com/rainbowwarmth/KazuhaBot/commit/37f8a939c750b586a89d92a7a23da59b9ca6188b))
+
+
+### Bug Fixes
+
+* . ([8e04aff](https://github.com/rainbowwarmth/KazuhaBot/commit/8e04aff3ec7fd690809596df16848de397f684c9))
+* excute未定义 ([1390075](https://github.com/rainbowwarmth/KazuhaBot/commit/1390075621343c82ad6e2af4a08ec1ec7e900722))
+* 优化代码结构，补充部分日志提示 ([a6545f1](https://github.com/rainbowwarmth/KazuhaBot/commit/a6545f1f6a41f62a9420ca4e45a3f3ad17f6a7af))
+* 删除无用依赖 ([0f2cdc5](https://github.com/rainbowwarmth/KazuhaBot/commit/0f2cdc5374d290a2781a54d25754cb9779410d3e))
+* 补充配置文件 ([3f9841f](https://github.com/rainbowwarmth/KazuhaBot/commit/3f9841f081b36d40b5f8d333ac4825ee4bdb7c9e))
+
 ## [1.0.1](https://github.com/rainbowwarmth/KazuhaBot/compare/v1.0.0...v1.0.1) (2025-03-01)
 
 
