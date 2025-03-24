@@ -62,7 +62,6 @@ export default class mihoyo {
                   logger.debug('开始执行大别野公告检查')
                   await dbytaskPushNews()
                 },
-                enabled: process.env.NODE_ENV === 'production' // 仅生产环境启用
               }
         ]
     }
