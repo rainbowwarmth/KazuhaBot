@@ -102,7 +102,7 @@ export async function handleNewsList(msg, gid, gameName, type, typeName) {
     })
 
     if (savePath){
-        msg.sendMsgEx({ imagePath: savePath })
+        msg.sendMsgEx({ content: `米游社${gameName}${typeName}列表`, imagePath: savePath })
     }
     logger.mark(chalk.blueBright(`[${gameName}${typeName}列表] newListBBS/mysNew.js`))
 }
