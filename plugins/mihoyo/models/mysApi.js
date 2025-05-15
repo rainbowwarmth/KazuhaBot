@@ -1,6 +1,5 @@
 import { HttpClient } from "#core";
 const apiClient = new HttpClient({
-    baseURL: 'https://bbs-api-static.miyoushe.com',
     defaultHeaders: {
       Referer: 'https://www.miyoushe.com',
       Origin: 'https://www.miyoushe.com',
@@ -14,11 +13,11 @@ async function fetchMihoyoAPI(url) {
 }
 
 async function miGetNewsList(gid, type, pageSize = 10) {
-    const url = `/painter/wapi/getNewsList?gids=${gid}&page_size=${pageSize}&type=${type}`
+    const url = `https://bbs-api-static.miyoushe.com/painter/wapi/getNewsList?gids=${gid}&page_size=${pageSize}&type=${type}`
     return fetchMihoyoAPI(url)
 }
 async function miGetPostFull(gid, postId) {
-    const url = `/post/wapi/getPostFull?gids=${gid}&read=1&post_id=${postId}`
+    const url = `https://bbs-api.miyoushe.com/post/wapi/getPostFull?gids=${gid}&read=1&post_id=${postId}`
     return fetchMihoyoAPI(url)
 }
 async function bbbmiGetNewsList(type, pageSize = 10) {
