@@ -142,8 +142,6 @@ export async function changePushTask(msg) {
 }
 export async function taskPushNews(gamePrefix, getNewsList, getPostFull, logMessage) {
     const ignoreReg = getIgnoreReg(gamePrefix)
-    const msgId = await redis.get("lastestMsgId")
-    if (!msgId)return
     const sendChannels = []
     const _newsPushChannels = await redis.hGetAll(`config:${gamePrefix}newsPush`).catch(err => { logger.error(err); })
     if (!_newsPushChannels)return
@@ -189,7 +187,6 @@ export async function taskPushNews(gamePrefix, getNewsList, getPostFull, logMess
             const _sendQueue = [];
             for (const sendChannel of sendChannels) {
             _sendQueue.push(sendImage({
-                msgId,
                 content: data.post.subject,
                 imagePath: savePath,
                 channelId: sendChannel,
