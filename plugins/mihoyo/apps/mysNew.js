@@ -2,7 +2,7 @@ import render from "#render"
 import { redis } from '#global'
 import { sendImage } from "#core"
 import base from '../models/base.js'
-import getIgnoreReg from '../models/cfg.js'
+import { getIgnoreReg, getNewsPushConfig, setNewsPushConfig } from '../models/cfg.js'
 import { miGetNewsList, miGetPostFull } from "../../mihoyo/models/mysApi.js"
 import { bbbmiGetNewsList, bbbmiGetPostFull, bbmiGetNewsList, bbmiGetPostFull, dbymiGetNewsList, dbymiGetPostFull, srmiGetNewsList, srmiGetPostFull, wdmiGetNewsList, wdmiGetPostFull, ysmiGetNewsList, ysmiGetPostFull, zzzmiGetNewsList, zzzmiGetPostFull } from "../../mihoyo/models/mysApi.js"
 
@@ -126,8 +126,8 @@ export async function changePushTask(msg) {
     const { gid } = getGameIdAndName(msg.content)
     const gamePrefix = gamePrefixes[gid] || "unknown"
     const value = msg.content.includes("开启")
-    await redis.hSet(`config:${gamePrefix}newsPush`, parseInt(msg.channel_id), `${value}`)
-        .then(() => {
+    try {
+        setNewsPushConfig(gamePrefix, msg.channel_id, value)
         const gameName = gameIds[gid] || "未知游戏"
         const statusMessage = value
             ? `${gameName}米游社公告推送已开启\n每1分钟自动检测一次是否存在新更新公告\n如有更新自动发送公告内容至此。`
@@ -137,16 +137,16 @@ export async function changePushTask(msg) {
             ? `[${gameName}开启公告推送] changePushTask/mysNew.js`
             : `[${gameName}关闭公告推送] changePushTask/mysNew.js`
         logger.mark(loggerMessage)
-    })
-        .catch((err) => logger.error(err))
+    } catch (err) {
+        logger.error(err)
+    }
 }
 export async function taskPushNews(gamePrefix, getNewsList, getPostFull, logMessage) {
     const ignoreReg = getIgnoreReg(gamePrefix)
     const sendChannels = []
-    const _newsPushChannels = await redis.hGetAll(`config:${gamePrefix}newsPush`).catch(err => { logger.error(err); })
-    if (!_newsPushChannels)return
+    const _newsPushChannels = getNewsPushConfig(gamePrefix)
     for (const channel in _newsPushChannels) {
-        if (_newsPushChannels[channel] == "true")
+        if (_newsPushChannels[channel] == true || _newsPushChannels[channel] == "true")
             sendChannels.push(channel)
     }
     if (sendChannels.length == 0)return
