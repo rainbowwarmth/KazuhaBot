@@ -45,7 +45,7 @@ jobs:
       # 5. 使用 release-please 创建 PR，而不是直接发布
       - name: Release Please Action (PR Mode)
         if: env.VERSION_UPDATED == 'true'
-        uses: GoogleCloudPlatform/release-please-action@v4
+        uses: google-github-actions/release-please-action@v3
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
           release-type: node
