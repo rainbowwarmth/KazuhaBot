@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.1.0](https://github.com/rainbowwarmth/KazuhaBot/compare/v1.0.2...v1.1.0) (2026-03-10)
+
+
+### 🚀 Features
+
+* 适配新的鉴权方式 ([8b77923](https://github.com/rainbowwarmth/KazuhaBot/commit/8b779235c6739971ca8f13f5c4fe7d3ca1b5b89c))
+
+
+### 🐛 Bug Fixes
+
+* . ([43c6f83](https://github.com/rainbowwarmth/KazuhaBot/commit/43c6f8329c608174068ce0da05edaafd1e0426bb))
+
+
+### ♻️ Code Refactoring
+
+* 优化推送配置管理逻辑，增加获取和设置推送频道配置的功能 ([ae8adbe](https://github.com/rainbowwarmth/KazuhaBot/commit/ae8adbe260e9b7eeed6b0c354570160ef8e8af8b))
+* 移除消息推送中的msgId依赖并优化消息发送逻辑 ([c26e3f7](https://github.com/rainbowwarmth/KazuhaBot/commit/c26e3f7705e616bfddafe8fd1c1af59651a5cb63))
+
 ## [1.0.2](https://github.com/rainbowwarmth/KazuhaBot/compare/v1.0.1...v1.0.2) (2025-05-15)
 
 
