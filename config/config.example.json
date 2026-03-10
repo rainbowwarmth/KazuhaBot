@@ -2,6 +2,7 @@
     "initConfig": {
         "appID": "APPID",
         "token": "TOKEN",
+        "secret": "secret",
         "intents": [
             "GUILD_MESSAGES",
             "DIRECT_MESSAGE"
