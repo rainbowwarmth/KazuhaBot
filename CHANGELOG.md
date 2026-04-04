@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.1.0](https://github.com/rainbowwarmth/KazuhaBot/compare/v1.0.2...v1.1.0) (2026-04-04)
+
+
+### Features
+
+* 提供自定义端点，accessToken用缓存和新生成进行区分 ([0620615](https://github.com/rainbowwarmth/KazuhaBot/commit/06206150add8e0b348eef71834a92ccb40c21e21))
+* 适配新的鉴权方式 ([8b77923](https://github.com/rainbowwarmth/KazuhaBot/commit/8b779235c6739971ca8f13f5c4fe7d3ca1b5b89c))
+
+
+### Bug Fixes
+
+* . ([3f6e47b](https://github.com/rainbowwarmth/KazuhaBot/commit/3f6e47bfaadbedc8e1415ffcf18cbfaa3b2d2b49))
+
 ## [1.0.2](https://github.com/rainbowwarmth/KazuhaBot/compare/v1.0.1...v1.0.2) (2025-05-15)
 
 
