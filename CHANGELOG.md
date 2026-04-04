@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.2.0](https://github.com/rainbowwarmth/KazuhaBot/compare/v1.1.0...v1.2.0) (2026-04-04)
+## [1.1.1](https://github.com/rainbowwarmth/KazuhaBot/compare/v1.1.0...v1.1.1) (2026-04-04)
 
 
 ### Features
