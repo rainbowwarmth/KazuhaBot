@@ -47,7 +47,7 @@ git clone --depth=1 https://github.com/rainbowwarmth/KazuhaBot
 
 ## 修改设置文件
 
-打开config文件夹,选中config.example.json文件重命名为config.json文件，并更改其中的APP_ID和APP_TOKEN为机器人对应ID与TOKEN
+打开config文件夹,选中config.example.json文件重命名为config.json文件，并更改其中的APP_ID和APP_TOKENH和SECRET为机器人对应APP_ID与TOKEN与SECRET
 
 ### 使用外置渲染器
 
